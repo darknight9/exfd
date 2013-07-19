@@ -33,6 +33,12 @@ public class UserDaoImpl {
 	
 	public User find(String username, String password) {
 		
+		try {
+			Document document = XmlUtils.getDocument();
+			document.selectSingleNode("//user[@username='"+username+"' and @password='"+password+"']");
+		} catch (DocumentException e) { 
+			throw new RuntimeException(e);
+		}
 		return null;
 	}
 	
