@@ -4,7 +4,62 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-  <display-name></display-name>	
+  <display-name></display-name>
+  <servlet>
+    <description>RegisterUIServlet</description>
+    <display-name>RegisterUIServlet</display-name>
+    <servlet-name>RegisterUIServlet</servlet-name>
+    <servlet-class>com.exfd.web.UI.RegisterUIServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>RegisterUIServlet</description>
+    <display-name>RegisterUIServlet</display-name>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>com.exfd.web.controller.RegisterServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>RegisterUIServlet</description>
+    <display-name>RegisterUIServlet</display-name>
+    <servlet-name>LoginUIServlet</servlet-name>
+    <servlet-class>com.exfd.web.UI.LoginUIServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>RegisterUIServlet</description>
+    <display-name>RegisterUIServlet</display-name>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>com.exfd.web.controller.LoginServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>RegisterUIServlet</description>
+    <display-name>RegisterUIServlet</display-name>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>com.exfd.web.controller.LogoutServlet</servlet-class>
+  </servlet>
+
+
+
+
+
+  <servlet-mapping>
+    <servlet-name>RegisterUIServlet</servlet-name>
+    <url-pattern>/servlet/RegisterUIServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/servlet/RegisterServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LoginUIServlet</servlet-name>
+    <url-pattern>/servlet/LoginUIServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/servlet/LoginServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/servlet/LogoutServlet</url-pattern>
+  </servlet-mapping>	
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
