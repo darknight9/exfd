@@ -28,6 +28,10 @@ public class TrackSealServlet extends HttpServlet {
 		if(seal!=null){
 			// TODO
 			// 展现结果.
+			request.setAttribute("seal", seal);
+			// 重定向到搜索结果页.
+			//response.sendRedirect(request.getContextPath()+"/WEB-INF/jsp/showseal.jsp");
+			request.getRequestDispatcher("/WEB-INF/jsp/showseal.jsp").forward(request, response);
 			return;
 		}
 		
