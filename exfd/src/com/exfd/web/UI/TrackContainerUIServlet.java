@@ -8,22 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author david
- * 为用户提供注册界面.
- */
-public class RegisterUIServlet extends HttpServlet {
+public class TrackContainerUIServlet extends HttpServlet {
+
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		request.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(request, response);
-
+		request.getRequestDispatcher("/WEB-INF/jsp/trackcontainer.jsp").forward(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		doGet(request, response);
 	}
 

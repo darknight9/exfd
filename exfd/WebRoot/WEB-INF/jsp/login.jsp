@@ -45,7 +45,6 @@
 			</div>
 		</div>
 	</div>
-	This is my JSP page.
 	<br>
 </body>
 </html>
