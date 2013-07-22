@@ -11,7 +11,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 // 连接mysql数据库的辅助类.
-public class mysqlUtils {
+public class MysqlUtils {
 
 	// 第一种连接方式.
 	private static String dbUrl = "jdbc:mysql://localhost:3306/SealDB";

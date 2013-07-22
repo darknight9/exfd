@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import com.exfd.dao.SealDao;
 import com.exfd.domain.Seal;
-import com.exfd.util.mysqlUtils;
+import com.exfd.util.MysqlUtils;
 
 public class SealDaoImpl implements SealDao {
 
@@ -26,7 +26,7 @@ public class SealDaoImpl implements SealDao {
 		Connection con = null;
 		Statement stmt = null;
 		try {
-			con = mysqlUtils.getConnection();
+			con = MysqlUtils.getConnection();
 			StringBuilder sb = new StringBuilder(1000);
 			sb.append("INSERT INTO `SEALINFO` VALUES ('");
 			sb.append(seal.getCode()).append("','");
@@ -45,8 +45,8 @@ public class SealDaoImpl implements SealDao {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
-			mysqlUtils.closeStmt(stmt);
-			mysqlUtils.closeConnection(con);
+			MysqlUtils.closeStmt(stmt);
+			MysqlUtils.closeConnection(con);
 		}
 	}
 	
@@ -57,7 +57,7 @@ public class SealDaoImpl implements SealDao {
 		Connection con = null;
 		Statement stmt = null;
 		try {
-			con = mysqlUtils.getConnection();
+			con = MysqlUtils.getConnection();
 			StringBuilder sb = new StringBuilder(1000);
 			sb.append("UPDATE `SEALINFO` SET ");
 			sb.append("status = '").append(seal.getStatus()).append("', ");
@@ -75,8 +75,8 @@ public class SealDaoImpl implements SealDao {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
-			mysqlUtils.closeStmt(stmt);
-			mysqlUtils.closeConnection(con);
+			MysqlUtils.closeStmt(stmt);
+			MysqlUtils.closeConnection(con);
 		}
 	}
 	
@@ -92,7 +92,7 @@ public class SealDaoImpl implements SealDao {
 		PreparedStatement prepStmt = null;
 		ResultSet rs = null;
 		try {
-			con = mysqlUtils.getConnection();
+			con = MysqlUtils.getConnection();
 			String selectStatement = "select * "
 					+ "from SEALINFO where code = ? ";
 			prepStmt = con.prepareStatement(selectStatement);
@@ -117,9 +117,9 @@ public class SealDaoImpl implements SealDao {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
-			mysqlUtils.closeResultSet(rs);
-			mysqlUtils.closePrepStmt(prepStmt);
-			mysqlUtils.closeConnection(con);
+			MysqlUtils.closeResultSet(rs);
+			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeConnection(con);
 		}
 	}
 	
@@ -130,7 +130,7 @@ public class SealDaoImpl implements SealDao {
 		ResultSet rs = null;
 		
 		try {
-			con = mysqlUtils.getConnection();
+			con = MysqlUtils.getConnection();
 			String selectStatement = "select * "
 					+ "from SEALINFO";
 			prepStmt = con.prepareStatement(selectStatement);
@@ -154,10 +154,40 @@ public class SealDaoImpl implements SealDao {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
-			mysqlUtils.closeResultSet(rs);
-			mysqlUtils.closePrepStmt(prepStmt);
-			mysqlUtils.closeConnection(con);
+			MysqlUtils.closeResultSet(rs);
+			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeConnection(con);
 		}
+	}
+
+	@Override
+	public void add(ArrayList<Seal> seals) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Seal seal) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(ArrayList<Seal> seals) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(ArrayList<Seal> seals) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<Seal> find(ArrayList<String> codes) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

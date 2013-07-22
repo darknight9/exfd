@@ -1,0 +1,155 @@
+package com.exfd.dao.impl;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
+import com.exfd.dao.SealDao;
+import com.exfd.domain.Seal;
+import com.exfd.util.EagleGPSUtils;
+import com.exfd.util.XmlUtils;
+
+// 使用了类似修饰模式的类.
+public class SealEagleDaoImpl implements SealDao {
+
+	// 1980-09-09
+	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	// 内部使用SealDaoImpl.
+	SealDaoImpl dbimp = new SealDaoImpl();
+	
+	@Override
+	public void add(Seal seal) {
+		dbimp.add(seal);
+	}
+
+	@Override
+	public void add(ArrayList<Seal> seals) {
+		dbimp.add(seals);
+	}
+
+	@Override
+	public void delete(Seal seal) {
+		dbimp.delete(seal);
+	}
+
+	@Override
+	public void delete(ArrayList<Seal> seals) {
+		dbimp.delete(seals);
+	}
+
+	@Override
+	public void update(Seal seal) {
+		dbimp.update(seal);
+	}
+
+	@Override
+	public void update(ArrayList<Seal> seals) {
+		dbimp.update(seals);
+	}
+	
+	@Override
+	public Seal find(String code) {
+		
+		// 先在数据库中查找.
+		Seal seal = dbimp.find(code);
+		Calendar rightnow = Calendar.getInstance();
+		
+		// 规则：1天前的数据是失效的.
+		rightnow.add(Calendar.DAY_OF_YEAR, -1);
+		Date expire = rightnow.getTime();
+		
+		// 如果找到，还需要判断是否有效.
+		if(seal!=null){
+			
+			// 如果有效就可以返回了.
+			if (isTrackValid(seal, expire)) {
+				return seal;
+			}
+		}
+		// 需要联网获取最新的信息.
+		String str = EagleGPSUtils.trackVehicle(code);
+		
+		// 如果联网失败或者信息无效，直接返回null.
+		if (str == null || str.equals("")) {
+			return null;
+		}
+		Seal onlineSeal = xml2seal(str);
+		if (onlineSeal != null) {
+			// 联网信息有效，写入数据库并返回.
+			update(onlineSeal);
+		}
+		return onlineSeal;
+	}
+
+	@Override
+	public ArrayList<Seal> find(ArrayList<String> codes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Seal> list() {
+		return dbimp.list();
+	}
+	
+	// 检查记录是否有效.
+	public boolean isTrackValid(Seal seal, Date expire) {
+		
+		// TODO 先实现简单逻辑，后面需要继续添加.
+		if (seal.getGpstime().after((expire))) {
+			return true;
+		}
+		return false;
+	}
+	
+	// 通过返回的xml字符串提取出seal对象.
+	public Seal xml2seal(String str) {
+		Seal seal = new Seal();
+		try {
+			Document document = DocumentHelper.parseText(str);
+			Element seal_tag = (Element) document
+					.selectSingleNode("//VehicleTrack");
+			elment2seal(seal, seal_tag);
+			return seal;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * @param seal
+	 * @param seal_tag
+	 * @throws ParseException
+	 */
+	private static void elment2seal(Seal seal, Element seal_tag) throws ParseException {
+		seal.setCode(seal_tag.elementTextTrim("Vid"));	
+		seal.setStatus(1);
+		seal.setLongitude(Double.parseDouble(seal_tag.elementTextTrim("Lon")));
+		seal.setLatitude(Double.parseDouble(seal_tag.elementTextTrim("Lat")));
+		seal.setCtime(df.parse(seal_tag.elementTextTrim("GpsTime")));	
+		seal.setMtime(df.parse(seal_tag.elementTextTrim("GpsTime")));	
+		seal.setMarkdel(false);
+		seal.setRemark("");
+		
+		seal.setPlate(seal_tag.elementTextTrim("Plate"));	
+		seal.setGpstime(df.parse(seal_tag.elementTextTrim("GpsTime")));
+		seal.setSpeed(Integer.parseInt(seal_tag.elementTextTrim("Speed")));
+		seal.setDirection(Double.parseDouble(seal_tag.elementTextTrim("Dir")));
+		seal.setDaymiles(Double.parseDouble(seal_tag.elementTextTrim("MIL1")));
+		seal.setMonthmiles(Double.parseDouble(seal_tag.elementTextTrim("MIL2")));
+		seal.setOil(Integer.parseInt(seal_tag.elementTextTrim("oil")));
+		seal.setEngst(seal_tag.elementTextTrim("St"));	
+		seal.setPoi(seal_tag.elementTextTrim("Lo"));
+	}
+
+	
+}
