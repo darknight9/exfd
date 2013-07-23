@@ -1,6 +1,7 @@
 package com.exfd.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.exfd.domain.Seal;
 
@@ -16,8 +17,11 @@ public interface SealDao {
 	// 删除一个seal记录.
 	void delete(Seal seal);
 	
+	// 删除一个seal记录(通过code).
+	void delete(String code);
+	
 	// 删除多个seal记录.
-	void delete(ArrayList<Seal> seals);
+	void delete(ArrayList<String> codes);
 	
 	// 更新一条seal的记录.
 	void update(Seal seal);
@@ -29,7 +33,7 @@ public interface SealDao {
 	Seal find(String code);
 	
 	// 查找多个seal记录.
-	ArrayList<Seal> find(ArrayList<String> codes);
+	Map<String, Seal> find(ArrayList<String> codes);
 	
 	// 列出全部的seal记录.
 	public ArrayList<Seal> list();

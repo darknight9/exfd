@@ -12,6 +12,7 @@ public class Seal {
 	private Date mtime;
 	private boolean markdel;
 	private String remark;
+	
 	private String plate;
 	private Date gpstime;
 	private int speed;

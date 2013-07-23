@@ -11,6 +11,7 @@ public class EagleGPSUtils {
 	private static String getGPSUrlPrefix = "http://121.14.37.120/yxgps/service/getIntPostalDynamicData.asp";
 	private static String getHistoryUrlPrefix = "http://121.14.37.120/yxgps/service/getPostalTextHistoryTrack.asp";
 	
+	// 联网获取结果.
 	public static String trackVehicle(String code) {
 		
 		try {

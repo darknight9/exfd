@@ -1,5 +1,8 @@
 package junit.test;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.junit.Test;
 
 import com.exfd.dao.impl.SealEagleDaoImpl;
@@ -24,5 +27,17 @@ public class EagleSealDaoTest {
 		SealEagleDaoImpl dao = new SealEagleDaoImpl();
 		Seal seal = dao.find("2899");
 		System.out.println(seal);
+	}
+	
+	@Test
+	public void testDate() {
+		Calendar rightnow = Calendar.getInstance();
+		
+		// 规则：1天前的数据是失效的.
+		rightnow.add(Calendar.DAY_OF_YEAR, -1);
+		Date expire = rightnow.getTime();
+		
+		System.out.print(expire);
+		
 	}
 }

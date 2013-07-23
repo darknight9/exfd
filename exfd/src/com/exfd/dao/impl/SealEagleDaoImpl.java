@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -40,12 +41,17 @@ public class SealEagleDaoImpl implements SealDao {
 	public void delete(Seal seal) {
 		dbimp.delete(seal);
 	}
-
+	
 	@Override
-	public void delete(ArrayList<Seal> seals) {
-		dbimp.delete(seals);
+	public void delete(String code) {
+		dbimp.delete(code);
 	}
 
+	@Override
+	public void delete(ArrayList<String> codes) {
+		dbimp.delete(codes);		
+	}
+	
 	@Override
 	public void update(Seal seal) {
 		dbimp.update(seal);
@@ -55,7 +61,7 @@ public class SealEagleDaoImpl implements SealDao {
 	public void update(ArrayList<Seal> seals) {
 		dbimp.update(seals);
 	}
-	
+
 	@Override
 	public Seal find(String code) {
 		
@@ -66,7 +72,7 @@ public class SealEagleDaoImpl implements SealDao {
 		// 规则：1天前的数据是失效的.
 		rightnow.add(Calendar.DAY_OF_YEAR, -1);
 		Date expire = rightnow.getTime();
-		
+
 		// 如果找到，还需要判断是否有效.
 		if(seal!=null){
 			
@@ -85,15 +91,44 @@ public class SealEagleDaoImpl implements SealDao {
 		Seal onlineSeal = xml2seal(str);
 		if (onlineSeal != null) {
 			// 联网信息有效，写入数据库并返回.
-			update(onlineSeal);
+			if (seal!=null) {
+				
+				// TODO 这里以后需要升级复杂的更新逻辑.
+				// 有旧记录，更新.
+				update(onlineSeal);
+			}else {
+				// 没有记录，添加.
+				add(onlineSeal);
+			}
 		}
 		return onlineSeal;
 	}
 
+	// TODO 这里的实现还差得比较远，以后再实现.
 	@Override
-	public ArrayList<Seal> find(ArrayList<String> codes) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Seal> find(ArrayList<String> codes) {
+		
+		// 先在数据库中查找.
+		Map<String, Seal> mapSeal = dbimp.find(codes);
+		
+		Calendar rightnow = Calendar.getInstance();
+		
+		// 规则：1天前的数据是失效的.
+		rightnow.add(Calendar.DAY_OF_YEAR, -1);
+		Date expire = rightnow.getTime();
+
+		// 如果找到，还需要判断是否有效.
+		if(!mapSeal.isEmpty()){
+			for (String code : codes) {
+				Seal seal = mapSeal.get(code);
+				// 如果无效就直接删除.
+				if (isTrackValid(seal, expire)) {
+				}
+			}
+
+		}
+		return mapSeal;
+
 	}
 
 	@Override
@@ -150,6 +185,5 @@ public class SealEagleDaoImpl implements SealDao {
 		seal.setEngst(seal_tag.elementTextTrim("St"));	
 		seal.setPoi(seal_tag.elementTextTrim("Lo"));
 	}
-
 	
 }
