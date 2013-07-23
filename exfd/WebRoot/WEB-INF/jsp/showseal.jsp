@@ -67,12 +67,20 @@
 			<td>${seal.mtime }</td>
 		</tr>
 		<tr>
+			<td>gpstime</td>
+			<td>${seal.gpstime }</td>
+		</tr>
+		<tr>
 			<td>markdel</td>
 			<td>${seal.markdel }</td>
 		</tr>
 		<tr>
 			<td>remark</td>
 			<td>${seal.remark }</td>
+		</tr>
+		<tr>
+			<td>location</td>
+			<td>${seal.poi }</td>
 		</tr>
 	</table>
 </body>

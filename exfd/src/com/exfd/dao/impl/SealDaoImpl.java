@@ -16,9 +16,10 @@ import com.exfd.dao.SealDao;
 import com.exfd.domain.Seal;
 import com.exfd.util.MysqlUtils;
 
+// 铅封Dao实现.
 public class SealDaoImpl implements SealDao {
 
-	// 1980-09-09
+	// 1980-09-09 12:03:04
 	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	// 添加一个seal记录.
@@ -35,9 +36,7 @@ public class SealDaoImpl implements SealDao {
 			String str = createInsertStatement(seal);
 			
 			stmt = con.createStatement();
-			System.out.println(str);
-			int ret = stmt.executeUpdate(str);
-
+			stmt.executeUpdate(str);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
