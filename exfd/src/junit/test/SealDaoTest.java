@@ -2,6 +2,8 @@ package junit.test;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -138,9 +140,9 @@ public class SealDaoTest {
 		codeStrings.add("testAddArray001");
 		codeStrings.add("testAddArray002");
 		codeStrings.add("testAddArray003");
-		ArrayList<Seal> newSeals = dao.find(codeStrings);
-		for (Seal seal : newSeals) {
-			System.out.println(seal);
+		Map<String, Seal> newSeals = dao.find(codeStrings);
+		for (String str : codeStrings) {
+			System.out.println(newSeals.get(str));
 		}
 	}
 	
@@ -159,11 +161,12 @@ public class SealDaoTest {
 		codes.add("testAddArray001");
 		codes.add("2899");
 		codes.add("test002");
-		ArrayList<Seal> seals = dao.find(codes);
 		System.out.println("----- testFindArray -----");
-		for (Seal seal : seals) {
-			System.out.println(seal);
+		Map<String, Seal> newSeals = dao.find(codes);
+		for (String str : codes) {
+			System.out.println(newSeals.get(str));
 		}
+		
 	}
 	
 	

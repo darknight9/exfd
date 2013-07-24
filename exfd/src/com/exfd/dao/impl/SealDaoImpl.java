@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.apple.jobjc.SEL;
 import com.exfd.dao.SealDao;
 import com.exfd.domain.Seal;
 import com.exfd.util.MysqlUtils;
@@ -34,7 +33,6 @@ public class SealDaoImpl implements SealDao {
 		try {
 			con = MysqlUtils.getConnection();
 			String str = createInsertStatement(seal);
-			
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {

@@ -1,76 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.0" 
-	xmlns="http://java.sun.com/xml/ns/javaee" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-  <display-name></display-name>
-  <servlet>
-    <description>RegisterUIServlet</description>
-    <display-name>RegisterUIServlet</display-name>
-    <servlet-name>RegisterUIServlet</servlet-name>
-    <servlet-class>com.exfd.web.UI.RegisterUIServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>RegisterUIServlet</description>
-    <display-name>RegisterUIServlet</display-name>
-    <servlet-name>RegisterServlet</servlet-name>
-    <servlet-class>com.exfd.web.controller.RegisterServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>RegisterUIServlet</description>
-    <display-name>RegisterUIServlet</display-name>
-    <servlet-name>LoginUIServlet</servlet-name>
-    <servlet-class>com.exfd.web.UI.LoginUIServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>RegisterUIServlet</description>
-    <display-name>RegisterUIServlet</display-name>
-    <servlet-name>LoginServlet</servlet-name>
-    <servlet-class>com.exfd.web.controller.LoginServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>RegisterUIServlet</description>
-    <display-name>RegisterUIServlet</display-name>
-    <servlet-name>LogoutServlet</servlet-name>
-    <servlet-class>com.exfd.web.controller.LogoutServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>Track the Smart Seals</description>
-    <display-name>Track Smart Seals</display-name>
-    <servlet-name>TrackContainerUIServlet</servlet-name>
-    <servlet-class>com.exfd.web.UI.TrackContainerUIServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>Track the Smart Seals</description>
-    <display-name>Track Smart Seals</display-name>
-    <servlet-name>TrackShipUIServlet</servlet-name>
-    <servlet-class>com.exfd.web.UI.TrackShipUIServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>Track the Smart Seals</description>
-    <display-name>Track Smart Seals</display-name>
-    <servlet-name>TrackSealUIServlet</servlet-name>
-    <servlet-class>com.exfd.web.UI.TrackSealUIServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>Track Container</description>
-    <display-name>Track Container</display-name>
-    <servlet-name>TrackContainerServlet</servlet-name>
-    <servlet-class>com.exfd.web.controller.TrackContainerServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>TrackSealServlet</description>
-    <display-name>TrackSealServlet</display-name>
-    <servlet-name>TrackSealServlet</servlet-name>
-    <servlet-class>com.exfd.web.controller.TrackSealServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>TrackShipServlet</description>
-    <display-name>TrackShipServlet</display-name>
-    <servlet-name>TrackShipServlet</servlet-name>
-    <servlet-class>com.exfd.web.controller.TrackShipServlet</servlet-class>
-  </servlet>
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<servlet>
+		<description>RegisterUIServlet</description>
+		<display-name>RegisterUIServlet</display-name>
+		<servlet-name>RegisterUIServlet</servlet-name>
+		<servlet-class>com.exfd.web.UI.RegisterUIServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>RegisterUIServlet</description>
+		<display-name>RegisterUIServlet</display-name>
+		<servlet-name>RegisterServlet</servlet-name>
+		<servlet-class>com.exfd.web.controller.RegisterServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>RegisterUIServlet</description>
+		<display-name>RegisterUIServlet</display-name>
+		<servlet-name>LoginUIServlet</servlet-name>
+		<servlet-class>com.exfd.web.UI.LoginUIServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>RegisterUIServlet</description>
+		<display-name>RegisterUIServlet</display-name>
+		<servlet-name>LoginServlet</servlet-name>
+		<servlet-class>com.exfd.web.controller.LoginServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>RegisterUIServlet</description>
+		<display-name>RegisterUIServlet</display-name>
+		<servlet-name>LogoutServlet</servlet-name>
+		<servlet-class>com.exfd.web.controller.LogoutServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>Track the Smart Seals</description>
+		<display-name>Track Smart Seals</display-name>
+		<servlet-name>TrackContainerUIServlet</servlet-name>
+		<servlet-class>com.exfd.web.UI.TrackContainerUIServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>Track the Smart Seals</description>
+		<display-name>Track Smart Seals</display-name>
+		<servlet-name>TrackShipUIServlet</servlet-name>
+		<servlet-class>com.exfd.web.UI.TrackShipUIServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>Track the Smart Seals</description>
+		<display-name>Track Smart Seals</display-name>
+		<servlet-name>TrackSealUIServlet</servlet-name>
+		<servlet-class>com.exfd.web.UI.TrackSealUIServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>Track Container</description>
+		<display-name>Track Container</display-name>
+		<servlet-name>TrackContainerServlet</servlet-name>
+		<servlet-class>com.exfd.web.controller.TrackContainerServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>TrackSealServlet</description>
+		<display-name>TrackSealServlet</display-name>
+		<servlet-name>TrackSealServlet</servlet-name>
+		<servlet-class>com.exfd.web.controller.TrackSealServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>TrackShipServlet</description>
+		<display-name>TrackShipServlet</display-name>
+		<servlet-name>TrackShipServlet</servlet-name>
+		<servlet-class>com.exfd.web.controller.TrackShipServlet</servlet-class>
+	</servlet>
 
 
 
@@ -82,51 +90,51 @@
 
 
 
-  <servlet-mapping>
-    <servlet-name>RegisterUIServlet</servlet-name>
-    <url-pattern>/servlet/RegisterUIServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>RegisterServlet</servlet-name>
-    <url-pattern>/servlet/RegisterServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>LoginUIServlet</servlet-name>
-    <url-pattern>/servlet/LoginUIServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>LoginServlet</servlet-name>
-    <url-pattern>/servlet/LoginServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>LogoutServlet</servlet-name>
-    <url-pattern>/servlet/LogoutServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TrackContainerUIServlet</servlet-name>
-    <url-pattern>/servlet/TrackContainerUIServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TrackShipUIServlet</servlet-name>
-    <url-pattern>/servlet/TrackShipUIServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TrackSealUIServlet</servlet-name>
-    <url-pattern>/servlet/TrackSealUIServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TrackContainerServlet</servlet-name>
-    <url-pattern>/servlet/TrackContainerServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TrackSealServlet</servlet-name>
-    <url-pattern>/servlet/TrackSealServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TrackShipServlet</servlet-name>
-    <url-pattern>/servlet/TrackShipServlet</url-pattern>
-  </servlet-mapping>	
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
+	<servlet-mapping>
+		<servlet-name>RegisterUIServlet</servlet-name>
+		<url-pattern>/servlet/RegisterUIServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RegisterServlet</servlet-name>
+		<url-pattern>/servlet/RegisterServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>LoginUIServlet</servlet-name>
+		<url-pattern>/servlet/LoginUIServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/servlet/LoginServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>LogoutServlet</servlet-name>
+		<url-pattern>/servlet/LogoutServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TrackContainerUIServlet</servlet-name>
+		<url-pattern>/servlet/TrackContainerUIServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TrackShipUIServlet</servlet-name>
+		<url-pattern>/servlet/TrackShipUIServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TrackSealUIServlet</servlet-name>
+		<url-pattern>/servlet/TrackSealUIServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TrackContainerServlet</servlet-name>
+		<url-pattern>/servlet/TrackContainerServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TrackSealServlet</servlet-name>
+		<url-pattern>/servlet/TrackSealServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TrackShipServlet</servlet-name>
+		<url-pattern>/servlet/TrackShipServlet</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
 </web-app>
