@@ -4,6 +4,13 @@
 	"http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+	<constant name="struts.action.extension" value="do"></constant>
+	<constant name="struts.i18n.encoding" value="UTF-8"></constant>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false"></constant>
+	<constant name="struts.serve.static.browserCache" value="false"></constant>
+	<constant name="struts.configuration.xml.reload" value="true"></constant>
+	<constant name="struts.devMode" value="true"></constant>
+	
 	<package name="exfd" namespace="/test" extends="struts-default">
 		<action name="helloworld" class="com.exfd.action.HelloWorldAction">
 			<result name="success">/WEB-INF/jsp/register.jsp</result>

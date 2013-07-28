@@ -28,7 +28,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div id="form">
 				<form action="${pageContext.request.contextPath }/servlet/TrackShipServlet" method="post">
 					<div class="input">
-						船号：<input class="inputtext" type="text" name="code" />
+						<input class="inputtext" type="text" name="code" /><br>
+						<input type="radio" name="type" value="name">船名<br>
+						<input type="radio" name="type" value="mmsi">MMSI<br>
+						<input type="radio" name="type" value="imo">IMO<br>
+						<input type="radio" name="type" value="callsign">呼码<br>
 					</div>
 					<div id="btn">
 						<input class="btn" type="button" value="注册"

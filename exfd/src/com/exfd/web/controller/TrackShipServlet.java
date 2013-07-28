@@ -2,6 +2,7 @@ package com.exfd.web.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.exfd.domain.Seal;
+import com.exfd.domain.Ship;
 import com.exfd.service.impl.SealServiceImpl;
+import com.exfd.service.impl.ShipServiceImpl;
 
 public class TrackShipServlet extends HttpServlet {
 
@@ -20,12 +23,18 @@ public class TrackShipServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		String code = request.getParameter("code");
-
-		SealServiceImpl service = new SealServiceImpl();
-		Seal seal = service.track(code);
-		if(seal!=null){
+		String type = request.getParameter("type");
+		ShipServiceImpl service = new ShipServiceImpl();
+		List<Ship> ships = service.track("", code, type, 1, 10);
+		if(ships!=null){
 			// TODO
 			// 展现结果.
+			request.setAttribute("shipnumbers", ships.size());
+			request.setAttribute("ships", ships);
+
+			// 重定向到搜索结果页.
+			//response.sendRedirect(request.getContextPath()+"/WEB-INF/jsp/showseal.jsp");
+			request.getRequestDispatcher("/WEB-INF/jsp/showship.jsp").forward(request, response);
 			return;
 		}
 		

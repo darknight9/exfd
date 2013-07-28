@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 public class MysqlUtils {
 
 	// 第一种连接方式.
-	private static String dbUrl = "jdbc:mysql://localhost:3306/SealDB";
+	private static String dbUrl = "jdbc:mysql://127.0.0.1:3306/SealDB";
 	private static String dbUser = "root";
 	private static String dbPwd = "kanekane.1";
 	
