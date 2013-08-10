@@ -24,7 +24,6 @@ public class ShipDaoImpl implements ShipDao{
 		try {
 			con = MysqlUtils.getConnection();
 			String str = createInsertStatement(ship);
-			System.out.println(str);
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
@@ -37,7 +36,7 @@ public class ShipDaoImpl implements ShipDao{
 	
 
 	private String createInsertStatement(Ship ship) {
-		StringBuilder sb = new StringBuilder(1000);
+		StringBuilder sb = new StringBuilder(3000);
 		sb.append("INSERT INTO `SHIPINFO` VALUES ('");
 
 		sb.append(ship.getShipid()).append("','");
@@ -85,7 +84,6 @@ public class ShipDaoImpl implements ShipDao{
 			stmt = con.createStatement();
 			for (Ship ship : ships) {
 				String str = createInsertStatement(ship);
-				System.out.println(str);
 				stmt.executeUpdate(str);
 			}
 		} catch (Exception e) {
@@ -94,7 +92,6 @@ public class ShipDaoImpl implements ShipDao{
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
 		}
-		
 	}
 
 	@Override
@@ -110,7 +107,6 @@ public class ShipDaoImpl implements ShipDao{
 			con = MysqlUtils.getConnection();
 			String str = "DELETE FROM `SHIPINFO` WHERE mmsi = '"+code+"'";
 			stmt = con.createStatement();
-			System.out.println(str);
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -159,7 +155,7 @@ public class ShipDaoImpl implements ShipDao{
 	}
 	
 	private String createUpdateStatment(Ship ship) {
-		StringBuilder sb = new StringBuilder(2000);
+		StringBuilder sb = new StringBuilder(3000);
 		sb.append("UPDATE `SHIPINFO` SET ");
 		sb.append("shipid = '").append(ship.getShipid()).append("', ");
 		sb.append("shipname = '").append(ship.getShipname()).append("', ");
@@ -208,7 +204,6 @@ public class ShipDaoImpl implements ShipDao{
 			stmt = con.createStatement();
 			for (Ship ship : ships) {
 				String str = createUpdateStatment(ship);
-				System.out.println(str);
 				stmt.executeUpdate(str);
 			}
 		} catch (Exception e) {

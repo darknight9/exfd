@@ -25,7 +25,7 @@ public class TrackSealServlet extends HttpServlet {
 
 		SealServiceImpl service = new SealServiceImpl();
 		Seal seal = service.track(code);
-		if(seal!=null){
+		if(seal != null){
 			// TODO
 			// 展现结果.
 			request.setAttribute("seal", seal);

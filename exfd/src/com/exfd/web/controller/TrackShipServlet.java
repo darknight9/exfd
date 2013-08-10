@@ -26,7 +26,7 @@ public class TrackShipServlet extends HttpServlet {
 		String type = request.getParameter("type");
 		ShipServiceImpl service = new ShipServiceImpl();
 		List<Ship> ships = service.track("", code, type, 1, 10);
-		if(ships!=null){
+		if(ships != null && !ships.isEmpty()){
 			// TODO
 			// 展现结果.
 			request.setAttribute("shipnumbers", ships.size());

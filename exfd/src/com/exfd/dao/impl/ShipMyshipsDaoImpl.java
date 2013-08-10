@@ -75,7 +75,7 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 			}
 		}
 		// 需要联网获取最新的信息.
-		String str;
+		String str = null;
 		try {
 			str = MyshipsUtils.getSearchRecByKeyAndTypeInShipBaseInfo("", code, "mmsi", 1, 2);
 		} catch (Exception e) {
@@ -124,10 +124,9 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 		return rSet.getShips();
 	}
 	
-
+	// TODO 目前的实现是只要有记录就有效.
 	private boolean isTrackValid(Ship ship, Date expire) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -154,16 +153,17 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 		Date expire = rightnow.getTime();
 
 		// 如果找到，还需要判断是否有效.
-		if(ships!=null){
+		if(ships != null && !ships.isEmpty()){
 			
 			// 如果有效就可以返回了.
 			// TODO 这里还有很多检查要做.
 			//if (isTrackValid(ship, expire)) {
 			//	return ship;
 			//}
+			return ships;
 		}
 		// 需要联网获取最新的信息.
-		String str;
+		String str = null;
 		try {
 			str = MyshipsUtils.getSearchRecByKeyAndTypeInShipBaseInfo(operid,keystr,type,start_ship,end_ship);
 		} catch (Exception e) {
@@ -177,7 +177,7 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 			return null;
 		}
 		List<Ship> onlineShips = json2ships(str);
-		if (onlineShips != null) {
+		if (onlineShips != null && !onlineShips.isEmpty()) {
 			// 联网信息有效，写入数据库并返回.
 			if (ships!=null) {
 				

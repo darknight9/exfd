@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,8 +59,8 @@ public class SealDaoImpl implements SealDao {
 		sb.append(seal.getStatus()).append("','");
 		sb.append(seal.getLongitude()).append("','");
 		sb.append(seal.getLatitude()).append("','");
-		sb.append(df.format(seal.getCtime())).append("','");
-		sb.append(df.format(seal.getMtime())).append("','");
+		sb.append(df.format(new Date())).append("','");
+		sb.append(df.format(new Date())).append("','");
 		sb.append(seal.isMarkdel()?"1":"0").append("','");
 		sb.append(seal.getRemark()).append("','");
 
@@ -166,8 +167,10 @@ public class SealDaoImpl implements SealDao {
 		sb.append("status = '").append(seal.getStatus()).append("', ");
 		sb.append("longitude = '").append(seal.getLongitude()).append("', ");
 		sb.append("latitude = '").append(seal.getLatitude()).append("', ");
-		sb.append("ctime = '").append(df.format(seal.getCtime())).append("', ");
-		sb.append("mtime = '").append(df.format(seal.getMtime())).append("', ");
+		
+		// ctime不会在更新记录时候更新.
+		//sb.append("ctime = '").append(df.format(seal.getCtime())).append("', ");
+		sb.append("mtime = '").append(df.format(new Date())).append("', ");
 		sb.append("markdel = '").append(seal.isMarkdel()?"1":"0").append("', ");
 		sb.append("remark = '").append(seal.getRemark()).append("', ");
 		

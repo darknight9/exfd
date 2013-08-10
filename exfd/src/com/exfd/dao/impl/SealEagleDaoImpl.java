@@ -1,6 +1,5 @@
 package com.exfd.dao.impl;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,14 +10,12 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import com.exfd.dao.SealDao;
 import com.exfd.domain.Seal;
 import com.exfd.util.EagleGPSUtils;
-import com.exfd.util.XmlUtils;
 
 // 使用了类似修饰模式的类.
 public class SealEagleDaoImpl implements SealDao {
@@ -78,25 +75,33 @@ public class SealEagleDaoImpl implements SealDao {
 		Date expire = rightnow.getTime();
 
 		// 如果找到，还需要判断是否有效.
-		if(seal!=null){
+		if(seal != null){
+			
+			logger.debug("find seal code [{}] in db", code);
 			
 			// 如果有效就可以返回了.
 			if (isTrackValid(seal, expire)) {
+				logger.debug("find seal code [{}] in db valid, return.", code);
 				return seal;
 			}
 		}
 		// 需要联网获取最新的信息.
 		String str = EagleGPSUtils.trackVehicle(code);
 		
-		// 如果联网失败或者信息无效，直接返回null.
+		// 如果联网失败或者信息无效.
 		if (str == null || str.equals("")) {
-			return null;
+			if (seal != null) {
+				// 还是需要更新mtime的值的.
+				update(seal);
+				return seal;
+			} else {
+				return null;
+			}
 		}
 		Seal onlineSeal = xml2seal(str);
 		if (onlineSeal != null) {
 			// 联网信息有效，写入数据库并返回.
 			if (seal!=null) {
-				
 				// TODO 这里以后需要升级复杂的更新逻辑.
 				// 有旧记录，更新.
 				update(onlineSeal);
@@ -104,6 +109,10 @@ public class SealEagleDaoImpl implements SealDao {
 				// 没有记录，添加.
 				add(onlineSeal);
 			}
+		} else if (seal != null) {
+			// 还是需要更新mtime的值的.
+			update(seal);
+			return seal;
 		}
 		return onlineSeal;
 	}
@@ -125,8 +134,9 @@ public class SealEagleDaoImpl implements SealDao {
 		if(!mapSeal.isEmpty()){
 			for (String code : codes) {
 				Seal seal = mapSeal.get(code);
-				// 如果无效就直接删除.
-				if (isTrackValid(seal, expire)) {
+				// 如果无效需要联网更新.
+				if (!isTrackValid(seal, expire)) {
+					// TODO.
 				}
 			}
 
@@ -144,7 +154,13 @@ public class SealEagleDaoImpl implements SealDao {
 	public boolean isTrackValid(Seal seal, Date expire) {
 		
 		// TODO 先实现简单逻辑，后面需要继续添加.
-		if (seal.getGpstime().after((expire))) {
+		// 如果GPS时间没有过期，说明记录有效.
+		if (seal.getGpstime().after(expire)) {
+			return true;
+		}
+		
+		// 如果记录更新时间没有过期，也说明记录有效.
+		if (seal.getMtime().after(expire)){
 			return true;
 		}
 		return false;
@@ -171,11 +187,11 @@ public class SealEagleDaoImpl implements SealDao {
 	 */
 	private static void elment2seal(Seal seal, Element seal_tag) throws ParseException {
 		seal.setCode(seal_tag.elementTextTrim("Vid"));	
-		seal.setStatus(1);
+		seal.setStatus(2);
 		seal.setLongitude(Double.parseDouble(seal_tag.elementTextTrim("Lon")));
 		seal.setLatitude(Double.parseDouble(seal_tag.elementTextTrim("Lat")));
-		seal.setCtime(df.parse(seal_tag.elementTextTrim("GpsTime")));	
-		seal.setMtime(df.parse(seal_tag.elementTextTrim("GpsTime")));	
+		seal.setCtime(new Date());	
+		seal.setMtime(new Date());	
 		seal.setMarkdel(false);
 		seal.setRemark("");
 		
