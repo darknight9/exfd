@@ -7,9 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.exfd.dao.SealDao;
 import com.exfd.domain.Seal;
@@ -17,6 +19,8 @@ import com.exfd.util.MysqlUtils;
 
 // 铅封Dao实现.
 public class SealDaoImpl implements SealDao {
+
+	static Logger logger = LogManager.getLogger();
 
 	// 1980-09-09 12:03:04
 	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -48,7 +52,7 @@ public class SealDaoImpl implements SealDao {
 	 * @return
 	 */
 	private String createInsertStatement(Seal seal) {
-		StringBuilder sb = new StringBuilder(1000);
+		StringBuilder sb = new StringBuilder(2000);
 		sb.append("INSERT INTO `SEALINFO` VALUES ('");
 		sb.append(seal.getCode()).append("','");
 		sb.append(seal.getStatus()).append("','");
@@ -80,7 +84,6 @@ public class SealDaoImpl implements SealDao {
 			stmt = con.createStatement();
 			for (Seal seal : seals) {
 				String str = createInsertStatement(seal);
-				System.out.println(str);
 				stmt.executeUpdate(str);
 			}
 		} catch (Exception e) {
@@ -104,7 +107,6 @@ public class SealDaoImpl implements SealDao {
 			con = MysqlUtils.getConnection();
 			String str = "DELETE FROM `SEALINFO` WHERE code = '"+code+"'";
 			stmt = con.createStatement();
-			System.out.println(str);
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -192,7 +194,6 @@ public class SealDaoImpl implements SealDao {
 			stmt = con.createStatement();
 			for (Seal seal : seals) {
 				String str = createUpdateStatment(seal);
-				System.out.println(str);
 				stmt.executeUpdate(str);
 			}
 		} catch (Exception e) {

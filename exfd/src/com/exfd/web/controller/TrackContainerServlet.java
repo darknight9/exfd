@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.exfd.domain.Container;
 import com.exfd.domain.Seal;
 import com.exfd.domain.User;
+import com.exfd.exception.LineQueryException;
 import com.exfd.exception.UserExistException;
 import com.exfd.service.impl.BusinessServieImpl;
 import com.exfd.service.impl.ContainerServiceImpl;
@@ -28,7 +29,16 @@ public class TrackContainerServlet extends HttpServlet {
 		String code = request.getParameter("code");
 
 		ContainerServiceImpl service = new ContainerServiceImpl();
-		Container cbox = service.track(code);
+		Container cbox;
+		try {
+			cbox = service.track(code);
+		} catch (LineQueryException e) {
+			e.printStackTrace();
+			request.setAttribute("message", "没有找到对应的箱子！");
+			request.setAttribute("linemessage", e.toString());
+			request.getRequestDispatcher("/message.jsp").forward(request, response);
+			return;
+		}
 		if(cbox!=null){
 			// TODO
 			// 展现结果.

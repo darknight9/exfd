@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -21,6 +23,8 @@ import com.exfd.util.XmlUtils;
 // 使用了类似修饰模式的类.
 public class SealEagleDaoImpl implements SealDao {
 
+	static Logger logger = LogManager.getLogger();
+	
 	// 1980-09-09
 	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
