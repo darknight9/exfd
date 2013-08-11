@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.exfd.domain.Seal;
 import com.exfd.domain.Ship;
 import com.exfd.service.impl.SealServiceImpl;
@@ -16,6 +19,7 @@ import com.exfd.service.impl.ShipServiceImpl;
 
 public class TrackShipServlet extends HttpServlet {
 
+	static Logger logger = LogManager.getLogger();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -24,6 +28,8 @@ public class TrackShipServlet extends HttpServlet {
 
 		String code = request.getParameter("code");
 		String type = request.getParameter("type");
+		code = new String(code.getBytes(), "UTF-8");
+		logger.debug("get get GETTTTT code=[{}], type=[{}]", code, type);
 		ShipServiceImpl service = new ShipServiceImpl();
 		List<Ship> ships = service.track("", code, type, 1, 10);
 		if(ships != null && !ships.isEmpty()){

@@ -28,7 +28,7 @@
 	<div id="container">
 		<div id="image">
 			<div id="form">
-				<form action="${pageContext.request.contextPath }/servlet/TrackContainerServlet" method="post">
+				<form action="${pageContext.request.contextPath }/servlet/TrackContainerInfoServlet" method="post">
 					<div class="input">
 						箱号：<input class="inputtext" type="text" name="code" />
 					</div>
@@ -49,10 +49,12 @@
 	一共搜索到结果数：${cboxnumbers } 个.
 	箱号：${cbox.code }<br>
 	公司：${cbox.company }<br>
-	结果：<br>
-	${cbox.httpresult }
+	结果Table：<br>
+	${cbox.tableString }
 	<hr />
-
+	结果Json:<br>
+	${cbox.jsonString }
+	<hr>
 </body>
 </html>
 

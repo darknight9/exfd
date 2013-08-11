@@ -29,7 +29,7 @@
 		<div id="image">
 			<div id="form">
 				<form
-					action="${pageContext.request.contextPath }/servlet/TrackShipServlet"
+					action="${pageContext.request.contextPath }/servlet/TrackShipInfoServlet"
 					method="post">
 					<div class="input">
 						船号：<input class="inputtext" type="text" name="code" />

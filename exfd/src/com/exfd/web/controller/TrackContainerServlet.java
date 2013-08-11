@@ -32,10 +32,10 @@ public class TrackContainerServlet extends HttpServlet {
 		Container cbox;
 		try {
 			cbox = service.track(code);
-		} catch (LineQueryException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("message", "没有找到对应的箱子！");
-			request.setAttribute("linemessage", e.toString());
+			request.setAttribute("exception", e.toString());
 			request.getRequestDispatcher("/message.jsp").forward(request, response);
 			return;
 		}

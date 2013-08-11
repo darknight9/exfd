@@ -29,7 +29,7 @@
 		<div id="image">
 			<div id="form">
 				<form
-					action="${pageContext.request.contextPath }/servlet/TrackSealServlet"
+					action="${pageContext.request.contextPath }/servlet/TrackSealInfoServlet"
 					method="post">
 					<div class="input">
 						铅封号：<input class="inputtext" type="text" name="code" />

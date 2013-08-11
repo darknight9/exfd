@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
@@ -24,6 +25,7 @@ public class SealEagleDaoImpl implements SealDao {
 	
 	// 1980-09-09
 	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	static SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
 	
 	// 内部使用SealDaoImpl.
 	SealDaoImpl dbimp = new SealDaoImpl();
@@ -88,8 +90,8 @@ public class SealEagleDaoImpl implements SealDao {
 		// 需要联网获取最新的信息.
 		String str = EagleGPSUtils.trackVehicle(code);
 		
-		// 如果联网失败或者信息无效.
-		if (str == null || str.equals("")) {
+		// 如果联网失败或者信息无效.返回一个"1"表示搜索无结果.
+		if (str == null || str.equals("") || str.startsWith("1")) {
 			if (seal != null) {
 				// 还是需要更新mtime的值的.
 				update(seal);
@@ -98,7 +100,14 @@ public class SealEagleDaoImpl implements SealDao {
 				return null;
 			}
 		}
-		Seal onlineSeal = xml2seal(str);
+		Seal onlineSeal = null;
+		try {
+			onlineSeal = xml2seal(str);
+		} catch (Exception e) {
+			logger.catching(Level.DEBUG, e);
+			onlineSeal = null;
+		}
+				
 		if (onlineSeal != null) {
 			// 联网信息有效，写入数据库并返回.
 			if (seal!=null) {
@@ -195,8 +204,14 @@ public class SealEagleDaoImpl implements SealDao {
 		seal.setMarkdel(false);
 		seal.setRemark("");
 		
-		seal.setPlate(seal_tag.elementTextTrim("Plate"));	
-		seal.setGpstime(df.parse(seal_tag.elementTextTrim("GpsTime")));
+		seal.setPlate(seal_tag.elementTextTrim("Plate"));
+		
+		try {
+			seal.setGpstime(df.parse(seal_tag.elementTextTrim("GpsTime")));
+		} catch (Exception e) {
+			seal.setGpstime(df2.parse(seal_tag.elementTextTrim("GpsTime")));
+		}
+	
 		seal.setSpeed(Integer.parseInt(seal_tag.elementTextTrim("Speed")));
 		seal.setDirection(Double.parseDouble(seal_tag.elementTextTrim("Dir")));
 		seal.setDaymiles(Double.parseDouble(seal_tag.elementTextTrim("MIL1")));
@@ -206,4 +221,57 @@ public class SealEagleDaoImpl implements SealDao {
 		seal.setPoi(seal_tag.elementTextTrim("Lo"));
 	}
 	
+	public Seal findHistoryRecord(String code) {
+		
+		// 先在数据库中查找.
+		Seal seal = dbimp.find(code);
+		Calendar rightnow = Calendar.getInstance();
+		
+		// 规则：1天前的数据是失效的.
+		rightnow.add(Calendar.DAY_OF_YEAR, -1);
+		Date expire = rightnow.getTime();
+
+		// 如果找到，还需要判断是否有效.
+		if(seal != null){
+			
+			logger.debug("find seal code [{}] in db", code);
+			
+			// 如果有效就可以返回了.
+			if (isTrackValid(seal, expire)) {
+				logger.debug("find seal code [{}] in db valid, return.", code);
+				return seal;
+			}
+		}
+		// 需要联网获取最新的信息.
+		String str = EagleGPSUtils.trackVehicle(code);
+		
+		// 如果联网失败或者信息无效.
+		if (str == null || str.equals("")) {
+			if (seal != null) {
+				// 还是需要更新mtime的值的.
+				update(seal);
+				return seal;
+			} else {
+				return null;
+			}
+		}
+		Seal onlineSeal = xml2seal(str);
+		if (onlineSeal != null) {
+			// 联网信息有效，写入数据库并返回.
+			if (seal!=null) {
+				// TODO 这里以后需要升级复杂的更新逻辑.
+				// 有旧记录，更新.
+				update(onlineSeal);
+			}else {
+				// 没有记录，添加.
+				add(onlineSeal);
+			}
+		} else if (seal != null) {
+			// 还是需要更新mtime的值的.
+			update(seal);
+			return seal;
+		}
+		return onlineSeal;
+	}
+
 }

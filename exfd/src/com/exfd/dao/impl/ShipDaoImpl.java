@@ -214,6 +214,8 @@ public class ShipDaoImpl implements ShipDao{
 		}
 		
 	}
+	
+	
 
 	@Override
 	public Ship find(String code) {
@@ -239,6 +241,7 @@ public class ShipDaoImpl implements ShipDao{
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
+		
 			MysqlUtils.closeResultSet(rs);
 			MysqlUtils.closePrepStmt(prepStmt);
 			MysqlUtils.closeConnection(con);
@@ -349,29 +352,43 @@ public class ShipDaoImpl implements ShipDao{
 		Connection con = null;
 		PreparedStatement prepStmt = null;
 		ResultSet rs = null;
+		String selectStatement = null;
 		try {
 			con = MysqlUtils.getConnection();
-			String selectStatement = "select * "
-					+ "from SHIPINFO where ? = ? ";
-			prepStmt = con.prepareStatement(selectStatement);
+			
 			// TODO 这里的查询方式有bug.
 			if (type.equals("name")) {
-				prepStmt.setString(1, "shipnamecn");
+				selectStatement = "select * "
+						+ "from SHIPINFO where shipnamecn = ? ";
+				prepStmt = con.prepareStatement(selectStatement);
 			} else if (type.equals("mmsi")) {
-				prepStmt.setString(1, "mmsi");
+				selectStatement = "select * "
+						+ "from SHIPINFO where mmsi = ? ";
+				prepStmt = con.prepareStatement(selectStatement);
 			} else if (type.equals("imo")) {
-				prepStmt.setString(1, "imo");
+				selectStatement = "select * "
+						+ "from SHIPINFO where imo = ? ";
+				prepStmt = con.prepareStatement(selectStatement);
 			} else {
-				prepStmt.setString(1, "callsign");
+				selectStatement = "select * "
+						+ "from SHIPINFO where callsign = ? ";
+				prepStmt = con.prepareStatement(selectStatement);
 			}
-			prepStmt.setString(2, keystr);
+			prepStmt.setString(1, keystr);
 			rs = prepStmt.executeQuery();
 
+			int current_no = 1;
 			while (rs.next()) {
-				Ship ship = new Ship();
-				resultSet2Ship(rs, ship);
-				shipList.add(ship);
+				if (start_ship <= current_no && current_no < end_ship){
+					Ship ship = new Ship();
+					resultSet2Ship(rs, ship);
+					shipList.add(ship);
+				} else if (current_no >= end_ship) {
+					return shipList;
+				}
+				current_no++;
 			}
+			return shipList;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -379,8 +396,78 @@ public class ShipDaoImpl implements ShipDao{
 			MysqlUtils.closePrepStmt(prepStmt);
 			MysqlUtils.closeConnection(con);
 		}
+	}
+	
+	@Override
+	public void updateOrAdd(Ship ship) {
+		Connection con = null;
+		Statement stmt = null;
+		PreparedStatement prepStmt = null;
+		String selectStatement = "select * "
+				+ "from SHIPINFO where mmsi = ? ";
+		ResultSet rs = null;
+		String str = null;
+		try {
+			con = MysqlUtils.getConnection();
+			prepStmt = con.prepareStatement(selectStatement);
+			stmt = con.createStatement();
+			
+			prepStmt.setString(1, ship.getMmsi());
+			rs = prepStmt.executeQuery();
+			if (rs.next()) {
+				// 船有记录，更新记录.
+				str = createUpdateStatment(ship);
+				stmt.executeUpdate(str);
+			} else {
+				// 没有记录，添加记录.
+				str = createInsertStatement(ship);
+				stmt.executeUpdate(str);				}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			MysqlUtils.closeResultSet(rs);
+			MysqlUtils.closeStmt(stmt);
+			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeConnection(con);
+		}
 		
-		return null;
+	}
+	
+	@Override
+	public void updateOrAdd(List<Ship> ships) {
+		Connection con = null;
+		Statement stmt = null;
+		PreparedStatement prepStmt = null;
+		String selectStatement = "select * "
+				+ "from SHIPINFO where mmsi = ? ";
+		ResultSet rs = null;
+		String str = null;
+		try {
+			con = MysqlUtils.getConnection();
+			prepStmt = con.prepareStatement(selectStatement);
+			stmt = con.createStatement();
+			for (Ship ship : ships) {
+				prepStmt.setString(1, ship.getMmsi());
+				rs = prepStmt.executeQuery();
+				if (rs.next()) {
+					// 船有记录，更新记录.
+					str = createUpdateStatment(ship);
+					stmt.executeUpdate(str);
+				} else {
+					// 没有记录，添加记录.
+					str = createInsertStatement(ship);
+					stmt.executeUpdate(str);
+				}
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			MysqlUtils.closeResultSet(rs);
+			MysqlUtils.closeStmt(stmt);
+			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeConnection(con);
+		}
+		
 	}
 
 }

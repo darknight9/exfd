@@ -10,6 +10,8 @@ public interface ContainerDao {
 	void delete(String code);
 
 	void update(Container container);
+	
+	void updateOrAdd(Container container);
 
 	Container find(String code);
 

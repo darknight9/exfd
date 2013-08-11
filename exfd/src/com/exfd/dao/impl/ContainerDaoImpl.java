@@ -5,7 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.exfd.dao.ContainerDao;
 import com.exfd.domain.Container;
@@ -14,6 +19,12 @@ import com.exfd.util.MysqlUtils;
 
 public class ContainerDaoImpl implements ContainerDao {
 
+	static Logger logger = LogManager.getLogger();
+
+	// 1980-09-09 12:03:04
+	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	
 	@Override
 	public void add(Container container) {
 		Connection con = null;
@@ -36,6 +47,16 @@ public class ContainerDaoImpl implements ContainerDao {
 		sb.append("INSERT INTO `CONTAINERINFO` VALUES ('");
 		sb.append(container.getCode()).append("','");
 		sb.append(container.getCompany()).append("','");
+		sb.append(df.format(new Date())).append("','");
+		sb.append(df.format(new Date())).append("','");
+		
+		sb.append(container.getDownload()).append("','");
+		sb.append(container.getNotfound()).append("','");
+		sb.append(container.getParseerror()).append("','");
+		
+		sb.append(container.getTableString()).append("','");
+		sb.append(container.getJsonString()).append("','");
+		//sb.append("").append("','");
 		sb.append(container.getHttpresult()).append("');");
 	
 		return sb.toString();
@@ -49,7 +70,6 @@ public class ContainerDaoImpl implements ContainerDao {
 			con = MysqlUtils.getConnection();
 			String str = "DELETE FROM `CONTAINERINFO` WHERE code = '"+code+"'";
 			stmt = con.createStatement();
-			System.out.println(str);
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -83,6 +103,17 @@ public class ContainerDaoImpl implements ContainerDao {
 		sb.append("UPDATE `CONTAINERINFO` SET ");
 		//sb.append("code = '").append(container.getCode()).append("', ");
 		sb.append("company = '").append(container.getCompany()).append("', ");
+		
+		// ctime不会在更新记录时候更新.
+		//sb.append("ctime = '").append(df.format(seal.getCtime())).append("', ");
+		sb.append("mtime = '").append(df.format(new Date())).append("', ");
+		
+		sb.append("download = '").append(container.getDownload()).append("', ");
+		sb.append("notfound = '").append(container.getNotfound()).append("', ");
+		sb.append("parseerror = '").append(container.getParseerror()).append("', ");
+		
+		sb.append("tablestring = '").append(container.getTableString()).append("', ");
+		sb.append("jsonstring = '").append(container.getJsonString()).append("', ");
 		sb.append("httpresult = '").append(container.getHttpresult()).append("' ");
 
 		sb.append("WHERE code = '").append(container.getCode()).append("';");
@@ -123,6 +154,15 @@ public class ContainerDaoImpl implements ContainerDao {
 	private void resultSet2Container(ResultSet rs, Container container) throws SQLException {
 		container.setCode(rs.getString("code"));
 		container.setCompany(rs.getString("company"));
+		container.setCtime(rs.getTimestamp("ctime"));
+		container.setMtime(rs.getTimestamp("mtime"));
+		
+		container.setDownload(rs.getInt("download"));
+		container.setNotfound(rs.getInt("notfound"));
+		container.setParseerror(rs.getInt("parseerror"));
+
+		container.setTableString(rs.getString("tablestring"));
+		container.setJsonString(rs.getString("jsonstring"));
 		container.setHttpresult(rs.getString("httpresult"));
 		
 	}
@@ -153,6 +193,41 @@ public class ContainerDaoImpl implements ContainerDao {
 			MysqlUtils.closeConnection(con);
 		}
 		return arrayList;
+	}
+
+	@Override
+	public void updateOrAdd(Container container) {
+		Connection con = null;
+		PreparedStatement prepStmt = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			con = MysqlUtils.getConnection();
+			String selectStatement = "select * "
+					+ "from CONTAINERINFO where code = ? ";
+			prepStmt = con.prepareStatement(selectStatement);
+			prepStmt.setString(1, container.getCode());
+			rs = prepStmt.executeQuery();
+
+			String str = null;
+			if (rs.next()) {
+				str = createUpdateStatment(container);
+				
+			} else {
+				str = createInsertStatement(container);
+			}
+			stmt = con.createStatement();
+			stmt.executeUpdate(str);
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			MysqlUtils.closeStmt(stmt);
+			MysqlUtils.closeResultSet(rs);
+			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeConnection(con);
+		}
+		
 	}
 
 }

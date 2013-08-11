@@ -1,6 +1,7 @@
 package com.exfd.util;
 
-import org.apache.axis2.AxisFault;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.webservice.GeneralShipWebServiceImplServiceStub;
 import com.webservice.GetSearchRecByKeyAndTypeInShipBaseInfo;
@@ -8,6 +9,8 @@ import com.webservice.GetSearchRecByKeyAndTypeInShipBaseInfoE;
 
 public class MyshipsUtils {
 
+	static Logger logger = LogManager.getLogger();
+	
 	/**
 	 * 根据关键字和类型对船舶基本信息表进行搜索，并根据开始结束位置返回记录
 	 * @param operid：用户ID
@@ -36,7 +39,7 @@ public class MyshipsUtils {
 		//取得返回值
 		String name = stub.getSearchRecByKeyAndTypeInShipBaseInfo(command).getGetSearchRecByKeyAndTypeInShipBaseInfoResponse().get_return();
 		
-		System.out.println(name);
+		logger.debug(name);
 		
 		return name;
 

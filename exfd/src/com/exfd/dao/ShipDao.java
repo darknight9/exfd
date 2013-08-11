@@ -50,4 +50,8 @@ public interface ShipDao {
 	// 列出全部的记录.
 	public List<Ship> list();
 
+	public abstract void updateOrAdd(List<Ship> ships);
+
+	public abstract void updateOrAdd(Ship ship);
+
 }
