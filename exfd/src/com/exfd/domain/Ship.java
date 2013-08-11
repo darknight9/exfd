@@ -3,8 +3,8 @@ package com.exfd.domain;
 public class Ship {
 
 	private String shipid;
-	private String shipname;// 中文船名
-	private String shipnamecn;// 英文船名
+	private String shipname;// 英文船名
+	private String shipnamecn;// 中文船名
 	private String mmsi;
 	private String imo;
 

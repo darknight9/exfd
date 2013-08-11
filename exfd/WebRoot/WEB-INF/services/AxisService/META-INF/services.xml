@@ -1,0 +1,7 @@
+<service name="AxisService">
+	<description>AxisService</description>
+	<parameter name="ServiceClass">com.exfd.service.impl.Webservice</parameter>
+	<operation name="trackSeal">
+		<messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+	</operation>
+</service>

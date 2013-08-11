@@ -11,6 +11,7 @@ import com.exfd.dao.impl.SealEagleDaoImpl;
 import com.exfd.dao.impl.SealEagleHistoryDaoImpl;
 import com.exfd.domain.Seal;
 import com.exfd.domain.SealHistoryRecord;
+import com.google.gson.Gson;
 
 //对web层提供和铅封有关的服务.
 public class SealServiceImpl {
@@ -50,5 +51,7 @@ public class SealServiceImpl {
 		}
 		return records;
 	}
+	
+
 	
 }

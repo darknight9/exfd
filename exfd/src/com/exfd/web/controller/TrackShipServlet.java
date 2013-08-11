@@ -36,11 +36,13 @@ public class TrackShipServlet extends HttpServlet {
 			// TODO
 			// 展现结果.
 			request.setAttribute("shipnumbers", ships.size());
-			request.setAttribute("ships", ships);
+			request.setAttribute("ship", ships.get(0));
+			request.setAttribute("code", code);
+			request.setAttribute("type", type);
 
 			// 重定向到搜索结果页.
 			//response.sendRedirect(request.getContextPath()+"/WEB-INF/jsp/showseal.jsp");
-			request.getRequestDispatcher("/WEB-INF/jsp/showship.jsp").forward(request, response);
+			request.getRequestDispatcher("/ship.jsp").forward(request, response);
 			return;
 		}
 		
