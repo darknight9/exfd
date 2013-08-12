@@ -1,6 +1,5 @@
 package com.exfd.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Container {
@@ -8,10 +7,10 @@ public class Container {
 	private String company;
 	private Date ctime; // 记录生成时间
 	private Date mtime; // 记录修改时间
-	private int download;	// 0:not download. 1:download fail. 2:download OK.
-	private int notfound;	// 0:not process. 1:notfound.
-	private int parseerror;	// 0:not parse. 1:找不到标记点.
-	private ArrayList<ContainerRecord> records;
+	private int download; // 0:not download. 1:download fail. 2:download OK.
+	private int notfound; // 0:not process. 1:notfound.
+	private int parseerror; // 0:not parse. 1:找不到标记点.
+	private ContainerStatus status;
 	private String tableString;
 	private String jsonString;
 	private String httpresult;
@@ -47,9 +46,9 @@ public class Container {
 				.append(company).append(", ctime=").append(ctime)
 				.append(", mtime=").append(mtime).append(", download=")
 				.append(download).append(", notfound=").append(notfound)
-				.append(", parseerror=").append(parseerror)
-				.append(", records=").append(records).append(", tableString=")
-				.append(tableString).append(", jsonString=").append(jsonString)
+				.append(", parseerror=").append(parseerror).append(", status=")
+				.append(status).append(", tableString=").append(tableString)
+				.append(", jsonString=").append(jsonString)
 				.append(", httpresult=").append(httpresult).append("]");
 		return builder.toString();
 	}
@@ -110,11 +109,11 @@ public class Container {
 		this.parseerror = parseerror;
 	}
 
-	public ArrayList<ContainerRecord> getRecords() {
-		return records;
+	public ContainerStatus getStatus() {
+		return status;
 	}
 
-	public void setRecords(ArrayList<ContainerRecord> records) {
-		this.records = records;
+	public void setStatus(ContainerStatus status) {
+		this.status = status;
 	}
 }

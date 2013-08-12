@@ -2,20 +2,21 @@ package com.exfd.service.impl;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.exfd.dao.SealDao;
 import com.exfd.dao.SealHistoryDao;
-import com.exfd.dao.impl.SealDaoImpl;
 import com.exfd.dao.impl.SealEagleDaoImpl;
 import com.exfd.dao.impl.SealEagleHistoryDaoImpl;
 import com.exfd.domain.Seal;
 import com.exfd.domain.SealHistoryRecord;
-import com.google.gson.Gson;
 
 //对web层提供和铅封有关的服务.
 public class SealServiceImpl {
 
+	private static Logger logger = LogManager.getLogger();
+	
 	private SealDao dao = new SealEagleDaoImpl();	// 以后用工厂模式或者spring来解耦合.
 	private SealHistoryDao historyDao = new SealEagleHistoryDaoImpl();
 	
@@ -24,7 +25,11 @@ public class SealServiceImpl {
 		
 		// 在dao层查找.
 		Seal seal = dao.find(code);
-
+		if (seal != null) {
+			logger.info("SEAL[{}] find. Very Good.", code);
+		} else {
+			logger.info("SEAL[{}] not find.", code);
+		}
 		return seal;
 	}
 	
@@ -33,7 +38,11 @@ public class SealServiceImpl {
 		
 		// 在dao层查找.
 		ArrayList<SealHistoryRecord> records = historyDao.find(code);
-
+		if (records != null && !records.isEmpty()) {
+			logger.info("SEALHISTORY[{}] find. Very Good.", code);
+		} else {
+			logger.info("SEALHISTORY[{}] not find.", code);
+		}
 		return records;
 	}
 	
@@ -46,8 +55,13 @@ public class SealServiceImpl {
 		try {
 			records = historyDao.find(code, beginDate, endDate);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.catching(e);
 			records = null;
+		}
+		if (records != null && !records.isEmpty()) {
+			logger.info("SEALHISTORY[{}] find. Very Good.", code);
+		} else {
+			logger.info("SEALHISTORY[{}] not find.", code);
 		}
 		return records;
 	}

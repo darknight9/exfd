@@ -6,7 +6,6 @@ import com.exfd.dao.impl.ContainerLineDaoImpl;
 import com.exfd.dao.impl.SealEagleDaoImpl;
 import com.exfd.domain.Container;
 import com.exfd.domain.Seal;
-import com.exfd.exception.LineQueryException;
 import com.google.gson.Gson;
 
 public class Webservice {

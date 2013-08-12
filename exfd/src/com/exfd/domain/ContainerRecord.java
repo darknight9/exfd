@@ -1,11 +1,14 @@
 package com.exfd.domain;
 
 public class ContainerRecord {
+	
 	private String time;
 	private String event;
 	private String location;
 	private String vessel;
 	private String voyage;
+	private String ext1;
+	private String ext2;
 	private Boolean header;
 
 	public String getTime() {
