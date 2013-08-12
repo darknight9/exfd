@@ -61,6 +61,7 @@ public class ContainerUtils {
 			return (String) method.invoke(lineObject, args);
 
 		} catch (Exception e) {
+			logger.catching(e);
 			e.printStackTrace();
 		}
 
@@ -83,6 +84,7 @@ public class ContainerUtils {
 			return (Container) method.invoke(lineObject, args);
 
 		} catch (Exception e) {
+			logger.catching(e);
 			e.printStackTrace();
 		}
 
@@ -107,6 +109,7 @@ public class ContainerUtils {
 			return (Container) method.invoke(lineObject, args);
 
 		} catch (Exception e) {
+			logger.catching(e);
 			e.printStackTrace();
 		}
 
@@ -118,6 +121,7 @@ public class ContainerUtils {
 			config = new PropertiesConfiguration("containercode.properties");
 			levelconfig = new PropertiesConfiguration("shiplevel.properties");
 		} catch (ConfigurationException e) {
+			logger.catching(e);
 			e.printStackTrace();
 		}
 	}

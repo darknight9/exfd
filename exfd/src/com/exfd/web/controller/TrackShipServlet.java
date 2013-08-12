@@ -28,12 +28,12 @@ public class TrackShipServlet extends HttpServlet {
 
 		String code = request.getParameter("code");
 		String type = request.getParameter("type");
-		code = new String(code.getBytes(), "UTF-8");
-		logger.debug("get get GETTTTT code=[{}], type=[{}]", code, type);
+		
+		logger.debug("SHIPDETAIL[{}][{}] the request is received.", code, type);
 		ShipServiceImpl service = new ShipServiceImpl();
 		List<Ship> ships = service.track("", code, type, 1, 10);
 		if(ships != null && !ships.isEmpty()){
-			// TODO
+
 			// 展现结果.
 			request.setAttribute("shipnumbers", ships.size());
 			request.setAttribute("ship", ships.get(0));

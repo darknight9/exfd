@@ -27,8 +27,8 @@ public class TrackShipInfoServlet extends HttpServlet {
 
 		String code = request.getParameter("code");
 		String type = request.getParameter("type");
-		type="mmsi";
-		logger.debug("get get GETTTTT code=[{}], type=[{}]", code, type);
+		
+		logger.debug("SHIPDETAIL[{}][{}] the request is received.", code, type);
 		ShipServiceImpl service = new ShipServiceImpl();
 		List<Ship> ships = service.track("", code, type, 1, 10);
 		if(ships != null && !ships.isEmpty()){

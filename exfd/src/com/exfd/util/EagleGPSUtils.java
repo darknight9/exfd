@@ -1,7 +1,6 @@
 package com.exfd.util;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -10,9 +9,7 @@ import java.net.URL;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -22,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 public class EagleGPSUtils {
 
-	static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger();
 	
 	// 目前的巡逻鹰接口.
 	private final static String getGPSUrlPrefix = "http://121.14.37.120/yxgps/service/getIntPostalDynamicData.asp";
@@ -63,7 +60,7 @@ public class EagleGPSUtils {
 			return str;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.catching(e);
 		}
 		return null;
 	}
@@ -99,7 +96,6 @@ public class EagleGPSUtils {
 			//resString = EntityUtils.toString(entity);
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.catching(e);
 		}
 		return resString;
@@ -152,7 +148,7 @@ public class EagleGPSUtils {
 			connection.disconnect();
 			return sBuilder.toString();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.catching(e);
 		}
 		return null;
 	}
@@ -194,7 +190,6 @@ public class EagleGPSUtils {
 			//resString = EntityUtils.toString(entity);
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.catching(e);
 		}
 		return resString;

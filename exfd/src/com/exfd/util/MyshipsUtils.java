@@ -9,7 +9,7 @@ import com.webservice.GetSearchRecByKeyAndTypeInShipBaseInfoE;
 
 public class MyshipsUtils {
 
-	static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger();
 	
 	/**
 	 * 根据关键字和类型对船舶基本信息表进行搜索，并根据开始结束位置返回记录
@@ -39,7 +39,7 @@ public class MyshipsUtils {
 		//取得返回值
 		String name = stub.getSearchRecByKeyAndTypeInShipBaseInfo(command).getGetSearchRecByKeyAndTypeInShipBaseInfoResponse().get_return();
 		
-		logger.debug(name);
+		logger.debug("SHIPDETAIL[{}][{}], result:[{}]", keystr, type, name);
 		
 		return name;
 

@@ -1,7 +1,6 @@
 package com.exfd.web.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -14,8 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.exfd.domain.Seal;
 import com.exfd.domain.SealHistoryRecord;
-import com.exfd.domain.User;
-import com.exfd.service.impl.BusinessServieImpl;
 import com.exfd.service.impl.SealServiceImpl;
 
 public class TrackSealServlet extends HttpServlet {
@@ -34,9 +31,11 @@ public class TrackSealServlet extends HttpServlet {
 		SealServiceImpl service = new SealServiceImpl();
 		if (beginString != null && endString!= null && 
 				!beginString.equals("") && !endString.equals("")) {
+			
+			// 有时间参数，表明是查历史信息.
 			ArrayList<SealHistoryRecord> records = service.trackHistory(code, beginString, endString);
 			if(records != null){
-				// TODO
+
 				// 展现结果.
 				request.setAttribute("records", records);
 				// 重定向到搜索结果页.
@@ -48,12 +47,14 @@ public class TrackSealServlet extends HttpServlet {
 				request.getRequestDispatcher("/message.jsp").forward(request, response);
 			}
 		} else {
+			
+			// 没有时间参数，查询铅封位置信息.
 			Seal seal = service.track(code);
 			if(seal != null){
-				// TODO
+
 				// 展现结果.
 				request.setAttribute("seal", seal);
-				logger.error("seal is send:{},{},{}", seal.getCode(), seal.getLongitude(), seal.getLatitude());
+				logger.error("SEAL[{} is send to page : [{}],[{}]", seal.getCode(), seal.getLongitude(), seal.getLatitude());
 				
 				// 重定向到搜索结果页.
 				//response.sendRedirect(request.getContextPath()+"/seal.jsp");
