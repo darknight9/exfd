@@ -21,7 +21,7 @@ import com.exfd.util.MysqlUtils;
 // 铅封Dao实现.
 public class SealDaoImpl implements SealDao {
 
-	static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger();
 
 	// 1980-09-09 12:03:04
 	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -41,17 +41,13 @@ public class SealDaoImpl implements SealDao {
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
 		}
 	}
 
-	/**
-	 * @param seal
-	 * @return
-	 */
 	private String createInsertStatement(Seal seal) {
 		StringBuilder sb = new StringBuilder(2000);
 		sb.append("INSERT INTO `SEALINFO` VALUES ('");
@@ -88,7 +84,7 @@ public class SealDaoImpl implements SealDao {
 				stmt.executeUpdate(str);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -110,7 +106,7 @@ public class SealDaoImpl implements SealDao {
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -130,7 +126,7 @@ public class SealDaoImpl implements SealDao {
 				prepStmt.executeUpdate();
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(prepStmt);
 			MysqlUtils.closeConnection(con);
@@ -150,17 +146,13 @@ public class SealDaoImpl implements SealDao {
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
 		}
 	}
 
-	/**
-	 * @param seal
-	 * @return
-	 */
 	private String createUpdateStatment(Seal seal) {
 		StringBuilder sb = new StringBuilder(2000);
 		sb.append("UPDATE `SEALINFO` SET ");
@@ -200,7 +192,7 @@ public class SealDaoImpl implements SealDao {
 				stmt.executeUpdate(str);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -215,15 +207,14 @@ public class SealDaoImpl implements SealDao {
 	@Override
 	public Seal find(String code) {
 		Connection con = null;
-		PreparedStatement prepStmt = null;
+		Statement stmt = null;
 		ResultSet rs = null;
 		try {
 			con = MysqlUtils.getConnection();
 			String selectStatement = "select * "
-					+ "from SEALINFO where code = ? ";
-			prepStmt = con.prepareStatement(selectStatement);
-			prepStmt.setString(1, code);
-			rs = prepStmt.executeQuery();
+					+ "from SEALINFO where code = '"+code+"'";
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(selectStatement);
 
 			if (rs.next()) {
 				Seal seal = new Seal();
@@ -234,19 +225,15 @@ public class SealDaoImpl implements SealDao {
 			}
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
-			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
 		}
+		return null;
 	}
 
-	/**
-	 * @param rs
-	 * @param seal
-	 * @throws SQLException
-	 */
 	private void resultSet2Seal(ResultSet rs, Seal seal) throws SQLException {
 		seal.setCode(rs.getString("code"));
 		seal.setStatus(rs.getInt("status"));
@@ -268,6 +255,9 @@ public class SealDaoImpl implements SealDao {
 		seal.setPoi(rs.getString("poi"));
 	}
 	
+	// 返回的至少是一个空Map.
+	// 如果有的code没有找到，对应的Map中有<code, null>的pair.
+	// 但是可能在查找的时候出现异常，这个时候返回的Map可能是不完整的。
 	@Override
 	public Map<String, Seal> find(ArrayList<String> codes) {
 		Map<String, Seal> sealMap = new HashMap<String, Seal>();
@@ -283,15 +273,16 @@ public class SealDaoImpl implements SealDao {
 			for (String code : codes) {
 				prepStmt.setString(1, code);
 				rs = prepStmt.executeQuery();
-
 				if (rs.next()) {
 					Seal seal = new Seal();
 					resultSet2Seal(rs, seal);
 					sealMap.put(code, seal);
+				} else {
+					sealMap.put(code, null);
 				}
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
 			MysqlUtils.closePrepStmt(prepStmt);
@@ -319,7 +310,7 @@ public class SealDaoImpl implements SealDao {
 				arrayList.add(seal);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
 			MysqlUtils.closeStmt(stmt);

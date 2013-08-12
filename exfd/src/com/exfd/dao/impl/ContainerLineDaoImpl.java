@@ -14,7 +14,7 @@ import com.exfd.util.ContainerUtils;
 
 public class ContainerLineDaoImpl implements ContainerDao {
 
-	static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger();
 
 	// 1980-09-09
 	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -45,35 +45,43 @@ public class ContainerLineDaoImpl implements ContainerDao {
 
 	@Override
 	public Container find(String code) {
+		
 		// 先在数据库中查找.
 		Container container = dbimp.find(code);
-		Calendar rightnow = Calendar.getInstance();
-
+		
 		// 规则：7天前的数据是失效的.
+		Calendar rightnow = Calendar.getInstance();
 		rightnow.add(Calendar.DAY_OF_YEAR, -7);
 		Date expire = rightnow.getTime();
 
 		// 如果找到，还需要判断是否有效.
 		if (container != null) {
 
-			logger.debug("find container code [{}] in db", code);
+			logger.debug("CONT[{}].find container code [{}] in db", code, code);
 
 			// 如果有效就可以返回了.
 			if (isTrackValid(container, expire)) {
-				logger.debug("find container code [{}] in db valid, return.", code);
+				logger.debug("CONT[{}].find container code [{}] in db valid, return.", code, code);
 				return container;
 			}
 		}
 		
 		// 需要联网获取最新的信息.
 		String page = ContainerUtils.GetPage(code);
-		logger.debug(page.substring(0,300));
 		
-		Container onlineContainer = ContainerUtils.GetContainerByPage(code, page);
+		Container onlineContainer = null;
+		if (page != null && !page.isEmpty()) {
+			logger.debug("CONT[{}]. THE FIRST 300 BYTES OF THE PAGE IS: [{}]", code, page.substring(0,300));
+			onlineContainer = ContainerUtils.GetContainerByPage(code, page);
+		} else {
+			logger.debug("CONT[{}]. GetPage return empty page.", code);
+		}
 		
-		// 如果联网失败或者信息无效.返回一个"1"表示搜索无结果.
+		// 如果联网失败或者信息无效.
 		if (onlineContainer == null) {
 			if (container != null) {
+				
+				// 更新记录的mtime值.
 				update(container);
 				return container;
 			} else {
@@ -81,12 +89,7 @@ public class ContainerLineDaoImpl implements ContainerDao {
 			}
 		} else {
 			// 联网信息有效，写入数据库并返回.
-			if (container != null) {
-				update(onlineContainer);
-			} else {
-				// 没有记录，添加.
-				add(onlineContainer);
-			}
+			updateOrAdd(onlineContainer);
 			return onlineContainer;
 		}
 	}
