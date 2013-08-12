@@ -14,17 +14,15 @@ import org.apache.logging.log4j.Logger;
 
 import com.exfd.dao.ContainerDao;
 import com.exfd.domain.Container;
-import com.exfd.domain.Seal;
 import com.exfd.util.MysqlUtils;
 
 public class ContainerDaoImpl implements ContainerDao {
 
-	static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger();
 
 	// 1980-09-09 12:03:04
 	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	
 	@Override
 	public void add(Container container) {
 		Connection con = null;
@@ -35,7 +33,7 @@ public class ContainerDaoImpl implements ContainerDao {
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -56,7 +54,6 @@ public class ContainerDaoImpl implements ContainerDao {
 		
 		sb.append(container.getTableString()).append("','");
 		sb.append(container.getJsonString()).append("','");
-		//sb.append("").append("','");
 		sb.append(container.getHttpresult()).append("');");
 	
 		return sb.toString();
@@ -72,7 +69,7 @@ public class ContainerDaoImpl implements ContainerDao {
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -90,7 +87,7 @@ public class ContainerDaoImpl implements ContainerDao {
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -124,16 +121,15 @@ public class ContainerDaoImpl implements ContainerDao {
 	@Override
 	public Container find(String code) {
 		Connection con = null;
-		PreparedStatement prepStmt = null;
+		Statement stmt = null;
 		ResultSet rs = null;
 		try {
 			con = MysqlUtils.getConnection();
 			String selectStatement = "select * "
-					+ "from CONTAINERINFO where code = ? ";
-			prepStmt = con.prepareStatement(selectStatement);
-			prepStmt.setString(1, code);
-			rs = prepStmt.executeQuery();
-
+					+ "from CONTAINERINFO where code = '"+code+"'";
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(selectStatement);
+			
 			if (rs.next()) {
 				Container container = new Container();
 				resultSet2Container(rs, container);				
@@ -143,12 +139,13 @@ public class ContainerDaoImpl implements ContainerDao {
 			}
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
-			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
 		}
+		return null;
 	}
 
 	private void resultSet2Container(ResultSet rs, Container container) throws SQLException {
@@ -186,7 +183,7 @@ public class ContainerDaoImpl implements ContainerDao {
 				arrayList.add(container);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
 			MysqlUtils.closeStmt(stmt);
@@ -198,33 +195,32 @@ public class ContainerDaoImpl implements ContainerDao {
 	@Override
 	public void updateOrAdd(Container container) {
 		Connection con = null;
-		PreparedStatement prepStmt = null;
-		Statement stmt = null;
+		Statement stmtQuery = null;
+		Statement stmtUpdate = null;
 		ResultSet rs = null;
+		String code = container.getCode();
 		try {
 			con = MysqlUtils.getConnection();
 			String selectStatement = "select * "
-					+ "from CONTAINERINFO where code = ? ";
-			prepStmt = con.prepareStatement(selectStatement);
-			prepStmt.setString(1, container.getCode());
-			rs = prepStmt.executeQuery();
+					+ "from CONTAINERINFO where code = '"+code+"'";
+			stmtQuery = con.createStatement();
+			rs = stmtQuery.executeQuery(selectStatement);
 
 			String str = null;
 			if (rs.next()) {
-				str = createUpdateStatment(container);
-				
+				str = createUpdateStatment(container);				
 			} else {
 				str = createInsertStatement(container);
 			}
-			stmt = con.createStatement();
-			stmt.executeUpdate(str);
+			stmtUpdate = con.createStatement();
+			stmtUpdate.executeUpdate(str);
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
-			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeResultSet(rs);
-			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeStmt(stmtUpdate);
+			MysqlUtils.closeStmt(stmtQuery);
 			MysqlUtils.closeConnection(con);
 		}
 		
