@@ -12,18 +12,18 @@
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
-	<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
 	<script type="text/javascript" src="js/map.js"></script>
-	<script type="text/javascript" src="js/logger.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
 </head>
 <body>
 	<div id="header" class="navbar">
 		<div class="navbar-inner">
 			<ul class="nav">
-				<li><a href="#">欢迎来到易寻方达！</a></li>
+				<li><a href="/index.html">欢迎来到易寻方达！</a></li>
 				<li class="divider-vertical"></li>
-				<li><a href="container.html" class="color-link">搜箱</a></li>
+				<li><a href="/container.jsp" class="color-link">搜箱</a></li>
 				<li class="divider-vertical"></li>
 				<li><a href="/ship.jsp" class="color-link">搜船</a></li>
 			</ul>
@@ -36,13 +36,13 @@
 	</div>
 
 	<div class="search-site-bar">
-		<div class="span2">
-			<a href="www.efinder.com.cn">
+		<div class="span2 offset2">
+			<a href="/index.html">
 				<img src="img/logo.png" width="100px" height="70px">
 			</a>
 		</div>
 		<div class="span9 logo-container">
-			<form id="searchForm" class="form-inline">
+			<form id="searchForm" class="form-inline" accept-charset="utf-8">
 				<input id="searchInput" type="text" class="input-xlarge search-box-input search-box-input-large" placeholder="搜铅封" name="code">
 				<button type="submit" class="btn search-box-button">搜索</button>
 			</form>
@@ -51,11 +51,27 @@
 
 	<div id="map" class="map-container"></div>
 
+	<footer class="footer">
+		<div class="container">
+			<ul class="footer-links">
+			    <li><a href="#">关于易方寻达</a></li>
+			    <li><a href="#">合作伙伴</a></li>
+			    <li><a href="#">营销中心</a></li>
+			    <li><a href="#">联系我们</a></li>
+			    <li><a href="#">网站地图</a></li>
+			    <li><a href="#">法律声明</a></li>
+			    <span class="float-right footer-license">© 2013 efinder.com.cn 版权所有</span>
+			</ul>
+		</div>
+	</footer>
+
 	<% Seal seal = (Seal)request.getAttribute("seal"); %>
 		
 	<script type="text/javascript">
 		$(function() {
 			"use strict";
+
+			var map = null;
 			
 			var getInfoContent = function(code, location) {
 				return '<div style="margin:0;line-height:20px;padding:2px;">\
@@ -72,47 +88,34 @@
 		            </div>';
 			};
 
+			var successCallbck = function(data) {
+				map.drawMarker(data.longitude, data.latitude, '搜铅封', getInfoContent(data.code, data.poi));
+			};
+
 			var init = function() {
-				var map,
+				var url,
 					self = this,
-					code = '<%= (seal != null) ? seal.getCode() : "" %>',
-					longitude = <%= (seal != null) ? seal.getLongitude() : null %>,
-					latitude = <%= (seal != null) ? seal.getLatitude() : null %>,
-					location = '<%=(seal != null) ? seal.getPoi() : "" %>';
+					data = {};
+
+				data.code = '<%= (seal != null) ? seal.getCode() : "" %>',
+				data.longitude = <%= (seal != null) ? seal.getLongitude() : null %>,
+				data.latitude = <%= (seal != null) ? seal.getLatitude() : null %>,
+				data.poi = '<%=(seal != null) ? seal.getPoi() : "" %>';
+				
+				if (data.code !== '') {
+					$('#searchInput').val(data.code);
+				}
 
 				map = new EFINDER.Map('map');
-				map.drawMarker(longitude, latitude, '搜铅封', getInfoContent(code, location));
-				
-				if (code !== '') {
-					$('#searchInput').val(code);
-				}
+				successCallbck(data);
 
 				$('#searchForm').submit(function(e) {
 					e.preventDefault();
 	
-					code = encodeURIComponent($('#searchInput').val());
-					
-					if (!!code) {
-						$.ajax({
-							type: 'GET',
-							url: '/servlet/TrackSealInfoServlet?code=' + code,
-							dataType: 'json',
-							cache: false,
-							success: function(data) {
-								if (!!data) {
-									code = data.code;
-									longitude = data.longitude;
-									latitude = data.latitude;
-									location = data.poi;
-	
-									map.drawMarker(longitude, latitude, '搜铅封', getInfoContent(code, location));
-								}
-							},
-							error: function() {
-								EFINDER.logger.error('Search Seal AJAX request failure!');
-							}
-						});
-					}
+					data.code = encodeURIComponent($('#searchInput').val());
+					url = '/servlet/TrackSealInfoServlet?code=' + data.code;
+
+					EFINDER.load(url, successCallbck);
 				})
 			};
 

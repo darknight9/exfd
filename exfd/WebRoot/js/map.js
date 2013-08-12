@@ -19,7 +19,7 @@ window.EFINDER = window.EFINDER || {};
 		}
 	};
 
-	EFINDER.Map.prototype.init = function(longitude, latitude) {
+	EFINDER.Map.prototype.init = function(longitude, latitude, zoom) {
 		var point;
 
 		if (!this.map) {
@@ -29,10 +29,11 @@ window.EFINDER = window.EFINDER || {};
 		// Default center point.
 		longitude = longitude || 116.404;
 		latitude = latitude || 39.915;
+		zoom = zoom || 15;
 
 		// Center around point.
 		point = new BMap.Point(longitude, latitude);
-		this.map.centerAndZoom(point, 15);
+		this.map.centerAndZoom(point, zoom);
 	};
 
 	EFINDER.Map.prototype.addMarker = function(longitude, latitude, title, content) {
@@ -80,9 +81,9 @@ window.EFINDER = window.EFINDER || {};
 		});
 	};
 
-	EFINDER.Map.prototype.drawMarker = function(longitude, latitude, title, content) {
+	EFINDER.Map.prototype.drawMarker = function(longitude, latitude, title, content, zoom) {
 		// Center around point.
-		this.init(longitude, latitude);
+		this.init(longitude, latitude, zoom);
 		// Clear the present marker.
 		this.clearMarker();
 		// Draw a marker at the point.

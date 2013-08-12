@@ -39,13 +39,42 @@ import org.apache.logging.log4j.Logger;
 
 import com.exfd.domain.Container;
 import com.exfd.domain.ContainerRecord;
+import com.exfd.domain.ContainerStatus;
 import com.google.gson.Gson;
 
 public class LineBase {
 
 	static Logger logger = LogManager.getLogger();
 	static XMLConfiguration config = null;
+	
+	// 配置的XML中的解析结点.
+	SubnodeConfiguration parseNode = null;
+	
+	// 页面解析出的source.
+	Source source = null;
+	
+	// 解析出的Hint position.
+	int hintPos = -1;
 
+	// 读取配置信息.
+	public static void LoadConfig() {
+		if (config != null) {
+			return;
+		}
+		try {
+			// 先设置属性再load才行.
+			config = new XMLConfiguration();
+			config.setExpressionEngine(new XPathExpressionEngine());
+			config.setDelimiterParsingDisabled(true);
+			config.setAttributeSplittingDisabled(true);
+			config.load("containers.xml");
+		} catch (ConfigurationException e) {
+			e.printStackTrace();
+			logger.catching(e);
+		}
+	}
+
+	// 根据箱号获取网页内容.
 	public String GetPage(String code) throws UnsupportedEncodingException,
 			ClientProtocolException, IOException, URISyntaxException {
 
@@ -157,6 +186,7 @@ public class LineBase {
 		}
 	}
 
+	// 使用POST请求获取网页内容.
 	protected String getPostPage(HttpClient httpclient, HttpPost httppost,
 			List<? extends NameValuePair> formparams) throws IOException {
 
@@ -186,13 +216,7 @@ public class LineBase {
 		return strPage;
 	}
 
-	/**
-	 * @param httpclient
-	 * @param httpget
-	 * @return
-	 * @throws ClientProtocolException
-	 * @throws IOException
-	 */
+	// 使用GET请求获取网页内容.
 	protected String getGetPage(HttpClient httpclient, HttpGet httpget)
 			throws ClientProtocolException, IOException {
 
@@ -219,54 +243,71 @@ public class LineBase {
 		return strPage;
 	}
 
-	public static void LoadConfig() {
-		try {
-			// 先设置属性再load才行.
-			config = new XMLConfiguration();
-			config.setExpressionEngine(new XPathExpressionEngine());
-			config.setDelimiterParsingDisabled(true);
-			config.setAttributeSplittingDisabled(true);
-			config.load("containers.xml");
-		} catch (ConfigurationException e) {
-			e.printStackTrace();
-			logger.catching(e);
-		}
-	}
-
+	// 根据箱号直接获取箱子信息.
 	public Container GetContainer(String code) {
 		String strPage = null;
 		try {
 			strPage = GetPage(code);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.catching(e);
 			return null;
 		}
 		Container container = GetContainerByPage(code, strPage);
 		return container;
 	}
-
-	public Container GetContainerByPage(String code, String page) {
-
+	
+	// Parse.1.解析基本信息.
+	public Container ParseBaseInfo(String code, String page) {
+		
 		// 获取公司名称, 去掉前面的"Line".
 		String company = this.getClass().getSimpleName().substring(4);
 
 		Container container = new Container();
 		container.setCode(code);
 		container.setCompany(company);
+		
+		ContainerStatus status = new ContainerStatus();
+		status.setCode(code);
+		status.setCompany(company);
+		container.setStatus(status);
 
 		// 获取当前的船公司的配置信息.
-		SubnodeConfiguration sub = config
+		parseNode = config
 				.configurationAt("/container[@classname='"
 						+ this.getClass().getSimpleName() + "']/parse");
-
-		// 检查是否没有找到箱子.
-		String notfoundString = sub.getString("notfound");
+		
+		return container;
+	}
+	
+	// 检查是否没有找到箱子.
+	public boolean IsNotFoundPage(String code, String page, Container container) {
+		
+		String notfoundString = parseNode.getString("notfound");
 		if (page.indexOf(notfoundString) >= 0) {
-			logger.info("container [{}] not found.", code);
+			logger.debug("CONT[{}] container page contains not found information.", code);
 			container.setNotfound(1);
-			return container;
+			return true;
 		}
+		return false;
+	}
+	
+	// 获取Hint
+	public boolean GetHintPos(String code, String page, Container container) {
+		String hintString = parseNode.getString("hint");
+		hintString = hintString.replace("EXFDCODE", code);
+		hintPos = page.indexOf(hintString);
 
+		// 找不到标记点，返回.
+		if (hintPos < 0) {
+			container.setParseerror(1);
+			logger.debug("CONT[{}] container page not find hint[{}] postion.", code, hintString);
+			return false;
+		}
+		return true;
+	}
+
+	// 获取解析的Tree.
+	public Source PrepareTree(String page) {
 		// 寻找结果.
 		MicrosoftConditionalCommentTagTypes.register();
 		PHPTagTypes.register();
@@ -275,30 +316,44 @@ public class LineBase {
 											// processing instructions
 		MasonTagTypes.register();
 		Source source = new Source(page);
-		String hintString = sub.getString("hint");
-		hintString = hintString.replace("EXFDCODE", code);
-		logger.debug(hintString);
+		return source;
+	}
 
-		int flagPos = page.indexOf(hintString);
+	public Container GetContainerByPage(String code, String page) {
 
-		// 找不到标记点，返回.
-		if (flagPos < 0) {
-			container.setParseerror(1);
+		// Parse.1.解析基本信息.
+		Container container = ParseBaseInfo(code, page);
+		
+		// Parse.2.检查是否没有找到箱子.
+		boolean isNotFound = IsNotFoundPage(code, page, container);
+		if (isNotFound) {
+			logger.info("CONT[{}] container page contains not found information.", code);
 			return container;
 		}
-		String dirString = sub.getString("dir");
+
+		// Parse.3.获取hint position.
+		boolean isGetHint = GetHintPos(code, page, container);
+		if (!isGetHint) {
+			logger.info("CONT[{}] container page not find hint postion.", code);
+			return container;
+		}
+		
+		// Parse.4.获取解析的Tree.
+		source = PrepareTree(page);
+		
+		String dirString = parseNode.getString("dir");
 		StartTag start = null;
 		if (dirString.equals("next")) {
-			start = source.getNextStartTag(flagPos, "table");
+			start = source.getNextStartTag(hintPos, "table");
 		} else {
-			start = source.getPreviousStartTag(flagPos, "table");
+			start = source.getPreviousStartTag(hintPos, "table");
 		}
 		logger.debug(start);
 		Element tableElement = start.getElement();
 		Element resultElement = null;
 		List<Element> trList = null;
-		String rowclass = sub.getString("rowclass");
-		String rowclassPattern = sub.getString("rowclassPattern");
+		String rowclass = parseNode.getString("rowclass");
+		String rowclassPattern = parseNode.getString("rowclassPattern");
 		if (rowclass != null) {
 
 		} else if (rowclassPattern != null) {
@@ -312,15 +367,15 @@ public class LineBase {
 		ArrayList<ContainerRecord> records = new ArrayList<ContainerRecord>();
 
 		// 默认记录是record，而不是header.
-		String defaultRecord = sub.getString("defaultRecord");
-		String recordClassStart = sub.getString("recordClassStart");
-		String headerClassStart = sub.getString("headerClassStart");
-		int usetdclass = sub.getInt("usetdclass");
-		int timeIndex = sub.getInt("time");
-		int eventIndex = sub.getInt("event");
-		int locationIndex = sub.getInt("location");
-		int vesselIndex = sub.getInt("vessel");
-		int voyageIndex = sub.getInt("voyage");
+		String defaultRecord = parseNode.getString("defaultRecord");
+		String recordClassStart = parseNode.getString("recordClassStart");
+		String headerClassStart = parseNode.getString("headerClassStart");
+		int usetdclass = parseNode.getInt("usetdclass");
+		int timeIndex = parseNode.getInt("time");
+		int eventIndex = parseNode.getInt("event");
+		int locationIndex = parseNode.getInt("location");
+		int vesselIndex = parseNode.getInt("vessel");
+		int voyageIndex = parseNode.getInt("voyage");
 
 		boolean isHeaderDefault = false;
 		if (defaultRecord.equals("false")) {
@@ -329,7 +384,7 @@ public class LineBase {
 		for (int i = 0; i < trList.size(); i++) {
 			Element trElement = trList.get(i);
 			boolean isHeader = isHeaderDefault;
-			
+
 			// 如果标记在tr上，删除不符合条件的tr行.
 			String classAttribute = trElement.getAttributeValue("class");
 			if (usetdclass == 0) {
@@ -343,7 +398,7 @@ public class LineBase {
 					continue; // 跳过这行.
 				}
 			}
-			
+
 			// 如果标记在td class上，可能要删除不符合条件的tr行.
 			boolean deleteTr = false;
 			List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
@@ -353,14 +408,15 @@ public class LineBase {
 
 			for (int j = 0; j < tdList.size(); j++) {
 				resultElement = tdList.get(j);
-				
+
 				// 有些header设置是在td标签上.
 				if (j == 0 && usetdclass != 0) {
 					classAttribute = resultElement.getAttributeValue("class");
 					if (classAttribute != null && recordClassStart != null
 							&& classAttribute.startsWith(recordClassStart)) {
 						isHeader = false;
-					} else if (classAttribute != null && headerClassStart != null
+					} else if (classAttribute != null
+							&& headerClassStart != null
 							&& classAttribute.startsWith(headerClassStart)) {
 						isHeader = true;
 					} else {
@@ -381,7 +437,7 @@ public class LineBase {
 				record.setLocation(arrayList.get(locationIndex));
 				record.setVessel(arrayList.get(vesselIndex));
 				record.setVoyage(arrayList.get(voyageIndex));
-				
+
 				aLists.add(arrayList);
 				records.add(record);
 			}
@@ -395,7 +451,10 @@ public class LineBase {
 		return container;
 
 	}
-	
+
+
+
+
 	public String Array2Table(ArrayList<ArrayList<String>> aLists, String code) {
 
 		StringBuilder sb = new StringBuilder(aLists.size() * 1000);
@@ -424,7 +483,7 @@ public class LineBase {
 		String strJson = gson.toJson(records);
 		return strJson;
 	}
-	
+
 	public String Record2Table(ArrayList<ContainerRecord> records, String code) {
 
 		StringBuilder sb = new StringBuilder(records.size() * 1000);
@@ -451,6 +510,5 @@ public class LineBase {
 		sb.append("</table>");
 		return sb.toString();
 	}
-	
-	
+
 }

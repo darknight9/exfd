@@ -9,7 +9,7 @@ public class Container {
 	private Date mtime; // 记录修改时间
 	private int download; // 0:not download. 1:download fail. 2:download OK.
 	private int notfound; // 0:not process. 1:notfound.
-	private int parseerror; // 0:not parse. 1:找不到标记点.
+	private int parseerror; // 0:not parse. 1:找不到hint position点.
 	private ContainerStatus status;
 	private String tableString;
 	private String jsonString;

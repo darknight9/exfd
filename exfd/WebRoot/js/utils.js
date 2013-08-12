@@ -10,7 +10,7 @@ window.EFINDER = window.EFINDER || {};
        LEVEL_WARNING: 3,
        LEVEL_ERROR  : 4,
 
-       LEVEL_DESC   : ["Trace", "Debug", "Info", "Warning", "Error"],
+       LEVEL_DESC   : ['Trace', 'Debug', 'Info', 'Warning', 'Error'],
 
        // Default log level is set to DEBUG.
        LOG_LEVEL    : 1,
@@ -37,37 +37,26 @@ window.EFINDER = window.EFINDER || {};
 
        log: function(args, level) {
           var logTime,
-              logString,
-              callerDetail = {},
-              functionName,
-              fileName,
-              lineNum;
+              logString;
 
           if (level >= this.LOG_LEVEL) {
              if (args) {
                 logTime = new Date();
-                callerDetail = getCallerDetail();
-                functionName = !!callerDetail.functionName ? callerDetail.functionName : "";
-                fileName = !!callerDetail.fileName ? callerDetail.fileName : "";
-                lineNum = !!callerDetail.lineNum ? callerDetail.lineNum : "";
-                logString = "[" + logTime.getFullYear() + "-" +
-                   pad(logTime.getMonth() + 1, 2) + "-" + pad(logTime.getDate(), 2) + "T" +
-                   pad(logTime.getHours(), 2) + ":" + pad(logTime.getMinutes(), 2) + ":" +
-                   pad(logTime.getSeconds(), 2) + "." + pad(logTime.getMilliseconds(), 3) +
-                   "][" + this.LEVEL_DESC[level] + "]";
-                if (!((functionName === "") && (fileName === "") && (lineNum === ""))) {
-                   logString += "[" + functionName + " " + fileName + ":" + lineNum + "]";
-                }
-                logString += ": " + args;
+                logString = '[' + logTime.getFullYear() + '-' +
+                   (logTime.getMonth() + 1) + '-' + logTime.getDate() + 'T' +
+                   logTime.getHours() + ':' + logTime.getMinutes() + ':' +
+                   logTime.getSeconds() + '.' + logTime.getMilliseconds() +
+                   '][' + this.LEVEL_DESC[level] + ']';
+                logString += ': ' + args;
              }
 
              if (this.logAppender) {
-                $(this.logAppender).append(logString + "<br />");
+                $(this.logAppender).append(logString + '<br />');
              }
-             if (typeof(this.logFunction) === "function") {
+             if (typeof(this.logFunction) === 'function') {
                 this.logFunction(logString);
              }
-             if (!!window.console && (typeof window.console.log === "function")) {
+             if (!!window.console && (typeof window.console.log === 'function')) {
                 window.console.log(logString);
              }
           }
@@ -100,4 +89,25 @@ window.EFINDER = window.EFINDER || {};
           this.logFunction = logFn;
        }
     };
+
+    EFINDER.load = function(url, successCallback, errorCallback) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                if (typeof successCallback === 'function') {
+                    successCallback(data);
+                }
+            },
+            error: function(e) {
+                EFINDER.logger.error('Search Seal AJAX request failure!');
+                if (typeof errorCallback === 'function') {
+                    errorCallback(e);
+                }
+            }
+        });
+    };
+
 }(window.jQuery, window.EFINDER));

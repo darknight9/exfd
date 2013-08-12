@@ -54,7 +54,7 @@ public class TrackSealServlet extends HttpServlet {
 
 				// 展现结果.
 				request.setAttribute("seal", seal);
-				logger.error("SEAL[{} is send to page : [{}],[{}]", seal.getCode(), seal.getLongitude(), seal.getLatitude());
+				logger.info("SEAL[{} is send to page : [{}],[{}]", seal.getCode(), seal.getLongitude(), seal.getLatitude());
 				
 				// 重定向到搜索结果页.
 				//response.sendRedirect(request.getContextPath()+"/seal.jsp");

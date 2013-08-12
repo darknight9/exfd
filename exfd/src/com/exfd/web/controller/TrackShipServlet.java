@@ -29,7 +29,7 @@ public class TrackShipServlet extends HttpServlet {
 		String code = request.getParameter("code");
 		String type = request.getParameter("type");
 		
-		logger.debug("SHIPDETAIL[{}][{}] the request is received.", code, type);
+		logger.info("SHIPDETAIL[{}][{}] the request is received.", code, type);
 		ShipServiceImpl service = new ShipServiceImpl();
 		List<Ship> ships = service.track("", code, type, 1, 10);
 		if(ships != null && !ships.isEmpty()){

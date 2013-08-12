@@ -2,6 +2,7 @@ package com.exfd.web.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -26,9 +27,12 @@ public class TrackShipInfoServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		String code = request.getParameter("code");
+		logger.debug("code is [{}]", code);
+		code = URLDecoder.decode(code, "utf-8");
+		logger.debug("code is [{}]", code);
 		String type = request.getParameter("type");
 		
-		logger.debug("SHIPDETAIL[{}][{}] the request is received.", code, type);
+		logger.info("SHIPDETAIL[{}][{}] the request is received.", code, type);
 		ShipServiceImpl service = new ShipServiceImpl();
 		List<Ship> ships = service.track("", code, type, 1, 10);
 		if(ships != null && !ships.isEmpty()){

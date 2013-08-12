@@ -11,104 +11,138 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 </head>
 <body>
-	<div id="header" class="navbar">
-		<div class="navbar-inner">
-			<div class="container">
-				<ul class="nav">
-					<li><a href="#">欢迎来到易寻方达！</a></li>
+	<div class="main-wrap">
+		<div id="header" class="navbar">
+			<div class="navbar-inner">
+				<div class="container">
+					<ul class="nav">
+						<li><a href="#">欢迎来到易寻方达！</a></li>
+					</ul>
+					<ul class="nav float-right">	
+						<li><a href="#" class="color-highlight">登录</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="#">注册</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="span2 offset1 logo-container">
+				<a href="#">
+					<img src="img/logo.png" width="100px" height="70px">
+				</a>
+			</div>
+			<div class="span7 relative-div">
+				<ul id="searchNav" class="nav nav-tabs search-nav-bar">
+				    <li data-type="SEAL" title="搜铅封" class="active">
+				    	<a href="#">搜铅封</a>
+				    </li>
+				    <li data-type="CONTAINER" title="搜箱"><a href="#">搜箱</a></li>
+				    <li data-type="SHIP" title="搜船"><a href="#">搜船</a></li>
 				</ul>
-				<ul class="nav float-right">	
-					<li><a href="#" class="color-highlight">登录</a></li>
-					<li class="divider-vertical"></li>
-					<li><a href="#">注册</a></li>
-				</ul>
+				<form id="searchForm" class="form-inline" method="post" accept-charset="utf-8">
+					<input id="searchInput" type="text" class="search-box-input" placeholder="搜铅封" name="code">
+					<span class="search-bar-radio-group hide">
+						<label class="radio inline">
+						    <input type="radio" name="type" value="name" checked> 船名
+						</label>
+						<label class="radio inline">
+						    <input type="radio" name="type" value="mmsi"> MMSI
+						</label>
+						<label class="radio inline">
+						    <input type="radio" name="type" value="imo"> IMO
+						</label>
+						<label class="radio inline">
+						    <input type="radio" name="type" value="callsign"> 呼码
+						</label>
+					</span>
+					<button type="submit" class="btn search-box-button">搜索</button>
+				</form>
+			</div>
+		</div>
+
+		<div class="site-bar">
+			<div class="container relative-div">
+			    <span class="site-bar-inner">全部分类</span>
+			    <div class="site-bar-nav">
+			    	<div class="site-bar-nav-inner">
+			    		<div class="site-bar-nav-icon-1"></div>
+			    		<a href="#" class="site-bar-nav-label">关于我们</a>
+					</div>
+					<div class="site-bar-nav-inner">
+						<span class="site-bar-nav-icon-2"></span>
+			    		<a href="#" class="site-bar-nav-label">服务中心</a>
+					</div>
+					<div class="site-bar-nav-inner">
+						<span class="site-bar-nav-icon-3"></span>
+			    		<a href="#" class="site-bar-nav-label">网站地图</a>
+					</div>
+					<div class="site-bar-nav-inner">
+						<span class="site-bar-nav-icon-4"></span>
+			    		<a href="#" class="site-bar-nav-label">联系我们</a>
+					</div>
+			    </div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div id="myCarousel" class="carousel slide ship-carousel">
+			    <ol class="carousel-indicators">
+				    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				    <li data-target="#myCarousel" data-slide-to="1"></li>
+				    <li data-target="#myCarousel" data-slide-to="2"></li>
+				    <li data-target="#myCarousel" data-slide-to="3"></li>
+				    <li data-target="#myCarousel" data-slide-to="4"></li>
+				    <li data-target="#myCarousel" data-slide-to="5"></li>
+			    </ol>
+			    <!-- Carousel items -->
+			    <div class="carousel-inner">
+				    <div class="active item">
+				    	<img src="img/ship1.jpg" class="carousel-img">
+				    	<div class="carousel-caption">
+				    		<p>每个铅封上都有唯一的编号标识。只要集装箱外观完整，集装箱门正确关闭，铅封正常锁上，则可以证明该集装箱在运输途中未经私自开封，箱内情况由装箱人在装箱时监督负责。</p>
+				    	</div>
+				    </div>
+				    <div class="item">
+				    	<img src="img/ship2.jpg" class="carousel-img">
+				    	<div class="carousel-caption">
+				    		<p>基于电子海图和地图的船舶位置服务，提供船队管理、快速船舶搜索、全球AIS船位。</p>
+				    	</div>
+				    </div>
+				    <div class="item">
+				    	<img src="img/ship3.jpg" class="carousel-img">
+				    	<div class="carousel-caption">
+				    		<p>基于电子海图和地图的船舶位置服务，提供船队管理、快速船舶搜索、全球AIS船位。</p>
+				    	</div>
+				    </div>
+				    <div class="item">
+				    	<img src="img/ship4.jpg" class="carousel-img">
+				    </div>
+				    <div class="item">
+				    	<img src="img/ship5.jpg" class="carousel-img">
+				    </div>
+				    <div class="item">
+				    	<img src="img/ship6.jpg" class="carousel-img">
+				    </div>
+			    </div>
 			</div>
 		</div>
 	</div>
 
-	<div class="container">
-		<div class="span2 logo-container">
-			<a href="www.efinder.com.cn">
-				<img src="img/logo.png" width="100px" height="70px">
-			</a>
-		</div>
-		<div class="span6 relative-div">
-			<ul id="searchNav" class="nav nav-tabs search-nav-bar">
-			    <li data-type="SEAL" title="搜铅封" class="active">
-			    	<a href="#">搜铅封</a>
-			    </li>
-			    <li data-type="CONTAINER" title="搜箱"><a href="#">搜箱</a></li>
-			    <li data-type="SHIP" title="搜船"><a href="#">搜船</a></li>
+	<footer class="footer">
+		<div class="container">
+			<ul class="footer-links">
+			    <li><a href="#">关于易方寻达</a></li>
+			    <li><a href="#">合作伙伴</a></li>
+			    <li><a href="#">营销中心</a></li>
+			    <li><a href="#">联系我们</a></li>
+			    <li><a href="#">网站地图</a></li>
+			    <li><a href="#">法律声明</a></li>
+			    <span class="float-right footer-license">© 2013 efinder.com.cn 版权所有</span>
 			</ul>
-			<form id="searchForm" class="form-inline" method="post">
-				<input type="text" class="input-xlarge search-box-input" placeholder="搜铅封" name="code">
-				<span class="search-bar-radio-group hide">
-					<label class="radio inline">
-					    <input type="radio" name="type" value="name" checked> 船名
-					</label>
-					<label class="radio inline">
-					    <input type="radio" name="type" value="mmsi"> MMSI
-					</label>
-					<label class="radio inline">
-					    <input type="radio" name="type" value="imo"> IMO
-					</label>
-					<label class="radio inline">
-					    <input type="radio" name="type" value="callsign"> 呼码
-					</label>
-				</span>
-				<button type="submit" class="btn search-box-button">搜索</button>
-			</form>
 		</div>
-	</div>
-
-	<div class="site-bar">
-		<div class="container relative-div">
-		    <span class="site-bar-inner">全部分类</span>
-		</div>
-	</div>
-
-	<div class="container">
-		<div id="myCarousel" class="carousel slide ship-carousel">
-		    <ol class="carousel-indicators">
-			    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			    <li data-target="#myCarousel" data-slide-to="1"></li>
-			    <li data-target="#myCarousel" data-slide-to="2"></li>
-			    <li data-target="#myCarousel" data-slide-to="3"></li>
-			    <li data-target="#myCarousel" data-slide-to="4"></li>
-			    <li data-target="#myCarousel" data-slide-to="5"></li>
-		    </ol>
-		    <!-- Carousel items -->
-		    <div class="carousel-inner">
-			    <div class="active item">
-			    	<img src="img/ship1.jpg" class="carousel-img">
-			    	<div class="carousel-caption">
-			    		<p>每个铅封上都有唯一的编号标识。只要集装箱外观完整，集装箱门正确关闭，铅封正常锁上，则可以证明该集装箱在运输途中未经私自开封，箱内情况由装箱人在装箱时监督负责。</p>
-			    	</div>
-			    </div>
-			    <div class="item">
-			    	<img src="img/ship2.jpg" class="carousel-img">
-			    	<div class="carousel-caption">
-			    		<p>基于电子海图和地图的船舶位置服务，提供船队管理、快速船舶搜索、全球AIS船位。</p>
-			    	</div>
-			    </div>
-			    <div class="item">
-			    	<img src="img/ship3.jpg" class="carousel-img">
-			    	<div class="carousel-caption">
-			    		<p>基于电子海图和地图的船舶位置服务，提供船队管理、快速船舶搜索、全球AIS船位。</p>
-			    	</div>
-			    </div>
-			    <div class="item">
-			    	<img src="img/ship4.jpg" class="carousel-img">
-			    </div>
-			    <div class="item">
-			    	<img src="img/ship5.jpg" class="carousel-img">
-			    </div>
-			    <div class="item">
-			    	<img src="img/ship6.jpg" class="carousel-img">
-			    </div>
-		    </div>
-		</div>
-	</div>
+	</footer>
 
 	<script type="text/javascript">
 		$(function() {
@@ -134,9 +168,16 @@
 					searchType = self.data('type');
 					if (searchType === 'SHIP') {
 						radioGroup.removeClass('hide');
+						$('#searchInput').attr('placeholder', '搜船');
 					} else {
 						if (!radioGroup.hasClass('hide')) {
 							radioGroup.addClass('hide');
+						}
+
+						if (searchType === 'SEAL') {
+							$('#searchInput').attr('placeholder', '搜铅封');
+						} else {
+							$('#searchInput').attr('placeholder', '搜箱');
 						}
 					}
 				});

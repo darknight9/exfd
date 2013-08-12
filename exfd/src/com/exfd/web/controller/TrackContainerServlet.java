@@ -42,11 +42,12 @@ public class TrackContainerServlet extends HttpServlet {
 		if(cbox!=null){
 			// TODO
 			// 展现结果.
+			request.setAttribute("code", code);
 			request.setAttribute("cbox", cbox);
 			request.setAttribute("cboxnumbers", 1);
 			// 重定向到搜索结果页.
 			//response.sendRedirect(request.getContextPath()+"/WEB-INF/jsp/showseal.jsp");
-			request.getRequestDispatcher("/WEB-INF/jsp/showcontainer.jsp").forward(request, response);
+			request.getRequestDispatcher("/container.jsp").forward(request, response);
 			return;
 		}
 		

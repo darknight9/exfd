@@ -14,11 +14,9 @@
 		</File>
 	</appenders>
 	<loggers>
-		<logger name="AccessLogger" level="info" additivity="false">
-			<appender-ref ref="MyAccess" />
-		</logger>
 		<root level="trace">
 			<appender-ref ref="MyTrace" />
+			<appender-ref ref="MyAccess" />
 		</root>
 	</loggers>
 </configuration>
