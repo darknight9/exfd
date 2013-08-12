@@ -1,0 +1,33 @@
+<!ELEMENT containers (container|defaults)*>
+
+<!ELEMENT defaults (default)*>
+<!ELEMENT default (#PCDATA)>
+<!ATTLIST default name CDATA #REQUIRED>
+<!ATTLIST default value CDATA #REQUIRED>
+<!ATTLIST default method (SET|ADD) "SET">
+
+
+<!ELEMENT container (name,homepage,status,comment,search,parse)>
+<!ATTLIST container company CDATA #REQUIRED>
+<!ATTLIST container classname CDATA #REQUIRED>
+
+
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT homepage (#PCDATA)>
+<!ELEMENT status (#PCDATA)>
+<!ELEMENT comment (#PCDATA)>
+
+<!ELEMENT search (endpoint,params,headers*)>
+<!ATTLIST search method (POST|GET) "POST">
+
+<!ELEMENT params (param)*>
+<!ELEMENT param (#PCDATA)>
+<!ATTLIST param name CDATA #REQUIRED>
+<!ATTLIST param value CDATA #REQUIRED>
+
+<!ELEMENT parse (notfound|hint|dir|rowclass)*>
+<!ELEMENT notfound (#PCDATA)>
+<!ELEMENT hint (#PCDATA)>
+
+<!ELEMENT dir (#PCDATA)>
+<!ELEMENT rowclass (#PCDATA)>

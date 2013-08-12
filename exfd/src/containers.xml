@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE containers SYSTEM "container.dtd">
+<containers>
+	<defaults>
+		<default name="Accept" value="text/html, application/xhtml+xml, */*"></default>
+		<default name="Accept-Language" value="zh-CN"></default>
+		<default name="User-Agent"
+			value="Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)"></default>
+	</defaults>
+	<container company="MAERSK" classname="LineMAERSK">
+		<name>马士基</name>
+		<homepage>http://www.maerskline.com/</homepage>
+		<status>download fail</status>
+		<comment>下载不行.</comment>
+		<search method="POST">
+			<endpoint>http://www.maerskline.com:80/appmanager/maerskline/public?_nfpb=true&amp;_windowLabel=portlet_trackSimple_1&amp;portlet_trackSimple_1_actionOverride=%2Fportlets%2Ftracking3%2Ftrack%2FtrackSimple%2FtrackSimple&amp;_pageLabel=page_tracking3_trackSimple</endpoint>
+			<params>
+				<param
+					name="portlet_trackSimple_1wlw-select_key%3A%7BpageFlow.trackSimpleForm.type%7DOldValue"
+					value="true"></param>
+				<param
+					name="portlet_trackSimple_1wlw-select_key%3A%7BpageFlow.trackSimpleForm.type%7D"
+					value="CONTAINERNUMBER"></param>
+				<param name="portlet_trackSimple_1%7BpageFlow.trackSimpleForm.numbers%7D"
+					value="EXFDCODE"></param>
+			</params>
+			<headers>
+				<header name="Accept" value="default" method="SET"></header>
+				<header name="Accept-Language" value="default" method="SET"></header>
+				<header name="User-Agent" value="default" method="SET"></header>
+			</headers>
+		</search>
+		<parse>
+			<notfound>not found</notfound>
+			<hint>row_EXFDCODE</hint>
+			<dir>next</dir>
+			<rowclass>TrackingRow</rowclass>
+		</parse>
+	</container>
+	<container company="MSC" classname="LineMSC">
+		<name>地中海</name>
+		<homepage>http://www.msccruises.com.cn/cn_zh/homepage.aspx</homepage>
+		<status>Search OK</status>
+		<comment>下载正常，还没有调试解析.通过第三方查询网站查询的。</comment>
+		<search method="POST">
+			<endpoint>http://www.track-trace.com/parse</endpoint>
+			<params>
+				<param name="type" value="multi"></param>
+				<param name="ref" value="EXFDCODE"></param>
+				<param name="id" value="141"></param>
+				<param name="v" value="B"></param>
+				<param name="ref_key" value="MED"></param>
+			</params>
+		</search>
+		<parse>
+			<notfound>not found</notfound>
+			<hint>row_EXFDCODE</hint>
+			<dir>next</dir>
+			<rowclass>TrackingRow</rowclass>
+		</parse>
+	</container>
+	<container company="CMA" classname="LineCMA">
+		<name>法国达飞</name>
+		<homepage>http://www.cma-cgm.com/</homepage>
+		<status>Search OK</status>
+		<comment>全部解析完毕.</comment>
+		<search method="GET">
+			<endpoint>http://www.cma-cgm.com/eBusiness/Tracking/Default.aspx</endpoint>
+			<params>
+				<param name="ContNum" value="EXFDCODE"></param>
+			</params>
+		</search>
+		<parse>
+			<notfound>not found</notfound>
+			<hint>row_EXFDCODE</hint>
+			<dir>next</dir>
+			<usetdclass>0</usetdclass>
+			<rowclassPattern>(^TrackingRow)|(^TrackingLabel.*)</rowclassPattern>
+			<defaultRecord>true</defaultRecord>
+			<recordClassStart></recordClassStart>
+			<headerClassStart>TrackingLabel</headerClassStart>
+			<time>0</time>
+			<event>1</event>
+			<location>2</location>
+			<vessel>3</vessel>
+			<voyage>4</voyage>
+		</parse>
+	</container>
+	<container company="EVERGREEN" classname="LineEVERGREEN">
+		<name>长荣</name>
+		<homepage>http://www.evergreen-marine.com/tw/</homepage>
+		<status>Search OK</status>
+		<comment>下载正常，还没有调试解析.</comment>
+		<search method="POST">
+			<endpoint>http://www.shipmentlink.com/servlet/TDB1_CargoTracking.do
+			</endpoint>
+			<params>
+				<param name="TYPE" value="CNTR"></param>
+				<param name="CNTR" value="EXFDCODE"></param>
+				<param name="SEL" value="s_cntr"></param>
+				<param name="NO" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<notfound>No information</notfound>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+			<usetdclass>1</usetdclass>
+			<defaultRecord>true</defaultRecord>
+			<recordClassStart>f12rown</recordClassStart>
+			<headerClassStart>f13tabn3</headerClassStart>
+			<time>2</time>
+			<event>3</event>
+			<location>4</location>
+			<vessel>5</vessel>
+			<voyage>5</voyage>
+		</parse>
+	</container>
+	<container company="COSCO" classname="LineCOSCO">
+		<name>中远</name>
+		<homepage>http://www.cosco.com/cn/</homepage>
+		<status>Search OK</status>
+		<comment>解析正常.</comment>
+		<search method="POST">
+			<endpoint>http://www.coscon.com/ebusiness/service/cargo/trackbycont.do</endpoint>
+			<params>
+				<param name="cont" value="EXFDCODE"></param>
+				<param name="type" value="bycont"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<notfound>No information</notfound>
+			<hint>&lt;b&gt;EXFDCODE&lt;/b&gt;</hint>
+			<dir>next</dir>
+			<usetdclass>0</usetdclass>
+			<defaultRecord>true</defaultRecord>
+			<recordClassStart>graycolor</recordClassStart>
+			<headerClassStart>header</headerClassStart>
+			<time>2</time>
+			<event>0</event>
+			<location>1</location>
+			<vessel>3</vessel>
+			<voyage>3</voyage>
+		</parse>
+	</container>
+	<container company="APL" classname="LineAPL">
+		<name>美国总统轮船</name>
+		<homepage>http://www.apl.com/</homepage>
+		<status>Search OK</status>
+		<comment>下载正常，还没有调试解析.</comment>
+		<search method="POST">
+			<endpoint>http://www.tritoncontainer.com/tritoncontainer/unitStatus.do?step=prepare&amp;submitAction=search</endpoint>
+			<params>
+				<param name="HiddenSearchString" value=""></param>
+				<param name="searchString" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="CSAV" classname="LineCSAV">
+		<name>南美邮轮</name>
+		<homepage>http://www.csav.com/index_en.htm</homepage>
+		<status>Search fail</status>
+		<comment>下载超时,配置了www5后不超时但获取不了结果.</comment>
+		<search method="POST">
+			<endpoint>http://www5.csav.com/rastreo/rastreo.nsf/YourTrace?OpenForm&amp;Seq=1</endpoint>
+			<params>
+				<param name="__Click" value="0"></param>
+				<param name="YourTrace" value="EXFDCODE"></param>
+				<param name="TrackingAux" value="Tracking"></param>
+				<param name="SearchAux" value="Tracking"></param>
+				<param name="maximum_number_to_track" value="5"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="HANJIN" classname="LineHANJIN">
+		<name>韩进</name>
+		<homepage>http://www.hanjin.com/hanjin/CUP_HOM_1001.do</homepage>
+		<status>Search fail</status>
+		<comment>还需要解决cookie，先不管了.</comment>
+		<search method="POST">
+			<endpoint>http://www5.csav.com/rastreo/rastreo.nsf/YourTrace?OpenForm&amp;Seq=1</endpoint>
+			<params>
+				<param name="__Click" value="0"></param>
+				<param name="YourTrace" value="EXFDCODE"></param>
+				<param name="TrackingAux" value="Tracking"></param>
+				<param name="SearchAux" value="Tracking"></param>
+				<param name="maximum_number_to_track" value="5"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="CHINASHIPPING" classname="LineCHINASHIPPING">
+		<name>中海</name>
+		<homepage>http://www.cscl.com.cn/</homepage>
+		<status>Search ok</status>
+		<comment>下载OK，乱码</comment>
+		<search method="POST">
+			<endpoint>http://222.66.158.204/cargo_track/cargo_track_rst_pre.jsp</endpoint>
+			<params>
+				<param name="tr_num" value="unit_no"></param>
+				<param name="tf_bl_no" value="EXFDCODE"></param>
+				<param name="Submit" value="OK"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="MOL" classname="LineMOL">
+		<name>商船三井</name>
+		<homepage>http://www.molcn.com.cn/Home/Index.aspx</homepage>
+		<status>Search ok</status>
+		<comment>下载OK，由于有对code的特殊处理，先在代码中实现了.</comment>
+		<search method="GET">
+			<endpoint>http://www.molpower.com/VLCWeb/UITracking/TrackNTraceEqpHistoryDtls.aspx</endpoint>
+			<params>
+				<param name="NOTUSE" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="OOCL" classname="LineOOCL">
+		<name>东方海外</name>
+		<homepage>http://www.oocl.com/schi/Pages/default.aspx</homepage>
+		<status>Search ok</status>
+		<comment>下载分两步，很麻烦。延后实现.</comment>
+		<search method="GET">
+			<endpoint>http://moc.oocl.com/party/cargotracking/ct_search_from_other_domain.jsf</endpoint>
+			<params>
+				<param name="ANONYMOUS_BEHAVIOR" value="BUILD_UP"></param>
+				<param name="domainName" value="PARTY_DOMAIN"></param>
+				<param name="ENTRY_TYPE" value="OOCL"></param>
+				<param name="ENTRY" value="MCC"></param>
+				<param name="ctSearchType" value="CNTR"></param>
+				<param name="ctShipmentNumber" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+
+	<container company="NYK" classname="LineNYK">
+		<name>日本邮轮</name>
+		<homepage>http://www.cn.nyk.com/nyk_cn/cnindex.html</homepage>
+		<status>Search ok</status>
+		<comment>下载OK.</comment>
+		<search method="POST">
+			<endpoint>http://www2.nykline.com/ct/chContainerSearch.nyk?lang=zh&amp;country=CHN</endpoint>
+			<params>
+				<param name="searchText" value="EXFDCODE"></param>
+				<param name="fromCT" value="true"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="YANGMING" classname="LineYANGMING">
+		<name>阳明海运</name>
+		<homepage>http://www.yangming.com/index.asp</homepage>
+		<status>Search ok</status>
+		<comment>下载OK.不过这个地址是从另一个地址302跳转过来的，不知道能不能一直用.</comment>
+		<search method="GET">
+			<endpoint>http://www.yangming.com/track_trace/single_ctnr.asp</endpoint>
+			<params>
+				<param name="num1" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="KLINE" classname="LineKLINE">
+		<name>川崎海运</name>
+		<homepage>http://www.kline.com/</homepage>
+		<status>Search ok</status>
+		<comment>下载没问题，返回的是json！.</comment>
+		<search method="GET">
+			<endpoint>http://ecom.kline.com/Tracking/Search/FindShipment</endpoint>
+			<params>
+				<param name="searchValue" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="ZIM" classname="LineZIM">
+		<name>以星</name>
+		<homepage>http://www.zim-logistics.com.cn/China/</homepage>
+		<status>Search fail</status>
+		<comment>没有找到在哪里查询.</comment>
+		<search method="GET">
+			<endpoint>http://ecom.kline.com/Tracking/Search/FindShipment</endpoint>
+			<params>
+				<param name="searchValue" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="PIL" classname="LinePIL">
+		<name>太平船务</name>
+		<homepage>https://www.pilship.com/</homepage>
+		<status>Search fail</status>
+		<comment>下载OK.</comment>
+		<search method="POST">
+			<endpoint>https://www.pilship.com//pilweb/eservices/shipprogress.jsp</endpoint>
+			<params>
+				<param name="searchby" value="cn"></param>
+				<param name="refno" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="WANHAI" classname="LineWANHAI">
+		<name>万海航运</name>
+		<homepage>http://web.wanhai.com.tw/index_tw.html</homepage>
+		<status>Search OK</status>
+		<comment>下载OK.</comment>
+		<search method="POST">
+			<endpoint>http://web.wanhai.com/index_whl.jsp?web=whlwww&amp;file_num=15040&amp;i_url=whlwww/cargoTrackList.jsp</endpoint>
+			<params>
+				<param name="REF_NO1" value="EXFDCODE"></param>
+				<param name="REF_NO2" value=""></param>
+				<param name="REF_NO3" value=""></param>
+				<param name="REF_NO4" value=""></param>
+				<param name="REF_NO5" value=""></param>
+				<param name="REF_NO6" value=""></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="TSLINE" classname="LineTSLINE">
+		<name>德翔航运</name>
+		<homepage>http://www.tslines.com/</homepage>
+		<status>Search OK</status>
+		<comment>这个也是需要二次访问的网页！.</comment>
+		<search method="POST">
+			<endpoint>http://www.tslines.com/TCT1/TCT1Query.aspx</endpoint>
+			<params>
+				<param name="REF_NO1" value="EXFDCODE"></param>
+				<param name="REF_NO2" value=""></param>
+				<param name="REF_NO3" value=""></param>
+				<param name="REF_NO4" value=""></param>
+				<param name="REF_NO5" value=""></param>
+				<param name="REF_NO6" value=""></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+
+	<container company="SINOTRANS" classname="LineSINOTRANS">
+		<name>中外运</name>
+		<homepage>http://www.sinotrans.com/</homepage>
+		<status>Search OK</status>
+		<comment>需要密码！.</comment>
+		<search method="POST">
+			<endpoint>http://www.sinotrans.com/col/col470/index.html</endpoint>
+			<params>
+				<param name="REF_NO1" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="HAMBURGSUD" classname="LineHAMBURGSUD">
+		<name>汉堡南美</name>
+		<homepage>http://www.hamburgsud-line.com/hsdg/en/hsdg/</homepage>
+		<status>Search OK</status>
+		<comment>没搞定.</comment>
+		<search method="POST">
+			<endpoint>http://www.hamburgsud-line.com/ecommerce-hs/trackntrace/</endpoint>
+			<params>
+				<param name="searchReference" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="HYUNDA" classname="LineHYUNDA">
+		<name>现代商船</name>
+		<homepage>http://www.hmm21.com/cms/company/chnn/index.jsp</homepage>
+		<status>Search OK</status>
+		<comment>没搞定.</comment>
+		<search method="POST">
+			<endpoint>http://www.hmm21.com/ebiz/track_trace/main_new.jsp</endpoint>
+			<params>
+				<param name="type" value="2"></param>
+				<param name="number" value="EXFDCODE"></param>
+				<param name="is_quick" value="Y"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="HAPAGLLOYD" classname="LineHAPAGLLOYD">
+		<name>赫伯罗特</name>
+		<homepage>http://www.hapag-lloyd.com/en/home.html</homepage>
+		<status>Search OK</status>
+		<comment>网站需要登录.</comment>
+		<search method="POST">
+			<endpoint>http://www.hapag-lloyd.com/en/home.html</endpoint>
+			<params>
+				<param name="type" value="2"></param>
+				<param name="number" value="EXFDCODE"></param>
+				<param name="is_quick" value="Y"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+
+	<container company="CRCT" classname="LineCRCT">
+		<name>中铁集装箱</name>
+		<homepage>http://www.crct.com/</homepage>
+		<status>Search ok</status>
+		<comment>需要搞定验证码！.</comment>
+		<search method="GET">
+			<endpoint>http://www.crct.com/ztmh/xhdtListQueryAction.do?operFlag=init&amp;dispFlag=init</endpoint>
+			<params>
+				<param name="num1" value="EXFDCODE"></param>
+			</params>
+			<headers>
+			</headers>
+		</search>
+		<parse>
+			<hint>Container information on</hint>
+			<dir>pre</dir>
+		</parse>
+	</container>
+</containers>

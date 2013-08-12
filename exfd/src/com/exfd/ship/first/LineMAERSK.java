@@ -1,0 +1,14 @@
+package com.exfd.ship.first;
+
+/**
+ 马士基	MAERSK		MSKU、MRKU、MAEU、MASU、MARU、SEAU（这个箱号是马士基收购的一个公司箱号，可以放上去）
+ MSKU7877430	MSKU7511991
+ （马士基集团）南非航运	SAFMARINE		
+ MRKU8164977、MRKU8916098、MSKU2474004、MSKU4492347、MSKU2031114
+（马士基集团）MCC
+ SEAU8644657、TCKU9429851、MSKU8396866、MSKU0243602、TGHU7271125
+ http://www.maerskline.com
+*/
+public class LineMAERSK extends LineBase {
+
+}
