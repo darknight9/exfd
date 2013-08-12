@@ -55,4 +55,14 @@ public class ShipMyshipsDaoImplTest {
 		}
 		
 	}
+	
+	@Test
+	public void testFindDetail4() {
+		ShipDao dao = new ShipDaoImpl();
+		List<Ship> ships = dao.findDetail("", "中AGC", "name", 1, 20);
+		for (Ship ship : ships) {
+			System.out.println(ship);
+		}
+		
+	}
 }

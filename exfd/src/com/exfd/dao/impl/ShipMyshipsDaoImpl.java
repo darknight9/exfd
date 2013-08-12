@@ -95,7 +95,9 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 		}
 		
 		// 如果联网失败或者信息无效.返回一个"1"表示搜索无结果.
-		if (str == null || str.trim().equals("")) {
+		// 宝船网的返回结果，如果是没有找到船，返回2个字节的（"")2个双引号.
+		// 而正常结果不可能字节小于5，所以用这个来判断是否有结果.
+		if (str == null || str.trim().equals("") || str.length() < 5 ) {
 			if (ship != null) {
 				// 还是需要更新mtime的值的.
 				update(ship);
@@ -199,9 +201,11 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 			logger.catching(e);
 			str = null;
 		}
-
+		
 		// 如果联网失败或者信息无效.返回一个"1"表示搜索无结果.
-		if (str == null || str.trim().equals("")) {
+		// 宝船网的返回结果，如果是没有找到船，返回2个字节的（"")2个双引号.
+		// 而正常结果不可能字节小于5，所以用这个来判断是否有结果.
+		if (str == null || str.trim().equals("") || str.length() < 5 ) {
 			if (ships != null && !ships.isEmpty()) {
 				// 还是需要更新mtime的值的.
 				update(ships);
