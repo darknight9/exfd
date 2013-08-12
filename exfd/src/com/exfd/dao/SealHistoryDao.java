@@ -7,10 +7,10 @@ import com.exfd.domain.SealHistoryRecord;
 
 public interface SealHistoryDao {
 	
-	// 添加一个sealhistory记录.
+	// 添加一个记录.
 	void add(SealHistoryRecord sRecord);
 
-	// 添加多个seal记录.
+	// 添加多个记录.
 	void add(ArrayList<SealHistoryRecord> sRecords);
 		
 	// 删除一个seal的全部记录(通过code).

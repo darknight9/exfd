@@ -20,7 +20,7 @@ import com.exfd.util.EagleGPSUtils;
 // 使用了类似修饰模式的类.
 public class SealEagleDaoImpl implements SealDao {
 
-	static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger();
 
 	// 1980-09-09
 	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

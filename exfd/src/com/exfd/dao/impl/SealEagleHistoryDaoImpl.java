@@ -14,13 +14,12 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import com.exfd.dao.SealHistoryDao;
-import com.exfd.domain.Seal;
 import com.exfd.domain.SealHistoryRecord;
 import com.exfd.util.EagleGPSUtils;
 
 public class SealEagleHistoryDaoImpl implements SealHistoryDao {
 	
-	static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger();
 	
 	// 1980-09-09
 	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

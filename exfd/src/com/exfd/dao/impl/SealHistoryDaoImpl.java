@@ -1,7 +1,6 @@
 package com.exfd.dao.impl;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,13 +13,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.exfd.dao.SealHistoryDao;
-import com.exfd.domain.Seal;
 import com.exfd.domain.SealHistoryRecord;
 import com.exfd.util.MysqlUtils;
 
 public class SealHistoryDaoImpl implements SealHistoryDao {
 
-	static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger();
 
 	// 1980-09-09 12:03:04
 	static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -36,7 +34,7 @@ public class SealHistoryDaoImpl implements SealHistoryDao {
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -75,7 +73,7 @@ public class SealHistoryDaoImpl implements SealHistoryDao {
 				stmt.executeUpdate(str);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -92,7 +90,7 @@ public class SealHistoryDaoImpl implements SealHistoryDao {
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -106,32 +104,30 @@ public class SealHistoryDaoImpl implements SealHistoryDao {
 		ArrayList<SealHistoryRecord> records = new ArrayList<SealHistoryRecord>();
 		
 		Connection con = null;
-		PreparedStatement prepStmt = null;
+		Statement stmt = null;
 		ResultSet rs = null;
 		try {
 			con = MysqlUtils.getConnection();
 			String selectStatement = "select * "
-					+ "from SEALHISTORY where code = ? ";
-			prepStmt = con.prepareStatement(selectStatement);
-			prepStmt.setString(1, code);
-			rs = prepStmt.executeQuery();
-
+					+ "from SEALHISTORY where code = '"+code+"'";
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(selectStatement);
 			while (rs.next()) {
 				SealHistoryRecord record = new SealHistoryRecord();
 				resultSet2SRecord(rs, record);				
 				records.add(record);
 			}
-			
 			// TODO. records需要根据gpstime进行排序.
 			return records;
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
-			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
 		}
+		return records;
 	}
 
 	private void resultSet2SRecord(ResultSet rs, SealHistoryRecord record) throws SQLException {
@@ -155,15 +151,15 @@ public class SealHistoryDaoImpl implements SealHistoryDao {
 		ArrayList<SealHistoryRecord> records = new ArrayList<SealHistoryRecord>();
 		
 		Connection con = null;
-		PreparedStatement prepStmt = null;
+		Statement stmt = null;
 		ResultSet rs = null;
 		try {
+			
 			con = MysqlUtils.getConnection();
 			String selectStatement = "select * "
-					+ "from SEALHISTORY where code = ? ";
-			prepStmt = con.prepareStatement(selectStatement);
-			prepStmt.setString(1, code);
-			rs = prepStmt.executeQuery();
+					+ "from SEALHISTORY where code = '"+code+"'";
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(selectStatement);
 
 			while (rs.next()) {
 				SealHistoryRecord record = new SealHistoryRecord();
@@ -171,17 +167,18 @@ public class SealHistoryDaoImpl implements SealHistoryDao {
 				records.add(record);
 			}
 			
-			// TODO. records 需要根据begin, end时间筛选。
-			// TODO. records需要根据gpstime进行排序.
+			// TODO . records 需要根据begin, end时间筛选。
+			// TODO . records需要根据gpstime进行排序.
 			return records;
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
-			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
 		}
+		return records;
 	}
 
 	@Override

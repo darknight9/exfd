@@ -10,12 +10,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.exfd.dao.ShipDao;
 import com.exfd.domain.Ship;
 import com.exfd.util.MysqlUtils;
 
 public class ShipDaoImpl implements ShipDao{
 
+	private static Logger logger = LogManager.getLogger();
+	
 	@Override
 	public void add(Ship ship) {
 
@@ -27,7 +32,7 @@ public class ShipDaoImpl implements ShipDao{
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -87,7 +92,7 @@ public class ShipDaoImpl implements ShipDao{
 				stmt.executeUpdate(str);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -109,7 +114,7 @@ public class ShipDaoImpl implements ShipDao{
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -129,7 +134,7 @@ public class ShipDaoImpl implements ShipDao{
 				prepStmt.executeUpdate();
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(prepStmt);
 			MysqlUtils.closeConnection(con);
@@ -147,7 +152,7 @@ public class ShipDaoImpl implements ShipDao{
 			stmt = con.createStatement();
 			stmt.executeUpdate(str);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -207,7 +212,7 @@ public class ShipDaoImpl implements ShipDao{
 				stmt.executeUpdate(str);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
@@ -220,15 +225,14 @@ public class ShipDaoImpl implements ShipDao{
 	@Override
 	public Ship find(String code) {
 		Connection con = null;
-		PreparedStatement prepStmt = null;
+		Statement stmt = null;
 		ResultSet rs = null;
 		try {
 			con = MysqlUtils.getConnection();
 			String selectStatement = "select * "
-					+ "from SHIPINFO where mmsi = ? ";
-			prepStmt = con.prepareStatement(selectStatement);
-			prepStmt.setString(1, code);
-			rs = prepStmt.executeQuery();
+					+ "from SHIPINFO where mmsi = '"+code+"'";
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(selectStatement);
 
 			if (rs.next()) {
 				Ship ship = new Ship();
@@ -239,13 +243,13 @@ public class ShipDaoImpl implements ShipDao{
 			}
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
-		
 			MysqlUtils.closeResultSet(rs);
-			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeStmt(stmt);
 			MysqlUtils.closeConnection(con);
 		}
+		return null;
 	}
 
 	private void resultSet2Ship(ResultSet rs, Ship ship) throws SQLException {
@@ -303,10 +307,12 @@ public class ShipDaoImpl implements ShipDao{
 					Ship ship = new Ship();
 					resultSet2Ship(rs, ship);
 					shipMap.put(code, ship);
+				} else {
+					shipMap.put(code, null);
 				}
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
 			MysqlUtils.closePrepStmt(prepStmt);
@@ -334,7 +340,7 @@ public class ShipDaoImpl implements ShipDao{
 				arrayList.add(ship);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
 			MysqlUtils.closeStmt(stmt);
@@ -356,7 +362,6 @@ public class ShipDaoImpl implements ShipDao{
 		try {
 			con = MysqlUtils.getConnection();
 			
-			// TODO 这里的查询方式有bug.
 			if (type.equals("name")) {
 				selectStatement = "select * "
 						+ "from SHIPINFO where shipnamecn = ? ";
@@ -390,44 +395,43 @@ public class ShipDaoImpl implements ShipDao{
 			}
 			return shipList;
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
 			MysqlUtils.closePrepStmt(prepStmt);
 			MysqlUtils.closeConnection(con);
 		}
+		return shipList;
 	}
 	
 	@Override
 	public void updateOrAdd(Ship ship) {
 		Connection con = null;
-		Statement stmt = null;
-		PreparedStatement prepStmt = null;
+		Statement stmtQuery = null;
+		Statement stmtUpdate = null;
 		String selectStatement = "select * "
-				+ "from SHIPINFO where mmsi = ? ";
+				+ "from SHIPINFO where mmsi = '"+ship.getMmsi()+"'";
 		ResultSet rs = null;
 		String str = null;
 		try {
 			con = MysqlUtils.getConnection();
-			prepStmt = con.prepareStatement(selectStatement);
-			stmt = con.createStatement();
-			
-			prepStmt.setString(1, ship.getMmsi());
-			rs = prepStmt.executeQuery();
+			stmtQuery = con.createStatement();
+			stmtUpdate = con.createStatement();
+			rs = stmtQuery.executeQuery(selectStatement);
 			if (rs.next()) {
 				// 船有记录，更新记录.
 				str = createUpdateStatment(ship);
-				stmt.executeUpdate(str);
+				stmtUpdate.executeUpdate(str);
 			} else {
 				// 没有记录，添加记录.
 				str = createInsertStatement(ship);
-				stmt.executeUpdate(str);				}
+				stmtUpdate.executeUpdate(str);				}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
-			MysqlUtils.closeStmt(stmt);
-			MysqlUtils.closePrepStmt(prepStmt);
+			MysqlUtils.closeStmt(stmtUpdate);
+			MysqlUtils.closeStmt(stmtQuery);
 			MysqlUtils.closeConnection(con);
 		}
 		
@@ -460,7 +464,7 @@ public class ShipDaoImpl implements ShipDao{
 				}
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			logger.catching(e);
 		} finally {
 			MysqlUtils.closeResultSet(rs);
 			MysqlUtils.closeStmt(stmt);

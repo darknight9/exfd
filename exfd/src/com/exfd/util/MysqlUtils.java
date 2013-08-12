@@ -10,8 +10,13 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 // 连接mysql数据库的辅助类.
 public class MysqlUtils {
+
+	private static Logger logger = LogManager.getLogger();
 
 	// 第一种连接方式.
 	private static String dbUrl = "jdbc:mysql://127.0.0.1:3306/SealDB";
@@ -55,7 +60,7 @@ public class MysqlUtils {
 			if (con != null)
 				con.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.catching(e);
 		}
 	}
 
@@ -64,7 +69,7 @@ public class MysqlUtils {
 			if (prepStmt != null)
 				prepStmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.catching(e);
 		}
 	}
 
@@ -73,7 +78,7 @@ public class MysqlUtils {
 			if (stmt != null)
 				stmt.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.catching(e);
 		}
 	}
 

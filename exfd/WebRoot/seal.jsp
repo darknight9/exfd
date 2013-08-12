@@ -95,7 +95,7 @@
 					if (!!code) {
 						$.ajax({
 							type: 'GET',
-							url: '/exfd/servlet/TrackSealInfoServlet?code=' + code,
+							url: '/servlet/TrackSealInfoServlet?code=' + code,
 							dataType: 'json',
 							cache: false,
 							success: function(data) {

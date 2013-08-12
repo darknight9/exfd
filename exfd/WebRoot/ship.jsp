@@ -126,7 +126,7 @@
 					if (!!code && !!type) {
 						$.ajax({
 							type: 'GET',
-							url: '/exfd/servlet/TrackShipInfoServlet?code=' + code + '&type=' + type,
+							url: '/servlet/TrackShipInfoServlet?code=' + code + '&type=' + type,
 							dataType: 'json',
 							cache: false,
 							success: function(data) {

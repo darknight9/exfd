@@ -19,7 +19,7 @@ import com.google.gson.reflect.TypeToken;
 //使用了类似修饰模式的类.
 public class ShipMyshipsDaoImpl implements ShipDao {
 
-	static Logger logger = LogManager.getLogger();
+	private static Logger logger = LogManager.getLogger();
 
 	// 内部使用ShipDaoImpl.
 	ShipDaoImpl dbimp = new ShipDaoImpl();
@@ -65,20 +65,22 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 
 		// 先在数据库中查找.
 		Ship ship = dbimp.find(code);
-		Calendar rightnow = Calendar.getInstance();
 
-		// 规则：1天前的数据是失效的.
-		rightnow.add(Calendar.DAY_OF_YEAR, -1);
+		// 规则：7天前的数据是失效的.
+		Calendar rightnow = Calendar.getInstance();
+		rightnow.add(Calendar.DAY_OF_YEAR, -7);
 		Date expire = rightnow.getTime();
 
 		// 如果找到，还需要判断是否有效.
 		if (ship != null) {
 
-			logger.debug("find ship code [{}] in db", code);
+			logger.debug("SHIP[{}].find ship code [{}] in db", code, code);
 
 			// 如果有效就可以返回了.
 			if (isTrackValid(ship, expire)) {
-				logger.debug("find ship code [{}] in db valid, return.", code);
+				logger.debug(
+						"SHIP[{}].find ship code [{}] in db valid, return.",
+						code, code);
 				return ship;
 			}
 		}
@@ -88,27 +90,42 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 			str = MyshipsUtils.getSearchRecByKeyAndTypeInShipBaseInfo("", code,
 					"mmsi", 1, 2);
 		} catch (Exception e) {
+			logger.catching(e);
 			str = null;
-			e.printStackTrace();
 		}
-
-		// 如果联网失败或者信息无效，直接返回null.
-		// TODO 这个逻辑是有问题的，信息无效应该尽量返回数据库中的信息.
-		if (str == null || str.equals("")) {
-			return null;
+		
+		// 如果联网失败或者信息无效.返回一个"1"表示搜索无结果.
+		if (str == null || str.trim().equals("")) {
+			if (ship != null) {
+				// 还是需要更新mtime的值的.
+				update(ship);
+				return ship;
+			} else {
+				return null;
+			}
 		}
-		Ship onlineShip = json2ship(str);
+	
+		Ship onlineShip = null;
+		try {
+			onlineShip = json2ship(str);
+		} catch (Exception e) {
+			logger.catching(e);
+			onlineShip = null;
+		}
+		
 		if (onlineShip != null) {
 			// 联网信息有效，写入数据库并返回.
 			if (ship != null) {
-
-				// TODO 这里以后需要升级复杂的更新逻辑.
 				// 有旧记录，更新.
 				update(onlineShip);
 			} else {
 				// 没有记录，添加.
 				add(onlineShip);
 			}
+		} else if (ship != null) {
+			// 还是需要更新mtime的值的.
+			update(ship);
+			return ship;
 		}
 		return onlineShip;
 	}
@@ -143,24 +160,24 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 		return dbimp.list();
 	}
 
+	// 可能返回null.
+	// 也可能返回空list.
 	@Override
 	public List<Ship> findDetail(String operid, String keystr, String type,
 			int start_ship, int end_ship) {
 
-		logger.debug("ship findDetail:operid[{}], keystr[{}], type[{}]", operid, keystr, type);
 		// 先在数据库中查找.
 		ArrayList<Ship> ships = dbimp.findDetail(operid, keystr, type,
 				start_ship, end_ship);
 		if (ships != null) {
-			logger.debug("dbimp.findDetail return {} records", ships.size());
+			logger.debug("SHIP[{}].dbimp.findDetail return {} records", keystr, ships.size());
 		} else {
-			logger.debug("dbimp.findDetail return NULL 0 record.");
+			logger.debug("SHIP[{}]. dbimp.findDetail return 0 record.", keystr);
 		}
-		
-		Calendar rightnow = Calendar.getInstance();
 
-		// 规则：1天前的数据是失效的.
-		rightnow.add(Calendar.DAY_OF_YEAR, -1);
+		// 规则：7天前的数据是失效的.
+		Calendar rightnow = Calendar.getInstance();
+		rightnow.add(Calendar.DAY_OF_YEAR, -7);
 		Date expire = rightnow.getTime();
 
 		// 如果找到，还需要判断是否有效.
@@ -179,28 +196,38 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 			str = MyshipsUtils.getSearchRecByKeyAndTypeInShipBaseInfo(operid,
 					keystr, type, start_ship, end_ship);
 		} catch (Exception e) {
+			logger.catching(e);
 			str = null;
-			e.printStackTrace();
 		}
 
-		// 如果联网失败或者信息无效，直接返回null.
-		// TODO 这个逻辑是有问题的，信息无效应该尽量返回数据库中的信息.
+		// 如果联网失败或者信息无效.返回一个"1"表示搜索无结果.
 		if (str == null || str.trim().equals("")) {
-			return null;
+			if (ships != null && !ships.isEmpty()) {
+				// 还是需要更新mtime的值的.
+				update(ships);
+				return ships;
+			} else {
+				// 这里实际返回了一个空list.
+				// 不会返回空指针.
+				return ships;
+			}
 		}
-		
-		logger.debug(str);
-		
-		List<Ship> onlineShips;
+				
+		List<Ship> onlineShips = null;
 		try {
 			onlineShips = json2ships(str);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.catching(e);
 			onlineShips = null;
 		}
+		
 		if (onlineShips != null && !onlineShips.isEmpty()) {
 			// 联网信息有效，写入数据库并返回.
 			updateOrAdd(onlineShips);
+		} else if (ships != null) {
+			// 还是需要更新mtime的值的.
+			update(ships);
+			return ships;
 		}
 		return onlineShips;
 	}

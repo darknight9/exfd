@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="off" monitorInterval="30">
-  <appenders>
-    <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-    </Console>
-  </appenders>
-  <appenders>
-  	<File name="MyFile" fileName="logs/app.log">
-  		<PatternLayout pattern="%d %p %c{1.} [%t] %m%n" />
-  	</File>
-  </appenders>
-  <loggers>
-    <root level="trace">
-      <appender-ref ref="MyFile"/>
-    </root>
-  </loggers>
+	<appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<File name="MyTrace" fileName="logs/trace.log">
+			<PatternLayout pattern="%d %p %c{1} [%t] %m%n" />
+		</File>
+		<File name="MyAccess" fileName="logs/access.log">
+			<ThresholdFilter level="info" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="%d %p %c{1} %m%n" />
+		</File>
+	</appenders>
+	<loggers>
+		<logger name="AccessLogger" level="info" additivity="false">
+			<appender-ref ref="MyAccess" />
+		</logger>
+		<root level="trace">
+			<appender-ref ref="MyTrace" />
+		</root>
+	</loggers>
 </configuration>

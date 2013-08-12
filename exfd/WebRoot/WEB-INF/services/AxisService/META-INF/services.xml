@@ -4,4 +4,7 @@
 	<operation name="trackSeal">
 		<messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
 	</operation>
+	<operation name="trackContainer">
+		<messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+	</operation>
 </service>
