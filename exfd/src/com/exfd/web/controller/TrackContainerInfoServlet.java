@@ -43,12 +43,12 @@ public class TrackContainerInfoServlet extends HttpServlet {
 			//String strJson = cbox.getJsonString();
 			
 			//向后兼容.
-			String strJson = cbox.getHttpresult();
+			//String strJson = cbox.getHttpresult();
 			
 			// Get printerwriter object from response to write json object to the output stream.
-		    PrintWriter out = response.getWriter();
-		    out.print(strJson);
-		    out.flush();
+		    //PrintWriter out = response.getWriter();
+		    //out.print("");
+		    //out.flush();
 		    return;
 		} else {
 			request.setAttribute("message", "没有找到对应的箱子！");

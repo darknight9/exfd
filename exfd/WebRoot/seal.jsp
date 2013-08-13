@@ -47,14 +47,22 @@
 				<button type="submit" class="btn search-box-button">搜索</button>
 			</form>
 		</div>
+		<div class="busy-cursor-div">
+			<img src="img/loading.gif" id="loadingIndicator" class="hide"/>
+		</div>
 	</div>
+
+	<div id="errorDiv" class="alert alert-error">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+        <span id="errorMsg"></span>
+    </div>
 
 	<div id="map" class="map-container"></div>
 
 	<footer class="footer">
 		<div class="container">
 			<ul class="footer-links">
-			    <li><a href="#">关于易方寻达</a></li>
+			    <li><a href="#">关于易寻方达</a></li>
 			    <li><a href="#">合作伙伴</a></li>
 			    <li><a href="#">营销中心</a></li>
 			    <li><a href="#">联系我们</a></li>
@@ -71,7 +79,8 @@
 		$(function() {
 			"use strict";
 
-			var map = null;
+			var map = null,
+				searchInput = $('#searchInput');
 			
 			var getInfoContent = function(code, location) {
 				return '<div style="margin:0;line-height:20px;padding:2px;">\
@@ -89,7 +98,12 @@
 			};
 
 			var successCallbck = function(data) {
-				map.drawMarker(data.longitude, data.latitude, '搜铅封', getInfoContent(data.code, data.poi));
+				if (!!data) {
+					EFINDER.utils.hideError();
+					map.drawMarker(data.longitude, data.latitude, '搜铅封', getInfoContent(data.code, data.poi));
+				} else {
+					EFINDER.utils.showError('很抱歉，我们没有查找到铅封（' + searchInput.val() + '）的信息。');
+				}
 			};
 
 			var init = function() {
@@ -103,7 +117,7 @@
 				data.poi = '<%=(seal != null) ? seal.getPoi() : "" %>';
 				
 				if (data.code !== '') {
-					$('#searchInput').val(data.code);
+					searchInput.val(data.code);
 				}
 
 				map = new EFINDER.Map('map');
@@ -112,10 +126,10 @@
 				$('#searchForm').submit(function(e) {
 					e.preventDefault();
 	
-					data.code = encodeURIComponent($('#searchInput').val());
+					data.code = encodeURIComponent(searchInput.val());
 					url = '/servlet/TrackSealInfoServlet?code=' + data.code;
 
-					EFINDER.load(url, successCallbck);
+					EFINDER.utils.load(url, successCallbck);
 				})
 			};
 

@@ -1,4 +1,4 @@
-<%@ page language="java" import="com.exfd.domain.Ship" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="zh">
@@ -61,6 +61,14 @@
 				<button type="submit" class="btn search-box-button">搜索</button>
 			</form>
 		</div>
+		<div class="busy-cursor-div">
+			<img src="img/loading.gif" id="loadingIndicator" class="hide"/>
+		</div>
+	</div>
+
+	<div id="errorDiv" class="alert alert-error hide">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		<span id="errorMsg"></span>
 	</div>
 
 	<div id="map" class="map-container"></div>
@@ -68,7 +76,7 @@
 	<footer class="footer">
 		<div class="container">
 			<ul class="footer-links">
-			    <li><a href="#">关于易方寻达</a></li>
+			    <li><a href="#">关于易寻方达</a></li>
 			    <li><a href="#">合作伙伴</a></li>
 			    <li><a href="#">营销中心</a></li>
 			    <li><a href="#">联系我们</a></li>
@@ -80,7 +88,6 @@
 	</footer>
 
 	<% 
-		Ship ship = (Ship)request.getAttribute("ship");
 		String code = (String)request.getAttribute("code");
 		String type = (String)request.getAttribute("type");
 	%>
@@ -89,7 +96,8 @@
 		$(function() {
 			"use strict";
 
-			var map = null;
+			var map = null,
+				searchInput = $('#searchInput');
 			
 			var getInfoContent = function(ship) {
 				return '<div style="margin:0;line-height:20px;padding:2px;">\
@@ -107,7 +115,32 @@
 			};
 
 			var successCallbck = function(data) {
-				map.drawMarker(data.lon, data.lat, '搜船', getInfoContent(data), 10);
+				if (!!data) {
+					EFINDER.utils.hideError();
+					map.drawMarker(data.lon, data.lat, '搜船', getInfoContent(data), 5, {
+						image : 'img/cargo-ship.png',
+						width: 120,
+						height: 106,
+						anchorWidth: 60,
+						anchorHeight: 53
+					});
+				} else {
+					EFINDER.utils.showError('很抱歉，我们没有查找到航船（' +
+						$("#searchForm input[type='radio']:checked").val() + '：' +
+						searchInputsearchInput.val() + '）的信息。');
+				}
+			};
+
+			var submitForm = function() {
+				var code, type, url;
+
+				code = encodeURIComponent(searchInput.val());
+				if (!!code) {
+					type = encodeURIComponent($("#searchForm input[type='radio']:checked").val());
+					url = '/servlet/TrackShipInfoServlet?code=' + code + '&type=' + type;
+					
+					EFINDER.utils.load(url, successCallbck);
+				}
 			};
 
 			var init = function() {
@@ -115,19 +148,13 @@
 					self = this,
 					code = '',
 					type = 'name',
-					filter = '',
-					data = {};
+					filter = '';
 				
 				code = '<%= (code != null) ? code : "" %>';
 				type = '<%= (type != null) ? type : "" %>';
-				data.shipname = '<%= (ship != null) ? ship.getShipname() : "" %>';
-				data.shipnamecn = '<%= (ship != null) ? ship.getShipnamecn() : "" %>';
-				data.lon = <%= (ship != null) ? ship.getLon() : null %>;
-				data.lat = <%= (ship != null) ? ship.getLat() : null %>;
-				data.mmsi = '<%= (ship != null) ? ship.getMmsi() : null %>';
 
 				if (code !== '') {
-					$('#searchInput').val(code);
+					searchInput.val(code);
 				}
 				if (type !== '') {
 					filter = '[value=' + type + ']';
@@ -135,16 +162,11 @@
 				}
 
 				map = new EFINDER.Map('map');
-				successCallbck(data);
+				submitForm();
 
 				$('#searchForm').submit(function(e) {
 					e.preventDefault();
-	
-					code = encodeURIComponent($('#searchInput').val());
-					type = encodeURIComponent($("#searchForm input[type='radio']:checked").val());
-					url = '/servlet/TrackShipInfoServlet?code=' + code + '&type=' + type;
-					
-					EFINDER.load(url, successCallbck);
+					submitForm();	
 				})
 			};
 

@@ -36,19 +36,29 @@ window.EFINDER = window.EFINDER || {};
 		this.map.centerAndZoom(point, zoom);
 	};
 
-	EFINDER.Map.prototype.addMarker = function(longitude, latitude, title, content) {
+	EFINDER.Map.prototype.addMarker = function(longitude, latitude, title, content, icon) {
 		var point,
-			icon,
+			mapIcon,
 			self = this;
 
 		if (!this.map || !longitude || !latitude) {
 			return;
 		}
 
+		icon = icon || {
+			image : 'img/marker.png',
+			width : 30,
+			height : 68,
+			anchorWidth : 15,
+			anchorHeight : 68
+		};
+
 		// Draw a marker at the point.
 		point = new BMap.Point(longitude, latitude);
-		icon = new BMap.Icon("img/marker.png", new BMap.Size(30, 68));
-		this.marker = new BMap.Marker(point, {icon: icon});
+		mapIcon = new BMap.Icon(icon.image, new BMap.Size(icon.width, icon.height), {
+			icon : new BMap.Size(icon.iconWidth, icon.iconHeight)
+		});
+		this.marker = new BMap.Marker(point, {icon: mapIcon});
 		this.marker.addEventListener("click", function(e){
 			// Create search info window.
 			self.addInfoWindow(title, content);
@@ -81,13 +91,13 @@ window.EFINDER = window.EFINDER || {};
 		});
 	};
 
-	EFINDER.Map.prototype.drawMarker = function(longitude, latitude, title, content, zoom) {
+	EFINDER.Map.prototype.drawMarker = function(longitude, latitude, title, content, zoom, icon) {
 		// Center around point.
 		this.init(longitude, latitude, zoom);
 		// Clear the present marker.
 		this.clearMarker();
 		// Draw a marker at the point.
-		this.addMarker(longitude, latitude, title, content);
+		this.addMarker(longitude, latitude, title, content, icon);
 	};
 
 }(window.jQuery, window.EFINDER));

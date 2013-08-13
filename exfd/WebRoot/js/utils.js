@@ -90,24 +90,50 @@ window.EFINDER = window.EFINDER || {};
        }
     };
 
-    EFINDER.load = function(url, successCallback, errorCallback) {
-        $.ajax({
-            type: 'GET',
-            url: url,
-            dataType: 'json',
-            cache: false,
-            success: function(data) {
-                if (typeof successCallback === 'function') {
-                    successCallback(data);
-                }
-            },
-            error: function(e) {
-                EFINDER.logger.error('Search Seal AJAX request failure!');
-                if (typeof errorCallback === 'function') {
-                    errorCallback(e);
-                }
+    EFINDER.utils = {
+        showBusyCursor : function(display) {
+            var cursor = $('#loadingIndicator');
+
+            if (display) {
+                cursor.show();
+            } else {
+                cursor.hide();
             }
-        });
+        },
+
+        load : function(url, successCallback, errorCallback) {
+	    var self = this;
+
+            this.showBusyCursor(true);
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                cache: false,
+                success: function(data) {
+                    self.showBusyCursor(false);
+                    if (typeof successCallback === 'function') {
+                        successCallback(data);
+                    }
+                },
+                error: function(e) {
+                    self.showBusyCursor(false);
+                    EFINDER.logger.error('Search Seal AJAX request failure!');
+                    if (typeof errorCallback === 'function') {
+                        errorCallback(e);
+                    }
+                }
+            });
+        },
+
+        showError : function(msg) {
+            $('#errorMsg').text(msg);
+            $('#errorDiv').show();
+        },
+
+        hideError : function() {
+            $('#errorDiv').hide();
+        }
     };
 
 }(window.jQuery, window.EFINDER));

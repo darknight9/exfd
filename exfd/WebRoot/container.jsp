@@ -44,15 +44,40 @@
 					<button type="submit" class="btn search-box-button">搜索</button>
 				</form>
 			</div>
+			<div class="busy-cursor-div">
+				<img src="img/loading.gif" id="loadingIndicator" class="hide"/>
+			</div>
 		</div>
 
-		<div id="tableContainer" class="container table-container"></div>
+		<div id="errorDiv" class="alert alert-error hide">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+	        <span id="errorMsg"></span>
+	    </div>
+
+		<div class="container" style="width: 80% !important;">
+			<div class="row-fluid">
+				<div class="span2 thumbnail-container">
+					<ul class="thumbnails">
+					  <li>
+					    <div class="thumbnail thumbnail-div">
+					      <img data-src="holder.js/300x200" alt="" src="img/container-icon.png" class="thumbnail-img">
+					      <p id="containerId" class="thumbnail-label"></p>
+					      <p id="containerSize" class="thumbnail-label"></p>
+					      <p id="containerCompany" class="thumbnail-label"></p>
+					    </div>
+					  </li>
+					</ul>
+				</div>
+
+				<div id="tableContainer" class="offset1 span9 table-container"></div>
+			</div>
+		</div>
 	</div>
 
-	<footer class="footer">
+	<footer class="footer footer-margin">
 		<div class="container">
 			<ul class="footer-links">
-			    <li><a href="#">关于易方寻达</a></li>
+			    <li><a href="#">关于易寻方达</a></li>
 			    <li><a href="#">合作伙伴</a></li>
 			    <li><a href="#">营销中心</a></li>
 			    <li><a href="#">联系我们</a></li>
@@ -71,52 +96,110 @@
 		$(function() {
 			"use strict";
 
+			var searchInput = $('#searchInput');
+
 			var successCallback = function(data) {
 				var i, obj,
 					htmlStr = '';
 
 				if (!!data) {
-					for (i = 0; i < data.length; i++) {
-						obj = data[i];
-						if (obj.header) {
-							if (htmlStr !== '') {
-								htmlStr += '</table></div>';	
-							} 
+					$('#containerId').text('箱号： ' + data.code);
+					$('#containerSize').text('大小： ' + data.size);
+					$('#containerCompany').text('公司： ' + data.company);
 
-							htmlStr += '<div class="table-div">\
-								<span class="table-header">物流状态</span>\
-								<table class="table table-striped">\
-								<tr>\
-									<th>时间</th>\
-									<th>' + obj.event + '</th>\
-									<th>' + obj.location + '</th>\
-									<th>' + obj.vessel + '</th>\
-									<th>' + obj.voyage + '</th>\
-								</tr>';
-						} else {
-							htmlStr += '<tr>\
-								<td>' + obj.time + '</td>\
-								<td>' + obj.event + '</td>\
-								<td>' + obj.location + '</td>\
-								<td>' + obj.vessel + '</td>\
-								<td>' + obj.voyage + '</td>\
-							</tr>';
+					htmlStr += '<div class="table-div">\
+						<span class="table-header">物流状态</span>\
+						<table class="table table-striped">';
+
+					if (!!data.statusTitle) {
+						htmlStr += '<tr>\
+								<th>' + data.statusTitle.time + '</th>\
+								<th>' + data.statusTitle.event + '</th>\
+								<th>' + data.statusTitle.location + '</th>';
+						
+						if (!!data.statusTitle.vessel) {
+							htmlStr += '<th>' + data.statusTitle.vessel + '</th>';
+						}
+						if (!!data.statusTitle.voyage) {
+							htmlStr += '<th>' + data.statusTitle.voyage + '</th>';
+						}
+
+						htmlStr += '</tr>';
+					}
+
+					if (!!data.statusRecord) {
+						htmlStr += '<tr>\
+								<td>' + data.statusRecord.time + '</td>\
+								<td>' + data.statusRecord.event + '</td>\
+								<td>' + data.statusRecord.location + '</td>';
+
+						if (!!data.statusTitle.vessel) {
+							htmlStr += '<td>' + data.statusRecord.vessel + '</td>';
+						}
+						if (!!data.statusTitle.voyage) {
+							htmlStr += '<td>' + data.statusRecord.voyage + '</td>';
+						}
+						
+						htmlStr += '</tr>';
+					}
+
+					htmlStr += '</table></div>\
+						<div class="table-div">\
+						<span class="table-header">历史记录</span>\
+						<table class="table table-striped">';
+
+					if (!!data.historyTitle) {
+						htmlStr += '<tr>\
+								<th>' + data.historyTitle.time + '</th>\
+								<th>' + data.historyTitle.event + '</th>\
+								<th>' + data.historyTitle.location + '</th>';
+						
+						if (!!data.historyTitle.vessel) {
+							htmlStr += '<th>' + data.historyTitle.vessel + '</th>';
+						}
+						if (!!data.historyTitle.voyage) {
+							htmlStr += '<th>' + data.historyTitle.voyage + '</th>';
+						}
+						
+						htmlStr += '</tr>';
+					}
+					
+					if (!!data.historyRecords) {
+						for (i = 0; i < data.historyRecords.length; i++) {
+							obj = data.historyRecords[i];
+							if (!!obj) {
+								htmlStr += '<tr>\
+									<td>' + obj.time + '</td>\
+									<td>' + obj.event + '</td>\
+									<td>' + obj.location + '</td>';
+						
+								if (!!data.historyTitle.vessel) {
+									htmlStr += '<td>' + obj.vessel + '</td>';
+								}
+								if (!!data.historyTitle.voyage) {
+									htmlStr += '<td>' + obj.voyage + '</td>';
+								}
+						
+								htmlStr += '</tr>';
+							}
 						}
 					}
-				}
 
-				if (htmlStr !== '') {
 					htmlStr += '</table></div>';
+
+					EFINDER.utils.hideError();
+				} else {
+					EFINDER.utils.showError('很抱歉，我们没有查找到箱号（' + searchInput.val() + '）的信息。');
 				}
 
 				$('#tableContainer').html(htmlStr);
 			};
 
 			var submitForm = function() {
-				var code = encodeURIComponent($('#searchInput').val()),
+				var code = encodeURIComponent(searchInput.val()),
 				    url = '/servlet/TrackContainerInfoServlet?code=' + code;
 				
-				EFINDER.load(url, successCallback);
+				EFINDER.utils.load(url, successCallback);
 			};
 
 			var init = function() {
@@ -125,7 +208,7 @@
 				code = '<%= (code != null) ? code : "" %>';
 
 				if (code !== '') {
-					$('#searchInput').val(code);
+					searchInput.val(code);
 					submitForm();
 				}
 

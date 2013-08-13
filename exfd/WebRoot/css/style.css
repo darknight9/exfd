@@ -120,6 +120,10 @@ body {
 	clear: both;
 }
 
+.busy-cursor-div {
+	margin-top: 20px;
+}
+
 .carousel {
 	margin-top: 20px;
 	margin-left: 240px;
@@ -265,7 +269,6 @@ body {
 	height: 80%;
 }
 
-
 .BMapLib_SearchInfoWindow input {
 	padding: 0 !important;
 	margin-bottom: 0 !important;
@@ -349,6 +352,10 @@ body {
 	height: 20px;
 }
 
+.footer-margin {
+	margin-top: 60px;
+}
+
 .footer-links {
 	margin: 15px 0;
 }
@@ -361,4 +368,32 @@ body {
 .footer-license {
 	color: #555;
 	margin-right: 100px;
+}
+
+.thumbnail-container {
+	margin-top: 40px;
+}
+
+.thumbnail-div {
+	width: 170px;
+	padding-top: 10px;
+}
+
+.thumbnail-img {
+	width: 160px;
+	height: 160px;
+}
+
+.thumbnail-label {
+	padding-left: 10px;
+	padding-top: 5px;
+	margin-bottom: 0;
+	color: #333;
+	font-weight: bold;
+}
+
+#errorDiv {
+	margin-bottom: 0;
+	border-bottom: 2px solid #c76e6d;
+	font-weight: bold;
 }
