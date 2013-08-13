@@ -52,7 +52,7 @@
 		</div>
 	</div>
 
-	<div id="errorDiv" class="alert alert-error">
+	<div id="errorDiv" class="alert alert-error hide">
 		<button type="button" class="close" data-dismiss="alert">×</button>
         <span id="errorMsg"></span>
     </div>
