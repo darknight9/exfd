@@ -27,8 +27,8 @@ public class LineBaseTest {
 	public void TestDownload() throws Exception {
 		LineBase.LoadConfig();
 
-		LineBase line = new LineEVERGREEN();
-		String code = "EMCU3603350";
+		LineBase line = new LineCMA();
+		String code = "IPXU3131473";
 		String strPage = null;
 		try {
 			strPage = line.GetPage(code);
@@ -51,7 +51,7 @@ public class LineBaseTest {
 		LineBase.LoadConfig();
 
 		LineBase line = new LineCOSCO();
-		String code = "CBHU8234537";
+		String code = "CBHU1835330";
 
 		FileInputStream in = new FileInputStream(
 				"/Users/david/Developer/TestData/" + code + ".html");
@@ -78,6 +78,12 @@ public class LineBaseTest {
 		out2.print(container.getJsonString());
 		out2.flush();
 		out2.close();
+		
+		PrintWriter out3 = new PrintWriter(new File(
+				"/Users/david/Developer/TestData/" + code + "H.html"));
+		out3.print(container.getHttpresult());
+		out3.flush();
+		out3.close();
 		
 		
 
@@ -115,6 +121,12 @@ public class LineBaseTest {
 		out2.print(container.getJsonString());
 		out2.flush();
 		out2.close();
+		
+		PrintWriter out3 = new PrintWriter(new File(
+				"/Users/david/Developer/TestData/" + code + "H.html"));
+		out3.print(container.getHttpresult());
+		out3.flush();
+		out3.close();
 		
 		
 

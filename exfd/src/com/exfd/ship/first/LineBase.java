@@ -421,7 +421,9 @@ public class LineBase {
 		// 生成Json.
 		ContainerStatus status = container.getStatus();
 		container.setJsonString(status2Json(status));
-		container.setJsonString(status2JsonOld(status));
+		
+		// 向后兼容.
+		container.setHttpresult(status2JsonOld(status));
 		
 		// 生成table.
 		container.setTableString(status2Table(status));

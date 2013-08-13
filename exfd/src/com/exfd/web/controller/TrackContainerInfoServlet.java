@@ -40,7 +40,10 @@ public class TrackContainerInfoServlet extends HttpServlet {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 		    
-			String strJson = cbox.getJsonString();
+			//String strJson = cbox.getJsonString();
+			
+			//向后兼容.
+			String strJson = cbox.getHttpresult();
 			
 			// Get printerwriter object from response to write json object to the output stream.
 		    PrintWriter out = response.getWriter();
