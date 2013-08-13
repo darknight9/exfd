@@ -39,6 +39,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.exfd.domain.Container;
 import com.exfd.domain.ContainerRecord;
+import com.exfd.domain.ContainerRecordOld;
 import com.exfd.domain.ContainerStatus;
 import com.google.gson.Gson;
 
@@ -46,15 +47,28 @@ public class LineBase {
 
 	static Logger logger = LogManager.getLogger();
 	static XMLConfiguration config = null;
-	
+
 	// 配置的XML中的解析结点.
 	SubnodeConfiguration parseNode = null;
-	
+
 	// 页面解析出的source.
 	Source source = null;
-	
+
 	// 解析出的Hint position.
 	int hintPos = -1;
+
+	// 解析出的表格元素.
+	Element tablebaseElement = null;
+
+	// 解析出的表格元素.
+	Element tableElement2 = null;
+
+	int usetdclass = 0;
+	int timeIndex = -1;
+	int eventIndex = -1;
+	int locationIndex = -1;
+	int vesselIndex = -1;
+	int voyageIndex = -1;
 
 	// 读取配置信息.
 	public static void LoadConfig() {
@@ -255,44 +269,67 @@ public class LineBase {
 		Container container = GetContainerByPage(code, strPage);
 		return container;
 	}
-	
+
 	// Parse.1.解析基本信息.
 	public Container ParseBaseInfo(String code, String page) {
-		
+
 		// 获取公司名称, 去掉前面的"Line".
 		String company = this.getClass().getSimpleName().substring(4);
 
 		Container container = new Container();
 		container.setCode(code);
 		container.setCompany(company);
-		
+		container.setJsonString("");
+		container.setTableString("");
+		container.setHttpresult("");
+
 		ContainerStatus status = new ContainerStatus();
 		status.setCode(code);
 		status.setCompany(company);
 		container.setStatus(status);
+		status.setSize("未知");
+
+		ContainerRecord statusTitle = new ContainerRecord();
+		status.setStatusTitle(statusTitle);
+		ContainerRecord historyTitle = new ContainerRecord();
+		status.setHistoryTitle(historyTitle);
+		ContainerRecord statusRecord = new ContainerRecord();
+		status.setStatusRecord(statusRecord);
+		ArrayList<ContainerRecord> historyRecords = new ArrayList<ContainerRecord>();
+		status.setHistoryRecords(historyRecords);
+		
+		
 
 		// 获取当前的船公司的配置信息.
-		parseNode = config
-				.configurationAt("/container[@classname='"
-						+ this.getClass().getSimpleName() + "']/parse");
-		
+		parseNode = config.configurationAt("/container[@classname='"
+				+ this.getClass().getSimpleName() + "']/parse");
+
+		usetdclass = parseNode.getInt("usetdclass");
+		timeIndex = parseNode.getInt("time");
+		eventIndex = parseNode.getInt("event");
+		locationIndex = parseNode.getInt("location");
+		vesselIndex = parseNode.getInt("vessel");
+		voyageIndex = parseNode.getInt("voyage");
+
 		return container;
 	}
-	
+
 	// 检查是否没有找到箱子.
-	public boolean IsNotFoundPage(String code, String page, Container container) {
-		
+	public boolean isNotFoundPage(String code, String page, Container container) {
+
 		String notfoundString = parseNode.getString("notfound");
 		if (page.indexOf(notfoundString) >= 0) {
-			logger.debug("CONT[{}] container page contains not found information.", code);
+			logger.debug(
+					"CONT[{}] container page contains not found information.",
+					code);
 			container.setNotfound(1);
 			return true;
 		}
 		return false;
 	}
-	
+
 	// 获取Hint
-	public boolean GetHintPos(String code, String page, Container container) {
+	public boolean getHintPos(String code, String page, Container container) {
 		String hintString = parseNode.getString("hint");
 		hintString = hintString.replace("EXFDCODE", code);
 		hintPos = page.indexOf(hintString);
@@ -300,14 +337,15 @@ public class LineBase {
 		// 找不到标记点，返回.
 		if (hintPos < 0) {
 			container.setParseerror(1);
-			logger.debug("CONT[{}] container page not find hint[{}] postion.", code, hintString);
+			logger.debug("CONT[{}] container page not find hint[{}] postion.",
+					code, hintString);
 			return false;
 		}
 		return true;
 	}
 
 	// 获取解析的Tree.
-	public Source PrepareTree(String page) {
+	public Source prepareTree(String page) {
 		// 寻找结果.
 		MicrosoftConditionalCommentTagTypes.register();
 		PHPTagTypes.register();
@@ -319,28 +357,8 @@ public class LineBase {
 		return source;
 	}
 
-	public Container GetContainerByPage(String code, String page) {
-
-		// Parse.1.解析基本信息.
-		Container container = ParseBaseInfo(code, page);
-		
-		// Parse.2.检查是否没有找到箱子.
-		boolean isNotFound = IsNotFoundPage(code, page, container);
-		if (isNotFound) {
-			logger.info("CONT[{}] container page contains not found information.", code);
-			return container;
-		}
-
-		// Parse.3.获取hint position.
-		boolean isGetHint = GetHintPos(code, page, container);
-		if (!isGetHint) {
-			logger.info("CONT[{}] container page not find hint postion.", code);
-			return container;
-		}
-		
-		// Parse.4.获取解析的Tree.
-		source = PrepareTree(page);
-		
+	// 解析获取的table元素.
+	public void getTableElement() {
 		String dirString = parseNode.getString("dir");
 		StartTag start = null;
 		if (dirString.equals("next")) {
@@ -348,8 +366,75 @@ public class LineBase {
 		} else {
 			start = source.getPreviousStartTag(hintPos, "table");
 		}
-		logger.debug(start);
-		Element tableElement = start.getElement();
+		tablebaseElement = start.getElement();
+	}
+
+	// 从字符串数组中，根据预先定义的位置设置record各项的值.
+	public void list2Record(ArrayList<String> arrayList, ContainerRecord record) {
+		if (timeIndex > 0) {
+			record.setTime(arrayList.get(timeIndex - 1));
+		}
+		if (eventIndex > 0) {
+			record.setEvent(arrayList.get(eventIndex - 1));
+		}
+		if (locationIndex > 0) {
+			record.setLocation(arrayList.get(locationIndex - 1));
+		}
+		if (vesselIndex > 0) {
+			record.setVessel(arrayList.get(vesselIndex - 1));
+		}
+		if (voyageIndex > 0) {
+			record.setVoyage(arrayList.get(voyageIndex - 1));
+		}
+	}
+
+	public Container GetContainerByPage(String code, String page) {
+
+		// Parse.1.解析基本信息.
+		Container container = ParseBaseInfo(code, page);
+
+		// Parse.2.检查是否没有找到箱子.
+		boolean isNotFound = isNotFoundPage(code, page, container);
+		if (isNotFound) {
+			logger.info(
+					"CONT[{}] container page contains not found information.",
+					code);
+			return container;
+		}
+
+		// Parse.3.获取hint position.
+		boolean isGetHint = getHintPos(code, page, container);
+		if (!isGetHint) {
+			logger.info("CONT[{}] container page not find hint postion.", code);
+			return container;
+		}
+
+		// Parse.4.获取解析的Tree.
+		source = prepareTree(page);
+
+		boolean isGetContainerByTree = getContainerByTree(code, page, container);
+		if (!isGetContainerByTree) {
+			logger.info("CONT[{}] get container by tree fail.", code);
+			return container;
+		}
+		
+		// 生成Json.
+		ContainerStatus status = container.getStatus();
+		container.setJsonString(status2Json(status));
+		container.setJsonString(status2JsonOld(status));
+		
+		// 生成table.
+		container.setTableString(status2Table(status));
+		
+		return container;
+	}
+
+	public boolean getContainerByTree(String code, String page,
+			Container container) {
+
+		// Parse.5. 获取table元素.
+		getTableElement();
+
 		Element resultElement = null;
 		List<Element> trList = null;
 		String rowclass = parseNode.getString("rowclass");
@@ -358,9 +443,10 @@ public class LineBase {
 
 		} else if (rowclassPattern != null) {
 			Pattern valueRegexPattern = Pattern.compile(rowclass);
-			trList = tableElement.getAllElements("class", valueRegexPattern);
+			trList = tablebaseElement
+					.getAllElements("class", valueRegexPattern);
 		} else {
-			trList = tableElement.getAllElements(HTMLElementName.TR);
+			trList = tablebaseElement.getAllElements(HTMLElementName.TR);
 		}
 
 		ArrayList<ArrayList<String>> aLists = new ArrayList<ArrayList<String>>();
@@ -370,12 +456,6 @@ public class LineBase {
 		String defaultRecord = parseNode.getString("defaultRecord");
 		String recordClassStart = parseNode.getString("recordClassStart");
 		String headerClassStart = parseNode.getString("headerClassStart");
-		int usetdclass = parseNode.getInt("usetdclass");
-		int timeIndex = parseNode.getInt("time");
-		int eventIndex = parseNode.getInt("event");
-		int locationIndex = parseNode.getInt("location");
-		int vesselIndex = parseNode.getInt("vessel");
-		int voyageIndex = parseNode.getInt("voyage");
 
 		boolean isHeaderDefault = false;
 		if (defaultRecord.equals("false")) {
@@ -432,80 +512,108 @@ public class LineBase {
 				arrayList.add(conString);
 			}
 			if (!deleteTr) {
-				record.setTime(arrayList.get(timeIndex));
-				record.setEvent(arrayList.get(eventIndex));
-				record.setLocation(arrayList.get(locationIndex));
-				record.setVessel(arrayList.get(vesselIndex));
-				record.setVoyage(arrayList.get(voyageIndex));
+				list2Record(arrayList, record);
 
 				aLists.add(arrayList);
 				records.add(record);
 			}
 		}
-		String tableString = Record2Table(records, code);
-		container.setTableString(tableString);
 
-		String jsonString = Record2Json(records, code);
-		container.setJsonString(jsonString);
-
-		return container;
-
+		return true;
 	}
 
+	public String status2Json(ContainerStatus status) {
 
+		Gson gson = new Gson();
+		String strJson = gson.toJson(status);
+		return strJson;
+	}
 
+	public void record2RecordOld(ContainerRecord record, ContainerRecordOld old) {
+		old.setTime(record.getTime());
+		old.setEvent(record.getEvent());
+		old.setLocation(record.getLocation());
+		old.setVessel(record.getVessel());
+		old.setVoyage(record.getVoyage());
+	}
 
-	public String Array2Table(ArrayList<ArrayList<String>> aLists, String code) {
+	public String status2JsonOld(ContainerStatus status) {
 
-		StringBuilder sb = new StringBuilder(aLists.size() * 1000);
-		sb.append("<table border=\"1\">");
-		for (ArrayList<String> arrayList : aLists) {
-			sb.append("<tr>");
-			for (String string : arrayList) {
-				sb.append("<td>").append(string).append("</td>");
-			}
-			sb.append("</tr>");
+		Gson gson = new Gson();
+		ArrayList<ContainerRecordOld> recordOlds = new ArrayList<ContainerRecordOld>();
+		ContainerRecordOld old1 = new ContainerRecordOld();
+		ContainerRecordOld old2 = new ContainerRecordOld();
+		ContainerRecordOld old3 = new ContainerRecordOld();
+		record2RecordOld(status.getStatusTitle(), old1);
+		old1.setHeader(true);
+		record2RecordOld(status.getStatusRecord(), old2);
+		old2.setHeader(false);
+		record2RecordOld(status.getHistoryTitle(), old3);
+		old3.setHeader(true);
+
+		recordOlds.add(old1);
+		recordOlds.add(old2);
+		recordOlds.add(old3);
+		ArrayList<ContainerRecord> records = status.getHistoryRecords();
+		for (ContainerRecord record : records) {
+			ContainerRecordOld old = new ContainerRecordOld();
+			record2RecordOld(record, old);
+			old.setHeader(false);
+			recordOlds.add(old);
 		}
-		sb.append("</table>");
-		return sb.toString();
-	}
-
-	public String Array2Json(ArrayList<ArrayList<String>> aLists, String code) {
-
-		Gson gson = new Gson();
-		String strJson = gson.toJson(aLists);
+		String strJson = gson.toJson(recordOlds);
 		return strJson;
 	}
 
-	public String Record2Json(ArrayList<ContainerRecord> records, String code) {
+	public String status2Table(ContainerStatus status) {
 
-		Gson gson = new Gson();
-		String strJson = gson.toJson(records);
-		return strJson;
-	}
+		ContainerRecord statusTitle = status.getStatusTitle();
+		ContainerRecord historyTitle = status.getHistoryTitle();
+		ContainerRecord statusRecord = status.getStatusRecord();
+		ArrayList<ContainerRecord> historyRecords = status.getHistoryRecords();
 
-	public String Record2Table(ArrayList<ContainerRecord> records, String code) {
-
-		StringBuilder sb = new StringBuilder(records.size() * 1000);
+		StringBuilder sb = new StringBuilder(historyRecords.size() * 200);
 		sb.append("<table border=\"1\">");
-		for (ContainerRecord cb : records) {
-			if (cb.getHeader()) {
-				sb.append("<tr>");
-				sb.append("<th>日期(").append(cb.getTime()).append(")</th>");
-				sb.append("<th>事件(").append(cb.getEvent()).append(")</th>");
-				sb.append("<th>地点(").append(cb.getLocation()).append(")</th>");
-				sb.append("<th>舰船(").append(cb.getVessel()).append(")</th>");
-				sb.append("<th>行程(").append(cb.getVoyage()).append(")</th>");
-				sb.append("</tr>");
-			} else {
-				sb.append("<tr>");
-				sb.append("<td>").append(cb.getTime()).append("</td>");
-				sb.append("<td>").append(cb.getEvent()).append("</td>");
-				sb.append("<td>").append(cb.getLocation()).append("</td>");
-				sb.append("<td>").append(cb.getVessel()).append("</td>");
-				sb.append("<td>").append(cb.getVoyage()).append("</td>");
-				sb.append("</tr>");
-			}
+
+		sb.append("<tr>");
+		sb.append("<th>箱号：").append(status.getCode()).append("</th>");
+		sb.append("<th>公司：").append(status.getCompany()).append("</th>");
+		sb.append("<th>大小：").append(status.getSize()).append("</th>");
+		sb.append("</tr>");
+
+		sb.append("<tr>");
+		sb.append("<th>日期(").append(statusTitle.getTime()).append(")</th>");
+		sb.append("<th>事件(").append(statusTitle.getEvent()).append(")</th>");
+		sb.append("<th>地点(").append(statusTitle.getLocation()).append(")</th>");
+		sb.append("<th>舰船(").append(statusTitle.getVessel()).append(")</th>");
+		sb.append("<th>行程(").append(statusTitle.getVoyage()).append(")</th>");
+		sb.append("</tr>");
+
+		sb.append("<tr>");
+		sb.append("<td>").append(statusRecord.getTime()).append("</td>");
+		sb.append("<td>").append(statusRecord.getEvent()).append("</td>");
+		sb.append("<td>").append(statusRecord.getLocation()).append("</td>");
+		sb.append("<td>").append(statusRecord.getVessel()).append("</td>");
+		sb.append("<td>").append(statusRecord.getVoyage()).append("</td>");
+		sb.append("</tr>");
+
+		sb.append("<tr>");
+		sb.append("<th>日期(").append(historyTitle.getTime()).append(")</th>");
+		sb.append("<th>事件(").append(historyTitle.getEvent()).append(")</th>");
+		sb.append("<th>地点(").append(historyTitle.getLocation())
+				.append(")</th>");
+		sb.append("<th>舰船(").append(historyTitle.getVessel()).append(")</th>");
+		sb.append("<th>行程(").append(historyTitle.getVoyage()).append(")</th>");
+		sb.append("</tr>");
+
+		for (ContainerRecord cb : historyRecords) {
+			sb.append("<tr>");
+			sb.append("<td>").append(cb.getTime()).append("</td>");
+			sb.append("<td>").append(cb.getEvent()).append("</td>");
+			sb.append("<td>").append(cb.getLocation()).append("</td>");
+			sb.append("<td>").append(cb.getVessel()).append("</td>");
+			sb.append("<td>").append(cb.getVoyage()).append("</td>");
+			sb.append("</tr>");
 		}
 		sb.append("</table>");
 		return sb.toString();

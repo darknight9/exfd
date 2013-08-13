@@ -51,6 +51,43 @@ public class LineBaseTest {
 		LineBase.LoadConfig();
 
 		LineBase line = new LineCOSCO();
+		String code = "CBHU8234537";
+
+		FileInputStream in = new FileInputStream(
+				"/Users/david/Developer/TestData/" + code + ".html");
+		byte[] readBytes = new byte[in.available()];
+		in.read(readBytes);
+		String strPage = new String(readBytes);
+
+		logger.debug("{} : get page length : {}", code, strPage.length());
+
+		Container container = line.GetContainerByPage(code, strPage);
+		logger.debug(
+				"container[{}]: download[{}], notfound[{}], parseerror[{}]",
+				code, container.getDownload(), container.getNotfound(),
+				container.getParseerror());
+
+		PrintWriter out = new PrintWriter(new File(
+				"/Users/david/Developer/TestData/" + code + "T.html"));
+		out.print(container.getTableString());
+		out.flush();
+		out.close();
+
+		PrintWriter out2 = new PrintWriter(new File(
+				"/Users/david/Developer/TestData/" + code + "J.html"));
+		out2.print(container.getJsonString());
+		out2.flush();
+		out2.close();
+		
+		
+
+	}
+	
+	@Test
+	public void TestGetContainerByPage2() throws Exception {
+		LineBase.LoadConfig();
+
+		LineBase line = new LineCOSCO();
 		String code = "CBHU1835330";
 
 		FileInputStream in = new FileInputStream(

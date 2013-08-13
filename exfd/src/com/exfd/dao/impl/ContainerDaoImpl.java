@@ -51,10 +51,10 @@ public class ContainerDaoImpl implements ContainerDao {
 		sb.append(container.getNotfound()).append("','");
 		sb.append(container.getParseerror()).append("','");
 		
-		sb.append(container.getTableString()).append("','");
-		sb.append(container.getJsonString()).append("','");
-		sb.append(container.getHttpresult()).append("');");
-	
+		sb.append(container.getTableString().replace("'", "''")).append("','");
+		sb.append(container.getJsonString().replace("'", "''")).append("','");
+		sb.append(container.getHttpresult().replace("'", "''")).append("');");
+
 		return sb.toString();
 	}
 
@@ -108,9 +108,9 @@ public class ContainerDaoImpl implements ContainerDao {
 		sb.append("notfound = '").append(container.getNotfound()).append("', ");
 		sb.append("parseerror = '").append(container.getParseerror()).append("', ");
 		
-		sb.append("tablestring = '").append(container.getTableString()).append("', ");
-		sb.append("jsonstring = '").append(container.getJsonString()).append("', ");
-		sb.append("httpresult = '").append(container.getHttpresult()).append("' ");
+		sb.append("tablestring = '").append(container.getTableString().replace("'", "''")).append("', ");
+		sb.append("jsonstring = '").append(container.getJsonString().replace("'", "''")).append("', ");
+		sb.append("httpresult = '").append(container.getHttpresult().replace("'", "''")).append("' ");
 
 		sb.append("WHERE code = '").append(container.getCode()).append("';");
 		return sb.toString();

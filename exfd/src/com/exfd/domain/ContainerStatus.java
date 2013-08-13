@@ -45,8 +45,22 @@ public class ContainerStatus {
 		StringBuilder builder = new StringBuilder();
 		builder.append("ContainerStatus [code=").append(code).append(", size=")
 				.append(size).append(", company=").append(company)
+				.append(", statusTitle=").append(statusTitle)
+				.append(", historyTitle=").append(historyTitle)
 				.append(", statusRecord=").append(statusRecord)
 				.append(", historyRecords=").append(historyRecords).append("]");
 		return builder.toString();
+	}
+	public ContainerRecord getStatusTitle() {
+		return statusTitle;
+	}
+	public void setStatusTitle(ContainerRecord statusTitle) {
+		this.statusTitle = statusTitle;
+	}
+	public ContainerRecord getHistoryTitle() {
+		return historyTitle;
+	}
+	public void setHistoryTitle(ContainerRecord historyTitle) {
+		this.historyTitle = historyTitle;
 	}
 }
