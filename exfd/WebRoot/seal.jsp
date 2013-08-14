@@ -111,7 +111,7 @@
 
 				code = encodeURIComponent(searchInput.val());
 				if (!!code) {
-					url = '/servlet/TrackSealInfoServlet?code=' + data.code;
+					url = '/servlet/TrackSealInfoServlet?code=' + code;
 
 					EFINDER.utils.load(url, successCallbck);
 				}
