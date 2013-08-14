@@ -27,8 +27,8 @@ public class LineBaseTest {
 	public void TestDownload() throws Exception {
 		LineBase.LoadConfig();
 
-		LineBase line = new LineCMA();
-		String code = "IPXU3131473";
+		LineBase line = new LineMAERSK();
+		String code = "MSKU7511991";
 		String strPage = null;
 		try {
 			strPage = line.GetPage(code);

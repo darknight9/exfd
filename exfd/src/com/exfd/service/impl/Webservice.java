@@ -12,7 +12,11 @@ public class Webservice {
 	private SealDao sealDao = new SealEagleDaoImpl();	// 以后用工厂模式或者spring来解耦合.
 	private ContainerDao containerDao = new ContainerLineDaoImpl();	// 以后用工厂模式或者spring来解耦合.
 	
-	// web service endpoint.
+	/**
+	 * 查找铅封信息.
+	 * @param code 传入的铅封号。
+	 * @return 表示铅封信息的Json字符串.
+	 */
 	public String trackSeal(String code){
 		Gson gson = new Gson();
 		// 在dao层查找.
@@ -25,7 +29,11 @@ public class Webservice {
 		return strJson;
 	}
 	
-	// 对web层提供查询信息服务.
+	/**
+	 * 查找集装箱信息.
+	 * @param code 传入的集装箱编号.
+	 * @return 表示集装箱信息的Json字符串.
+	 */
 	public String trackContainer(String code) {
 		
 		// 在dao层查找.
