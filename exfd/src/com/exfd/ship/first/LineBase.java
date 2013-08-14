@@ -287,7 +287,7 @@ public class LineBase {
 		status.setCode(code);
 		status.setCompany(company);
 		container.setStatus(status);
-		status.setSize("未知");
+		
 
 		ContainerRecord statusTitle = new ContainerRecord();
 		status.setStatusTitle(statusTitle);
@@ -304,12 +304,18 @@ public class LineBase {
 		parseNode = config.configurationAt("/container[@classname='"
 				+ this.getClass().getSimpleName() + "']/parse");
 
+		// 设置默认size.
+		String defaultSize = parseNode.getString("defaultSize", "未知");
+		status.setSize(defaultSize);
+				
 		usetdclass = parseNode.getInt("usetdclass");
 		timeIndex = parseNode.getInt("time");
 		eventIndex = parseNode.getInt("event");
 		locationIndex = parseNode.getInt("location");
 		vesselIndex = parseNode.getInt("vessel");
 		voyageIndex = parseNode.getInt("voyage");
+		
+		
 
 		return container;
 	}
@@ -426,7 +432,7 @@ public class LineBase {
 		container.setHttpresult(status2JsonOld(status));
 		
 		// 生成table.
-		container.setTableString(status2Table(status));
+		//container.setTableString(status2Table(status));
 		
 		return container;
 	}

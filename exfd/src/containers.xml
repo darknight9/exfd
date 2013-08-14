@@ -71,6 +71,7 @@
 			</params>
 		</search>
 		<parse>
+			<defaultSize>20ST</defaultSize>
 			<notfound>not found</notfound>
 			<hint>row_EXFDCODE</hint>
 			<dir>next</dir>
@@ -115,7 +116,7 @@
 			<event>4</event>
 			<location>5</location>
 			<vessel>6</vessel>
-			<voyage>6</voyage>
+			<voyage>0</voyage>
 		</parse>
 	</container>
 	<container company="COSCO" classname="LineCOSCO">

@@ -1,4 +1,4 @@
-<%@ page language="java" import="com.exfd.domain.Seal" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="zh">
@@ -52,7 +52,7 @@
 		</div>
 	</div>
 
-	<div id="errorDiv" class="alert alert-error hide">
+	<div id="errorDiv" class="alert alert-error">
 		<button type="button" class="close" data-dismiss="alert">×</button>
         <span id="errorMsg"></span>
     </div>
@@ -73,7 +73,7 @@
 		</div>
 	</footer>
 
-	<% Seal seal = (Seal)request.getAttribute("seal"); %>
+	<% String code = (String)request.getAttribute("code"); %>
 		
 	<script type="text/javascript">
 		$(function() {
@@ -106,30 +106,33 @@
 				}
 			};
 
-			var init = function() {
-				var url,
-					self = this,
-					data = {};
+			var submitForm = function() {
+				var code, url;
 
-				data.code = '<%= (seal != null) ? seal.getCode() : "" %>',
-				data.longitude = <%= (seal != null) ? seal.getLongitude() : null %>,
-				data.latitude = <%= (seal != null) ? seal.getLatitude() : null %>,
-				data.poi = '<%=(seal != null) ? seal.getPoi() : "" %>';
-				
-				if (data.code !== '') {
-					searchInput.val(data.code);
-				}
-
-				map = new EFINDER.Map('map');
-				successCallbck(data);
-
-				$('#searchForm').submit(function(e) {
-					e.preventDefault();
-	
-					data.code = encodeURIComponent(searchInput.val());
+				code = encodeURIComponent(searchInput.val());
+				if (!!code) {
 					url = '/servlet/TrackSealInfoServlet?code=' + data.code;
 
 					EFINDER.utils.load(url, successCallbck);
+				}
+			};
+
+			var init = function() {
+				var code = '';
+
+				
+				code = '<%= (code != null) ? code : "" %>';
+
+				if (code !== '') {
+					searchInput.val(code);
+				}
+
+				map = new EFINDER.Map('map');
+				submitForm();
+
+				$('#searchForm').submit(function(e) {
+					e.preventDefault();
+					submitForm();
 				})
 			};
 
