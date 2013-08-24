@@ -1,6 +1,9 @@
 package com.exfd.ship.first;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -47,6 +50,7 @@ public class LineBase {
 
 	static Logger logger = LogManager.getLogger();
 	static XMLConfiguration config = null;
+	static boolean isDebug = false;
 
 	// 配置的XML中的解析结点.
 	SubnodeConfiguration parseNode = null;
@@ -69,6 +73,8 @@ public class LineBase {
 	int locationIndex = -1;
 	int vesselIndex = -1;
 	int voyageIndex = -1;
+	
+	
 
 	// 读取配置信息.
 	public static void LoadConfig() {
@@ -82,8 +88,12 @@ public class LineBase {
 			config.setDelimiterParsingDisabled(true);
 			config.setAttributeSplittingDisabled(true);
 			config.load("containers.xml");
+			String debugmode = config.getString("/debug");
+			if (debugmode.equals("true")) {
+				isDebug = true;
+			}
+			
 		} catch (ConfigurationException e) {
-			e.printStackTrace();
 			logger.catching(e);
 		}
 	}
@@ -625,6 +635,33 @@ public class LineBase {
 		}
 		sb.append("</table>");
 		return sb.toString();
+	}
+	
+	public void DebugPage(String code, String strPage, String fileName) {
+
+		if (!isDebug) {
+			return;
+		}
+		String pathName = "/Users/david/Developer/TestData/";
+		DebugPage(code, strPage, fileName, pathName);
+	}
+	
+	public void DebugPage(String code, String strPage, String fileName, String pathName) {
+
+		if (!isDebug) {
+			return;
+		}
+	    PrintWriter out = null;
+		try {
+			out = new PrintWriter(new File(
+					pathName + code + fileName + ".html"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		out.print(strPage);
+		out.flush();
+		out.close();
 	}
 
 }

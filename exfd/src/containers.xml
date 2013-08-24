@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE containers SYSTEM "container.dtd">
 <containers>
+	<debug>true</debug>
 	<defaults>
 		<default name="Accept" value="text/html, application/xhtml+xml, */*"></default>
 		<default name="Accept-Language" value="zh-CN"></default>
@@ -11,7 +12,7 @@
 		<name>马士基</name>
 		<homepage>http://www.maerskline.com/</homepage>
 		<status>download fail</status>
-		<comment>下载不行.</comment>
+		<comment>下载OK.</comment>
 		<search method="POST">
 			<endpoint>http://www.maerskline.com/appmanager/maerskline/public?_nfpb=true&amp;_nfls=false&amp;_pageLabel=page_tracking3_trackSimple</endpoint>
 			<params>
@@ -31,10 +32,19 @@
 			</headers>
 		</search>
 		<parse>
-			<notfound>not found</notfound>
-			<hint>row_EXFDCODE</hint>
-			<dir>next</dir>
-			<rowclass>TrackingRow</rowclass>
+			<defaultSize>20ST</defaultSize>
+			<notfound>No result</notfound>
+			<hint>Vessel</hint>
+			<dir>pre</dir>
+			<usetdclass>0</usetdclass>
+			<defaultRecord>true</defaultRecord>
+			<recordClassStart></recordClassStart>
+			<headerClassStart>TrackingLabel</headerClassStart>
+			<time>3</time>
+			<event>1</event>
+			<location>2</location>
+			<vessel>4</vessel>
+			<voyage>5</voyage>
 		</parse>
 	</container>
 	<container company="MSC" classname="LineMSC">

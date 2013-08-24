@@ -28,7 +28,7 @@ public class LineBaseTest {
 		LineBase.LoadConfig();
 
 		LineBase line = new LineMAERSK();
-		String code = "MSKU7511991";
+		String code = "TGHU7271125";
 		String strPage = null;
 		try {
 			strPage = line.GetPage(code);
@@ -46,12 +46,13 @@ public class LineBaseTest {
 		out.close();
 	}
 
+	
 	@Test
 	public void TestGetContainerByPage() throws Exception {
 		LineBase.LoadConfig();
 
-		LineBase line = new LineCOSCO();
-		String code = "CBHU1835330";
+		LineBase line = new LineMAERSK();
+		String code = "TGHU7271125";
 
 		FileInputStream in = new FileInputStream(
 				"/Users/david/Developer/TestData/" + code + ".html");
@@ -67,52 +68,11 @@ public class LineBaseTest {
 				code, container.getDownload(), container.getNotfound(),
 				container.getParseerror());
 
+		// 由于table string不会再生成了，所以测试函数自己生成。
+		String tableString = line.status2Table(container.getStatus());
 		PrintWriter out = new PrintWriter(new File(
 				"/Users/david/Developer/TestData/" + code + "T.html"));
-		out.print(container.getTableString());
-		out.flush();
-		out.close();
-
-		PrintWriter out2 = new PrintWriter(new File(
-				"/Users/david/Developer/TestData/" + code + "J.html"));
-		out2.print(container.getJsonString());
-		out2.flush();
-		out2.close();
-		
-		PrintWriter out3 = new PrintWriter(new File(
-				"/Users/david/Developer/TestData/" + code + "H.html"));
-		out3.print(container.getHttpresult());
-		out3.flush();
-		out3.close();
-		
-		
-
-	}
-	
-	@Test
-	public void TestGetContainerByPage2() throws Exception {
-		LineBase.LoadConfig();
-
-		LineBase line = new LineCOSCO();
-		String code = "CBHU1835330";
-
-		FileInputStream in = new FileInputStream(
-				"/Users/david/Developer/TestData/" + code + ".html");
-		byte[] readBytes = new byte[in.available()];
-		in.read(readBytes);
-		String strPage = new String(readBytes);
-
-		logger.debug("{} : get page length : {}", code, strPage.length());
-
-		Container container = line.GetContainerByPage(code, strPage);
-		logger.debug(
-				"container[{}]: download[{}], notfound[{}], parseerror[{}]",
-				code, container.getDownload(), container.getNotfound(),
-				container.getParseerror());
-
-		PrintWriter out = new PrintWriter(new File(
-				"/Users/david/Developer/TestData/" + code + "T.html"));
-		out.print(container.getTableString());
+		out.print(tableString);
 		out.flush();
 		out.close();
 
