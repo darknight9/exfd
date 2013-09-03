@@ -42,7 +42,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.exfd.domain.Container;
 import com.exfd.domain.ContainerRecord;
-import com.exfd.domain.ContainerRecordOld;
 import com.exfd.domain.ContainerStatus;
 import com.google.gson.Gson;
 
@@ -352,7 +351,7 @@ public class LineBase {
 
 		// 找不到标记点，返回.
 		if (hintPos < 0) {
-			container.setParseerror(1);
+			container.setError(1);
 			logger.debug("CONT[{}] container page not find hint[{}] postion.",
 					code, hintString);
 			return false;
@@ -439,7 +438,7 @@ public class LineBase {
 		container.setJsonString(status2Json(status));
 		
 		// 向后兼容.
-		container.setHttpresult(status2JsonOld(status));
+		//container.setHttpresult(status2JsonOld(status));
 		
 		// 生成table.
 		//container.setTableString(status2Table(status));
@@ -502,7 +501,6 @@ public class LineBase {
 			List<Element> tdList = trElement.getAllElements(HTMLElementName.TD);
 			ArrayList<String> arrayList = new ArrayList<String>();
 			ContainerRecord record = new ContainerRecord();
-			record.setHeader(isHeader);
 
 			for (int j = 0; j < tdList.size(); j++) {
 				resultElement = tdList.get(j);
@@ -521,7 +519,6 @@ public class LineBase {
 						deleteTr = true;
 						break;
 					}
-					record.setHeader(isHeader);
 				}
 				String conString = CharacterReference
 						.decodeCollapseWhiteSpace(resultElement.getContent()
@@ -544,42 +541,6 @@ public class LineBase {
 
 		Gson gson = new Gson();
 		String strJson = gson.toJson(status);
-		return strJson;
-	}
-
-	public void record2RecordOld(ContainerRecord record, ContainerRecordOld old) {
-		old.setTime(record.getTime());
-		old.setEvent(record.getEvent());
-		old.setLocation(record.getLocation());
-		old.setVessel(record.getVessel());
-		old.setVoyage(record.getVoyage());
-	}
-
-	public String status2JsonOld(ContainerStatus status) {
-
-		Gson gson = new Gson();
-		ArrayList<ContainerRecordOld> recordOlds = new ArrayList<ContainerRecordOld>();
-		ContainerRecordOld old1 = new ContainerRecordOld();
-		ContainerRecordOld old2 = new ContainerRecordOld();
-		ContainerRecordOld old3 = new ContainerRecordOld();
-		record2RecordOld(status.getStatusTitle(), old1);
-		old1.setHeader(true);
-		record2RecordOld(status.getStatusRecord(), old2);
-		old2.setHeader(false);
-		record2RecordOld(status.getHistoryTitle(), old3);
-		old3.setHeader(true);
-
-		recordOlds.add(old1);
-		recordOlds.add(old2);
-		recordOlds.add(old3);
-		ArrayList<ContainerRecord> records = status.getHistoryRecords();
-		for (ContainerRecord record : records) {
-			ContainerRecordOld old = new ContainerRecordOld();
-			record2RecordOld(record, old);
-			old.setHeader(false);
-			recordOlds.add(old);
-		}
-		String strJson = gson.toJson(recordOlds);
 		return strJson;
 	}
 

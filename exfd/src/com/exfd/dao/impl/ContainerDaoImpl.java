@@ -49,7 +49,7 @@ public class ContainerDaoImpl implements ContainerDao {
 		
 		sb.append(container.getDownload()).append("','");
 		sb.append(container.getNotfound()).append("','");
-		sb.append(container.getParseerror()).append("','");
+		sb.append(container.getError()).append("','");
 		
 		sb.append(container.getTableString().replace("'", "''")).append("','");
 		sb.append(container.getJsonString().replace("'", "''")).append("','");
@@ -106,7 +106,7 @@ public class ContainerDaoImpl implements ContainerDao {
 		
 		sb.append("download = '").append(container.getDownload()).append("', ");
 		sb.append("notfound = '").append(container.getNotfound()).append("', ");
-		sb.append("parseerror = '").append(container.getParseerror()).append("', ");
+		sb.append("parseerror = '").append(container.getError()).append("', ");
 		
 		sb.append("tablestring = '").append(container.getTableString().replace("'", "''")).append("', ");
 		sb.append("jsonstring = '").append(container.getJsonString().replace("'", "''")).append("', ");
@@ -155,7 +155,7 @@ public class ContainerDaoImpl implements ContainerDao {
 		
 		container.setDownload(rs.getInt("download"));
 		container.setNotfound(rs.getInt("notfound"));
-		container.setParseerror(rs.getInt("parseerror"));
+		container.setError(rs.getInt("parseerror"));
 
 		container.setTableString(rs.getString("tablestring"));
 		container.setJsonString(rs.getString("jsonstring"));

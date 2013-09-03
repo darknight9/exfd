@@ -71,7 +71,7 @@ public class LineMOL extends LineBase {
 
 		// 找不到标记点，返回.
 		if (currentPos < 0) {
-			container.setParseerror(1);
+			container.setError(1);
 			logger.debug(
 					"CONT[{}] container page not find lastest pos[{}] postion.",
 					code, currentPos);

@@ -66,7 +66,7 @@ public class LineBaseTest {
 		logger.debug(
 				"container[{}]: download[{}], notfound[{}], parseerror[{}]",
 				code, container.getDownload(), container.getNotfound(),
-				container.getParseerror());
+				container.getError());
 
 		// 由于table string不会再生成了，所以测试函数自己生成。
 		String tableString = line.status2Table(container.getStatus());

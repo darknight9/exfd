@@ -30,7 +30,7 @@ public class ContainerLineDaoImplTest {
 		logger.debug(
 				"container[{}]: download[{}], notfound[{}], parseerror[{}]",
 				code, container.getDownload(), container.getNotfound(),
-				container.getParseerror());
+				container.getError());
 
 		PrintWriter out = new PrintWriter(new File(
 				"/Users/david/Developer/TestData/" + code + "T.html"));
