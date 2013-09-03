@@ -27,8 +27,8 @@ public class LineBaseTest {
 	public void TestDownload() throws Exception {
 		LineBase.LoadConfig();
 
-		LineBase line = new LineMAERSK();
-		String code = "TGHU7271125";
+		LineBase line = new LineOOCL();
+		String code = "OOLU1037233";
 		String strPage = null;
 		try {
 			strPage = line.GetPage(code);
@@ -51,8 +51,8 @@ public class LineBaseTest {
 	public void TestGetContainerByPage() throws Exception {
 		LineBase.LoadConfig();
 
-		LineBase line = new LineMAERSK();
-		String code = "TGHU7271125";
+		LineBase line = new LineOOCL();
+		String code = "OOLU1037233";
 
 		FileInputStream in = new FileInputStream(
 				"/Users/david/Developer/TestData/" + code + ".html");
