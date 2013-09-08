@@ -13,7 +13,9 @@ public interface ContainerDao {
 	
 	void updateOrAdd(Container container);
 
-	Container find(String code);
+	Container find(String code, boolean isUpdate);
+	
+	Container find(String code, String company, boolean isUpdate);
 
 	ArrayList<Container> list();
 }

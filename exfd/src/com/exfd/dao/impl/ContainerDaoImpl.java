@@ -43,12 +43,14 @@ public class ContainerDaoImpl implements ContainerDao {
 		StringBuilder sb = new StringBuilder(1000);
 		sb.append("INSERT INTO `CONTAINERINFO` VALUES ('");
 		sb.append(container.getCode()).append("','");
+		sb.append(container.getTrycompany()).append("','");
 		sb.append(container.getCompany()).append("','");
+		sb.append(df.format(new Date())).append("','");
 		sb.append(df.format(new Date())).append("','");
 		sb.append(df.format(new Date())).append("','");
 		
 		sb.append(container.getDownload()).append("','");
-		sb.append(container.getNotfound()).append("','");
+		sb.append(container.getFound()).append("','");
 		sb.append(container.getError()).append("','");
 		
 		sb.append(container.getTableString().replace("'", "''")).append("','");
@@ -98,15 +100,18 @@ public class ContainerDaoImpl implements ContainerDao {
 		StringBuilder sb = new StringBuilder(2000);
 		sb.append("UPDATE `CONTAINERINFO` SET ");
 		//sb.append("code = '").append(container.getCode()).append("', ");
+		sb.append("trycompany = '").append(container.getTrycompany()).append("', ");
 		sb.append("company = '").append(container.getCompany()).append("', ");
 		
 		// ctime不会在更新记录时候更新.
 		//sb.append("ctime = '").append(df.format(seal.getCtime())).append("', ");
 		sb.append("mtime = '").append(df.format(new Date())).append("', ");
+		// foundtime是需要根据实际的container信息更新的.
+		sb.append("foundtime = '").append(df.format(container.getFoundtime())).append("', ");
 		
 		sb.append("download = '").append(container.getDownload()).append("', ");
-		sb.append("notfound = '").append(container.getNotfound()).append("', ");
-		sb.append("parseerror = '").append(container.getError()).append("', ");
+		sb.append("found = '").append(container.getFound()).append("', ");
+		sb.append("error = '").append(container.getError()).append("', ");
 		
 		sb.append("tablestring = '").append(container.getTableString().replace("'", "''")).append("', ");
 		sb.append("jsonstring = '").append(container.getJsonString().replace("'", "''")).append("', ");
@@ -118,7 +123,7 @@ public class ContainerDaoImpl implements ContainerDao {
 	}
 
 	@Override
-	public Container find(String code) {
+	public Container find(String code, boolean isUpdate) {
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -149,13 +154,15 @@ public class ContainerDaoImpl implements ContainerDao {
 
 	private void resultSet2Container(ResultSet rs, Container container) throws SQLException {
 		container.setCode(rs.getString("code"));
+		container.setTrycompany(rs.getString("trycompany"));
 		container.setCompany(rs.getString("company"));
 		container.setCtime(rs.getTimestamp("ctime"));
 		container.setMtime(rs.getTimestamp("mtime"));
+		container.setFoundtime(rs.getTimestamp("foundtime"));
 		
 		container.setDownload(rs.getInt("download"));
-		container.setNotfound(rs.getInt("notfound"));
-		container.setError(rs.getInt("parseerror"));
+		container.setFound(rs.getInt("found"));
+		container.setError(rs.getInt("error"));
 
 		container.setTableString(rs.getString("tablestring"));
 		container.setJsonString(rs.getString("jsonstring"));
@@ -223,6 +230,12 @@ public class ContainerDaoImpl implements ContainerDao {
 			MysqlUtils.closeConnection(con);
 		}
 		
+	}
+
+	@Override
+	public Container find(String code, String company, boolean isUpdate) {
+		
+		return find(code, isUpdate);
 	}
 
 }

@@ -64,8 +64,8 @@ public class LineBaseTest {
 
 		Container container = line.GetContainerByPage(code, strPage);
 		logger.debug(
-				"container[{}]: download[{}], notfound[{}], parseerror[{}]",
-				code, container.getDownload(), container.getNotfound(),
+				"container[{}]: download[{}], found[{}], error[{}]",
+				code, container.getDownload(), container.getFound(),
 				container.getError());
 
 		// 由于table string不会再生成了，所以测试函数自己生成。

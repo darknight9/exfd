@@ -55,8 +55,8 @@ public class ContainerUtilsTest {
 		Container container = ContainerUtils.GetContainerByPage(code, strPage);
 
 		logger.debug(
-				"container[{}]: download[{}], notfound[{}], parseerror[{}]",
-				code, container.getDownload(), container.getNotfound(),
+				"container[{}]: download[{}], found[{}], error[{}]",
+				code, container.getDownload(), container.getFound(),
 				container.getError());
 
 		PrintWriter out = new PrintWriter(new File(
@@ -83,8 +83,8 @@ public class ContainerUtilsTest {
 		Container container = ContainerUtils.GetContainer(code);
 
 		logger.debug(
-				"container[{}]: download[{}], notfound[{}], parseerror[{}]",
-				code, container.getDownload(), container.getNotfound(),
+				"container[{}]: download[{}], found[{}], error[{}]",
+				code, container.getDownload(), container.getFound(),
 				container.getError());
 
 		PrintWriter out = new PrintWriter(new File(

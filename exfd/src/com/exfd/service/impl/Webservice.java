@@ -37,7 +37,7 @@ public class Webservice {
 	public String trackContainer(String code) {
 		
 		// 在dao层查找.
-		Container container = containerDao.find(code);
+		Container container = containerDao.find(code, true);
 		String strJson = "";
 		if (container != null) {
 			strJson = container.getJsonString();

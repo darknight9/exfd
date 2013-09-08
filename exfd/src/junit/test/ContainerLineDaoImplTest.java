@@ -25,11 +25,11 @@ public class ContainerLineDaoImplTest {
 		
 		String code = "CMAU1396117";
 		
-		Container container = impl.find(code);
+		Container container = impl.find(code, true);
 
 		logger.debug(
-				"container[{}]: download[{}], notfound[{}], parseerror[{}]",
-				code, container.getDownload(), container.getNotfound(),
+				"container[{}]: download[{}], found[{}], error[{}]",
+				code, container.getDownload(), container.getFound(),
 				container.getError());
 
 		PrintWriter out = new PrintWriter(new File(

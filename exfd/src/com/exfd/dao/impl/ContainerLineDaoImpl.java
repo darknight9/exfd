@@ -44,11 +44,62 @@ public class ContainerLineDaoImpl implements ContainerDao {
 	}
 
 	@Override
-	public Container find(String code) {
-		
+	public Container find(String code, boolean isUpdate) {
+
+		String company = ContainerUtils.getCompany(code);
+
+		return find(code, company, isUpdate);
+	}
+
+	// 不考虑数据库中的数据，直接联网获取信息.
+	public Container trackLine(String code, String company, boolean isUpdate) {
+
+		// 需要联网获取最新的信息.
+		String page = ContainerUtils.GetPage(code, company);
+
+		Container onlineContainer = null;
+		if (page != null && !page.isEmpty()) {
+			logger.debug("CONT[{}]. THE FIRST 300 BYTES OF THE PAGE IS: [{}]",
+					code, page.substring(0, 300));
+			onlineContainer = ContainerUtils.GetContainerByPage(code, page);
+		} else {
+			logger.debug("CONT[{}]. GetPage return empty page.", code);
+		}
+
+		if (isUpdate && onlineContainer != null) {
+			// 联网信息有效，写入数据库并返回.
+			updateOrAdd(onlineContainer);
+		}
+
+		return onlineContainer;
+
+	}
+
+	private boolean isTrackValid(Container container, Date expire) {
+
+		// found为1的时候才表示信息有效.
+		if (container.getFound() != 1) {
+			return false;
+		}
+
+		// 如果记录found时间没有过期，说明记录有效.
+		if (container.getFoundtime().after(expire)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public ArrayList<Container> list() {
+		return dbimp.list();
+	}
+
+	@Override
+	public Container find(String code, String company, boolean isUpdate) {
+
 		// 先在数据库中查找.
-		Container container = dbimp.find(code);
-		
+		Container container = dbimp.find(code, true);
+
 		// 规则：7天前的数据是失效的.
 		Calendar rightnow = Calendar.getInstance();
 		rightnow.add(Calendar.DAY_OF_YEAR, -7);
@@ -61,51 +112,44 @@ public class ContainerLineDaoImpl implements ContainerDao {
 
 			// 如果有效就可以返回了.
 			if (isTrackValid(container, expire)) {
-				logger.debug("CONT[{}].find container code [{}] in db valid, return.", code, code);
+				logger.debug(
+						"CONT[{}].find container code [{}] in db valid, return.",
+						code, code);
 				return container;
 			}
 		}
-		
+
 		// 需要联网获取最新的信息.
-		String page = ContainerUtils.GetPage(code);
-		
+		String page = ContainerUtils.GetPage(code, company);
+
 		Container onlineContainer = null;
 		if (page != null && !page.isEmpty()) {
-			logger.debug("CONT[{}]. THE FIRST 300 BYTES OF THE PAGE IS: [{}]", code, page.substring(0,300));
+			logger.debug("CONT[{}]. THE FIRST 300 BYTES OF THE PAGE IS: [{}]",
+					code, page.substring(0, 300));
 			onlineContainer = ContainerUtils.GetContainerByPage(code, page);
 		} else {
 			logger.debug("CONT[{}]. GetPage return empty page.", code);
 		}
-		
+
 		// 如果联网失败或者信息无效.
 		if (onlineContainer == null) {
 			if (container != null) {
-				
+
 				// 更新记录的mtime值.
-				update(container);
+				if (isUpdate) {
+					update(container);
+				}
 				return container;
 			} else {
 				return null;
 			}
 		} else {
 			// 联网信息有效，写入数据库并返回.
-			updateOrAdd(onlineContainer);
+			if (isUpdate) {
+				updateOrAdd(onlineContainer);
+			}
 			return onlineContainer;
 		}
-	}
-
-	private boolean isTrackValid(Container container, Date expire) {
-		
-		// 如果记录更新时间没有过期，说明记录有效.
-		if (container.getMtime().after(expire)){
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public ArrayList<Container> list() {
-		return dbimp.list();
 	}
 
 }

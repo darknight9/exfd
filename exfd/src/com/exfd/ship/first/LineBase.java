@@ -337,7 +337,7 @@ public class LineBase {
 			logger.debug(
 					"CONT[{}] container page contains not found information.",
 					code);
-			container.setNotfound(1);
+			container.setFound(2);
 			return true;
 		}
 		return false;
