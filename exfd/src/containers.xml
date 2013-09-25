@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE containers SYSTEM "container.dtd">
 <containers>
-	<debug>true</debug>
+	<debug>false</debug>
 	<defaults>
 		<default name="Accept" value="text/html, application/xhtml+xml, */*"></default>
 		<default name="Accept-Language" value="zh-CN"></default>
