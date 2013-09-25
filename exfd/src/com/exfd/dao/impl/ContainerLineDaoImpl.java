@@ -48,6 +48,7 @@ public class ContainerLineDaoImpl implements ContainerDao {
 
 		String company = ContainerUtils.getCompany(code);
 
+		// 传入的company可能是空字符串.
 		return find(code, company, isUpdate);
 	}
 
@@ -98,7 +99,7 @@ public class ContainerLineDaoImpl implements ContainerDao {
 	public Container find(String code, String company, boolean isUpdate) {
 
 		// 先在数据库中查找.
-		Container container = dbimp.find(code, true);
+		Container container = dbimp.find(code, isUpdate);
 
 		// 规则：7天前的数据是失效的.
 		Calendar rightnow = Calendar.getInstance();
@@ -117,6 +118,22 @@ public class ContainerLineDaoImpl implements ContainerDao {
 						code, code);
 				return container;
 			}
+			
+			// 虽然无效，但是因为没有company信息，只能返回已经有的信息.
+			if (company == null || company.isEmpty()) {
+				logger.debug(
+						"CONT[{}].find container code [{}] in db novalid, but company is empty, return.",
+						code, code);
+				return container;
+			}
+		}
+		
+		// 因为没有company信息，只能返回空.
+		if (company == null || company.isEmpty()) {
+			logger.debug(
+					"CONT[{}]. can't find in db. company is empty, return.",
+					code);
+			return null;
 		}
 
 		// 需要联网获取最新的信息.

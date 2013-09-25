@@ -8,12 +8,11 @@ public class Container {
 	private String company;
 	private Date ctime; // 记录生成时间
 	private Date mtime; // 记录修改时间
-	private Date foundtime;  // 记录发现信息时间.
+	private Date foundtime; // 记录发现信息时间.
 	private int download; // 0:init. 1:download OK.
 	private int found; // 0:init. 1:found. 2:not found.
-	private int error; // 0:not error. 
+	private int error; // 0:not error.
 	private ContainerStatus status;
-	private String tableString;
 	private String jsonString;
 	private String httpresult;
 
@@ -57,14 +56,6 @@ public class Container {
 		this.mtime = mtime;
 	}
 
-	public String getTableString() {
-		return tableString;
-	}
-
-	public void setTableString(String tableString) {
-		this.tableString = tableString;
-	}
-
 	public String getJsonString() {
 		return jsonString;
 	}
@@ -106,9 +97,9 @@ public class Container {
 				.append(mtime).append(", foundtime=").append(foundtime)
 				.append(", download=").append(download).append(", found=")
 				.append(found).append(", error=").append(error)
-				.append(", status=").append(status).append(", tableString=")
-				.append(tableString).append(", jsonString=").append(jsonString)
-				.append(", httpresult=").append(httpresult).append("]");
+				.append(", status=").append(status).append(", jsonString=")
+				.append(jsonString).append(", httpresult=").append(httpresult)
+				.append("]");
 		return builder.toString();
 	}
 

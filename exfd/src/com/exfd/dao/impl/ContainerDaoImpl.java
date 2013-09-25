@@ -53,7 +53,6 @@ public class ContainerDaoImpl implements ContainerDao {
 		sb.append(container.getFound()).append("','");
 		sb.append(container.getError()).append("','");
 		
-		sb.append(container.getTableString().replace("'", "''")).append("','");
 		sb.append(container.getJsonString().replace("'", "''")).append("','");
 		sb.append(container.getHttpresult().replace("'", "''")).append("');");
 
@@ -113,7 +112,6 @@ public class ContainerDaoImpl implements ContainerDao {
 		sb.append("found = '").append(container.getFound()).append("', ");
 		sb.append("error = '").append(container.getError()).append("', ");
 		
-		sb.append("tablestring = '").append(container.getTableString().replace("'", "''")).append("', ");
 		sb.append("jsonstring = '").append(container.getJsonString().replace("'", "''")).append("', ");
 		sb.append("httpresult = '").append(container.getHttpresult().replace("'", "''")).append("' ");
 
@@ -164,7 +162,6 @@ public class ContainerDaoImpl implements ContainerDao {
 		container.setFound(rs.getInt("found"));
 		container.setError(rs.getInt("error"));
 
-		container.setTableString(rs.getString("tablestring"));
 		container.setJsonString(rs.getString("jsonstring"));
 		container.setHttpresult(rs.getString("httpresult"));
 		

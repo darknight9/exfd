@@ -59,11 +59,6 @@ public class ContainerUtilsTest {
 				code, container.getDownload(), container.getFound(),
 				container.getError());
 
-		PrintWriter out = new PrintWriter(new File(
-				"/Users/david/Developer/TestData/" + code + "T.html"));
-		out.print(container.getTableString());
-		out.flush();
-		out.close();
 
 		PrintWriter out2 = new PrintWriter(new File(
 				"/Users/david/Developer/TestData/" + code + "J.html"));
@@ -87,11 +82,6 @@ public class ContainerUtilsTest {
 				code, container.getDownload(), container.getFound(),
 				container.getError());
 
-		PrintWriter out = new PrintWriter(new File(
-				"/Users/david/Developer/TestData/" + code + "T.html"));
-		out.print(container.getTableString());
-		out.flush();
-		out.close();
 
 		PrintWriter out2 = new PrintWriter(new File(
 				"/Users/david/Developer/TestData/" + code + "J.html"));

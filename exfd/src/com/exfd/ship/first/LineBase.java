@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -287,9 +288,8 @@ public class LineBase {
 
 		Container container = new Container();
 		container.setCode(code);
-		container.setCompany(company);
+		container.setTrycompany(company);
 		container.setJsonString("");
-		container.setTableString("");
 		container.setHttpresult("");
 
 		ContainerStatus status = new ContainerStatus();
@@ -436,6 +436,11 @@ public class LineBase {
 		// 生成Json.
 		ContainerStatus status = container.getStatus();
 		container.setJsonString(status2Json(status));
+		
+		// 成功后设置company.
+		container.setCompany(container.getTrycompany());
+		container.setFound(1);
+		container.setFoundtime(new Date());
 		
 		// 向后兼容.
 		//container.setHttpresult(status2JsonOld(status));
