@@ -11,6 +11,11 @@
 	<link href="css/style.css" rel="stylesheet">
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<!--[if lte IE 6]>
+	<link href="css/bootstrap-ie6.min.css" rel="stylesheet">
+	<link href="css/ie.css" rel="stylesheet">
+	<script type="text/javascript" src="js/bootstrap-ie.js"></script>
+	<![endif]-->
 	<script type="text/javascript" src="js/utils.js"></script>
 </head>
 <body>
@@ -20,7 +25,7 @@
 				<ul class="nav">
 					<li><a href="/index.html">欢迎来到易寻方达！</a></li>
 					<li class="divider-vertical"></li>
-					<li><a href="/seal.jsp" class="color-link">搜铅封</a></li>
+					<li><a href="/seal.jsp" class="color-link">智能铅封</a></li>
 				<li class="divider-vertical"></li>
 					<li><a href="/ship.jsp" class="color-link">搜船</a></li>
 				</ul>
@@ -74,16 +79,14 @@
 		</div>
 	</div>
 
-	<footer class="footer footer-margin">
+	<footer class="footer">
 		<div class="container">
 			<ul class="footer-links">
-			    <li><a href="#">关于易寻方达</a></li>
-			    <li><a href="#">合作伙伴</a></li>
-			    <li><a href="#">营销中心</a></li>
-			    <li><a href="#">联系我们</a></li>
-			    <li><a href="#">网站地图</a></li>
-			    <li><a href="#">法律声明</a></li>
-			    <span class="float-right footer-license">© 2013 efinder.com.cn 版权所有</span>
+			    <li><a href="/partners.html">合作伙伴</a></li>
+			    <li><a href="/sitemap/about.html">联系我们</a></li>
+			    <li><a href="javascript:void(0);">网站地图</a></li>
+			    <li><a href="javascript:void(0);">法律声明</a></li>
+			    <span class="float-right footer-license">版权所有 © 北京易寻方达科技有限公司。  京ICP备13009564号</span>
 			</ul>
 		</div>
 	</footer>

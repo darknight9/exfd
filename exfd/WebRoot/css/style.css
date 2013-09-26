@@ -649,3 +649,22 @@ a.site-bar-nav-div:hover {
    border-bottom: 1px dashed #e5e5e5;
    margin: 10px auto;
 }
+
+.select-div {
+   position: absolute;
+   left: 350px;
+   bottom: 10px;
+}
+
+.select-btn {
+   color: #646464;
+   margin: 6px;
+   padding: 1px 5px;
+   border: 1px solid #d8d8d8;
+   background: #fafafa;
+   cursor: pointer;
+}
+
+.select-btn:hover {
+   text-decoration: none;
+}

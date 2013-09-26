@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title>易寻方达 - 搜铅封</title>
+	<title>易寻方达 - 智能铅封</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
@@ -11,6 +11,11 @@
 	<link href="css/style.css" rel="stylesheet">
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<!--[if lte IE 6]>
+	<link href="css/bootstrap-ie6.min.css" rel="stylesheet">
+	<link href="css/ie.css" rel="stylesheet">
+	<script type="text/javascript" src="js/bootstrap-ie.js"></script>
+	<![endif]-->
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
@@ -43,7 +48,7 @@
 		</div>
 		<div class="span9 logo-container">
 			<form id="searchForm" class="form-inline" accept-charset="utf-8">
-				<input id="searchInput" type="text" class="input-xlarge search-box-input search-box-input-large" placeholder="搜铅封" name="code">
+				<input id="searchInput" type="text" class="input-xlarge search-box-input search-box-input-large" placeholder="智能铅封" name="code">
 				<button type="submit" class="btn search-box-button">搜索</button>
 			</form>
 		</div>
@@ -62,13 +67,11 @@
 	<footer class="footer">
 		<div class="container">
 			<ul class="footer-links">
-			    <li><a href="#">关于易寻方达</a></li>
-			    <li><a href="#">合作伙伴</a></li>
-			    <li><a href="#">营销中心</a></li>
-			    <li><a href="#">联系我们</a></li>
-			    <li><a href="#">网站地图</a></li>
-			    <li><a href="#">法律声明</a></li>
-			    <span class="float-right footer-license">© 2013 efinder.com.cn 版权所有</span>
+	    	   <li><a href="/partners.html">合作伙伴</a></li>
+			   <li><a href="/sitemap/about.html">联系我们</a></li>
+			   <li><a href="javascript:void(0);">网站地图</a></li>
+			   <li><a href="javascript:void(0);">法律声明</a></li>
+			   <span class="float-right footer-license">版权所有 © 北京易寻方达科技有限公司。  京ICP备13009564号</span>
 			</ul>
 		</div>
 	</footer>
@@ -100,7 +103,7 @@
 			var successCallbck = function(data) {
 				if (!!data) {
 					EFINDER.utils.hideError();
-					map.drawMarker(data.longitude, data.latitude, '搜铅封', getInfoContent(data.code, data.poi));
+					map.drawMarker(data.longitude, data.latitude, '智能铅封', getInfoContent(data.code, data.poi));
 				} else {
 					EFINDER.utils.showError('很抱歉，我们没有查找到铅封（' + searchInput.val() + '）的信息。');
 				}
