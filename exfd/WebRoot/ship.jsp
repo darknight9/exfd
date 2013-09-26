@@ -11,6 +11,11 @@
 	<link href="css/style.css" rel="stylesheet">
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<!--[if lte IE 6]>
+	<link href="css/bootstrap-ie6.min.css" rel="stylesheet">
+	<link href="css/ie.css" rel="stylesheet">
+	<script type="text/javascript" src="js/bootstrap-ie.js"></script>
+	<![endif]-->
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
 	<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
 	<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
@@ -23,7 +28,7 @@
 			<ul class="nav">
 				<li><a href="/index.html">欢迎来到易寻方达！</a></li>
 				<li class="divider-vertical"></li>
-				<li><a href="/seal.jsp" class="color-link">搜铅封</a></li>
+				<li><a href="/seal.jsp" class="color-link">智能铅封</a></li>
 				<li class="divider-vertical"></li>
 				<li><a href="/container.jsp" class="color-link">搜箱</a></li>
 			</ul>
@@ -71,18 +76,23 @@
 		<span id="errorMsg"></span>
 	</div>
 
-	<div id="map" class="map-container"></div>
+	<div id="map" class="map-small-container"></div>
+
+   <div class="map-table">
+      <div class="panel-title map-title">
+         <h2>船舶详情</h2>
+      </div>
+      <table id="mapTable" class="table table-bordered"></table>
+   </div>
 
 	<footer class="footer">
 		<div class="container">
 			<ul class="footer-links">
-			    <li><a href="#">关于易寻方达</a></li>
-			    <li><a href="#">合作伙伴</a></li>
-			    <li><a href="#">营销中心</a></li>
-			    <li><a href="#">联系我们</a></li>
-			    <li><a href="#">网站地图</a></li>
-			    <li><a href="#">法律声明</a></li>
-			    <span class="float-right footer-license">© 2013 efinder.com.cn 版权所有</span>
+	    	   <li><a href="/partners.html">合作伙伴</a></li>
+			   <li><a href="/sitemap/about.html">联系我们</a></li>
+			   <li><a href="javascript:void(0);">网站地图</a></li>
+			   <li><a href="javascript:void(0);">法律声明</a></li>
+			   <span class="float-right footer-license">版权所有 © 北京易寻方达科技有限公司。  京ICP备13009564号</span>
 			</ul>
 		</div>
 	</footer>
@@ -97,7 +107,8 @@
 			"use strict";
 
 			var map = null,
-				searchInput = $('#searchInput');
+				 searchInput = $('#searchInput'),
+             mapTable = $('#mapTable');
 			
 			var getInfoContent = function(ship) {
 				return '<div style="margin:0;line-height:20px;padding:2px;">\
@@ -114,6 +125,73 @@
 		            </div>';
 			};
 
+         var getShipDetails = function(ship) {
+            return '<tbody>\
+                   <tr>\
+                     <th>ID号</th>\
+                     <td>' + ship.shipid + '</td>\
+                     <th>更新时间</th>\
+                     <td>' + ship.updatetime + '</td>\
+                   </tr>\
+                   <tr>\
+                     <th>英文船名</th>\
+                     <td>' + ship.shipname + '</td>\
+                     <th>中文船名</th>\
+                     <td>' + ship.shipnamecn + '</td>\
+                  </tr>\
+                  <tr>\
+                     <th>MMSI</th>\
+                     <td>' + ship.mmsi + '</td>\
+                     <th>IMO</th>\
+                     <td>' + ship.imo + '</td>\
+                  </tr>\
+                  <tr>\
+                     <th>呼号</th>\
+                     <td>' + ship.callsign + '</td>\
+                     <th>船籍</th>\
+                     <td>' + ship.shipflag + '</td>\
+                  </tr>\
+                  <tr>\
+                     <th>船舶类型</th>\
+                     <td>' + ship.shiptype + '</td>\
+                     <th>船长</th>\
+                     <td>' + ship.shiplength + '</td>\
+                  </tr>\
+                  <tr>\
+                     <th>船宽</th>\
+                     <td>' + ship.shipwidth + '</td>\
+                     <th>吃水</th>\
+                     <td>' + ship.draft + '</td>\
+                  </tr>\
+                  <tr>\
+                     <th>报位时间</th>\
+                     <td>' + ship.gpstime + '</td>\
+                     <th>报位方式</th>\
+                     <td>' + ship.reporttype + '</td>\
+                  </tr>\
+                  <tr>\
+                     <th>经度</th>\
+                     <td>' + ship.longitude + '</td>\
+                     <th>纬度</th>\
+                     <td>' + ship.latitude + '</td>\
+                  </tr>\
+                  <tr>\
+                     <th>航速</th>\
+                     <td>' + ship.speed + '</td>\
+                     <th>航向</th>\
+                     <td>' + ship.direction + '</td>\
+                  </tr>\
+                  <tr>\
+                     <th>航首向</th>\
+                     <td>' + ship.truehending + '</td>\
+                     <th>航行状态</th>\
+                     <td>' + ship.state + '</td>\
+                  </tr>\
+                  <tr>\
+                  </tr>\
+               </tbody>';
+         }; 
+
 			var successCallbck = function(data) {
 				if (!!data) {
 					EFINDER.utils.hideError();
@@ -124,6 +202,7 @@
 						anchorWidth: 60,
 						anchorHeight: 53
 					});
+               mapTable.html(getShipDetails(data));
 				} else {
 					EFINDER.utils.showError('很抱歉，我们没有查找到航船（' +
 						$("#searchForm input[type='radio']:checked").val() + '：' +
@@ -145,7 +224,6 @@
 
 			var init = function() {
 				var url,
-					self = this,
 					code = '',
 					type = 'name',
 					filter = '';
@@ -166,7 +244,7 @@
 
 				$('#searchForm').submit(function(e) {
 					e.preventDefault();
-					submitForm();	
+					submitForm();
 				})
 			};
 

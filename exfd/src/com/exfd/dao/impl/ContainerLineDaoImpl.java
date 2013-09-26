@@ -89,6 +89,20 @@ public class ContainerLineDaoImpl implements ContainerDao {
 		}
 		return false;
 	}
+	
+	private boolean isRecordValid(Container container, Date expire) {
+
+		// found为2的时候才表示信息有效(没找到箱子的这种信息).
+		if (container.getFound() != 2) {
+			return false;
+		}
+
+		// 如果记录found时间没有过期，说明记录有效.
+		if (container.getFoundtime().after(expire)) {
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public ArrayList<Container> list() {
@@ -125,6 +139,14 @@ public class ContainerLineDaoImpl implements ContainerDao {
 						"CONT[{}].find container code [{}] in db novalid, but company is empty, return.",
 						code, code);
 				return container;
+			}
+			
+			// TODO 这里的逻辑是暂时的.
+			if (isRecordValid(container, expire)) {
+				logger.debug(
+						"CONT[{}].find container code [{}] in db valid, [not found record] return null.",
+						code, code);
+				return null;
 			}
 		}
 		

@@ -289,6 +289,7 @@ public class LineBase {
 		Container container = new Container();
 		container.setCode(code);
 		container.setTrycompany(company);
+		container.setFoundtime(new Date());
 		container.setJsonString("");
 		container.setHttpresult("");
 

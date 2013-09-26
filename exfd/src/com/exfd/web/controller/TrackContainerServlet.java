@@ -27,7 +27,12 @@ public class TrackContainerServlet extends HttpServlet {
 		// 参数归一化后回传.
 		String code = request.getParameter("code").trim().toUpperCase();
 		request.setAttribute("code", code);
-		String company = request.getParameter("company").trim().toUpperCase();
+		String company = request.getParameter("company");
+		if (company == null || company.isEmpty()) {
+			company = "DEFAULT";
+		} else {
+			company = company.trim().toUpperCase();
+		}
 		request.setAttribute("company", company);
 
 		// 记录请求.
@@ -43,7 +48,7 @@ public class TrackContainerServlet extends HttpServlet {
 					response);
 			return;
 		}
-		
+
 		// 设置了company后再查询.
 		if (company.equals("DEFAULT")) {
 			company = ContainerUtils.getCompany(code);

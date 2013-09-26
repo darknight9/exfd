@@ -9,6 +9,11 @@
 	<link href="css/style.css" rel="stylesheet">
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<!--[if lte IE 6]>
+	<link href="css/bootstrap-ie6.min.css" rel="stylesheet">
+	<link href="css/ie.css" rel="stylesheet">
+	<script type="text/javascript" src="js/bootstrap-ie.js"></script>
+	<![endif]-->
 </head>
 <body>
 	<div class="main-wrap">
@@ -16,9 +21,9 @@
 			<div class="navbar-inner">
 				<div class="container">
 					<ul class="nav">
-						<li><a href="#">欢迎来到易寻方达！</a></li>
+						<li><a href="javascript:void(0);">欢迎来到易寻方达！</a></li>
 					</ul>
-					<ul class="nav float-right">	
+					<ul class="nav float-right">
 						<li><a href="#" class="color-highlight">登录</a></li>
 						<li class="divider-vertical"></li>
 						<li><a href="#">注册</a></li>
@@ -29,20 +34,20 @@
 
 		<div class="container">
 			<div class="span2 offset1 logo-container">
-				<a href="#">
+				<a href="javascript:void(0);">
 					<img src="img/logo.png" width="100px" height="70px">
 				</a>
 			</div>
 			<div class="span7 relative-div">
 				<ul id="searchNav" class="nav nav-tabs search-nav-bar">
-				    <li data-type="SEAL" title="搜铅封" class="active">
-				    	<a href="#">搜铅封</a>
+				    <li data-type="SEAL" title="智能铅封" class="active nav-first">
+				    	<a href="#">智能铅封</a>
 				    </li>
 				    <li data-type="CONTAINER" title="搜箱"><a href="#">搜箱</a></li>
 				    <li data-type="SHIP" title="搜船"><a href="#">搜船</a></li>
 				</ul>
 				<form id="searchForm" class="form-inline" method="post" accept-charset="utf-8">
-					<input id="searchInput" type="text" class="search-box-input" placeholder="搜铅封" name="code">
+					<input id="searchInput" type="text" class="search-box-input" placeholder="智能铅封" name="code">
 					<span class="search-bar-radio-group hide">
 						<label class="radio inline">
 						    <input type="radio" name="type" value="name" checked> 船名
@@ -65,24 +70,97 @@
 		<div class="site-bar">
 			<div class="container relative-div">
 			    <span class="site-bar-inner">全部分类</span>
-			    <div class="site-bar-nav">
-			    	<div class="site-bar-nav-inner">
-			    		<div class="site-bar-nav-icon-1"></div>
-			    		<a href="#" class="site-bar-nav-label">关于我们</a>
-					</div>
-					<div class="site-bar-nav-inner">
-						<span class="site-bar-nav-icon-2"></span>
-			    		<a href="#" class="site-bar-nav-label">服务中心</a>
-					</div>
-					<div class="site-bar-nav-inner">
-						<span class="site-bar-nav-icon-3"></span>
-			    		<a href="#" class="site-bar-nav-label">网站地图</a>
-					</div>
-					<div class="site-bar-nav-inner">
-						<span class="site-bar-nav-icon-4"></span>
-			    		<a href="#" class="site-bar-nav-label">联系我们</a>
-					</div>
-			    </div>
+			    <ul role="menu" class="site-bar-nav">
+			    	<li class="site-bar-nav-li">
+			    		<a href="/products/product1_1.html" class="site-bar-nav-div" aria-lable="产品展示" aria-haspopup="true">
+                     <h3 class="site-bar-title">产品展示</h3>
+                     <ul class="site-bar-list">
+                        <li>电子锁系列</li>
+                        <li>智能锁系列</li>
+                        <li>射频锁系列</li>
+                     </ul>
+                  </a>
+                  <div role="menu" class="site-bar-menu site-bar-menu-product">
+                     <ul class="unstyled">
+                        <li>
+                           <h3 class="popover-title site-bar-title">电子锁系列</h3>
+                           <ul class="site-bar-list">
+                              <li><a href="/products/product1_1.html">ES-YT电子铅封</a></li>
+                              <li><a href="/products/product1_2.html">EL-DT电子锁</a></li>
+                              <li><a href="/products/product1_3.html">ESR-C电子铅封连接器</a></li>
+                              <li><a href="/products/product1_4.html">ESR-H电子铅封查询机</a></li>
+                              <li><a href="/products/product1_5.html">ELR-H电子铅封查询机</a></li>
+                           </ul>
+                        </li>
+                        <li>
+                           <h3 class="popover-title site-bar-title">智能锁系列</h3>
+                           <ul class="site-bar-list">
+                              <li><a href="/products/product2_1.html">IGL-B GPS智能锁</a></li>
+                              <li><a href="/products/product2_2.html">IGL-BA GPS智能锁</a></li>
+                              <li><a href="/products/product2_3.html">IGR-B GPS RFID锁</a></li>
+                              <li><a href="/products/product2_4.html">IGL-BAT GPS温度智能锁</a></li>
+                           </ul>
+                        </li>
+                        <li>
+                           <h3 class="popover-title site-bar-title">射频锁系列</h3>
+                           <ul class="site-bar-list">
+                              <li><a href="/products/product3_1.html">RES-B RFID电子铅封</a></li>
+                              <li><a href="/products/product3_2.html">RESR-H RFID电子铅封读写器</a></li>
+                           </ul>
+                        </li>
+                     </ul>
+                  </div>
+					</li>
+					<li class="site-bar-nav-li">
+			    		<a href="/solutions/solution1.html" class="site-bar-nav-div" aria-label="解决方案" aria-haspopup="true">
+                     <h3 class="site-bar-title">解决方案</h3>
+                     <ul class="site-bar-list">
+                        <li>智能防盗</li>
+                        <li>追踪定位</li>
+                        <li>射频应用</li>
+                        <li>传感测量</li>
+                     </ul>
+                  </a>
+					</li>
+					<li class="site-bar-nav-li">
+			    		<a href="/partners.html" class="site-bar-nav-div" aria-label="合作伙伴" aria-haspopup="true">
+                     <h3 class="site-bar-title">合作伙伴</h3>
+                     <ul class="site-bar-list">
+                        <li>业务市场</li>
+                        <li>技术研发</li>
+                     </ul>
+                  </a>
+                  <div role="menu" class="site-bar-menu site-bar-menu-partner">
+                     <ul class="unstyled">
+                        <li>
+                           <h3 class="popover-title site-bar-title">业务市场</h3>
+                           <ul class="site-bar-list">
+                              <li><a href="http://www.myships.com/">宝船网</a></li>
+                              <li><a href="http://www.toyota.com.cn/">丰田汽车</a></li>
+                              <li><a href="http://www.cn.total.com/">道达尔石油</a></li>
+                              <li><a href="http://www.xjbt.gov.cn/">新疆建设兵团</a></li>
+                              <li><a href="http://www.bucg.com/">北京城建集团</a></li>
+                              <li><a href="http://www.zt17.cn/">中铁十七局</a></li>
+                              <li><a href="http://www.zoomlion.com/">中联重科</a></li>
+                           </ul>
+                        </li>
+                        <li>
+                           <h3 class="popover-title site-bar-title">技术研发</h3>
+                           <ul class="site-bar-list">
+                              <li><a href="http://www.pku.edu.cn/">北京大学</a></li>
+                              <li><a href="http://www.jlu.edu.cn/">吉林大学</a></li>
+                              <li><a href="http://www.cttic.cn/">中国交通通信信息中心</a></li>
+                           </ul>
+                        </li>
+                     </ul>
+                  </div>
+					</li>
+					<li class="site-bar-nav-li">
+			    		<a href="/sitemap/about.html" class="site-bar-nav-div" aria-label="服务中心" aria-haspopup="true">
+                     <h3 class="site-bar-title">服务中心</h3>
+                  </a>
+					</li>
+			    </ul>
 			</div>
 		</div>
 
@@ -130,16 +208,14 @@
 		</div>
 	</div>
 
-	<footer class="footer">
+	<footer class="footer footer-margin">
 		<div class="container">
 			<ul class="footer-links">
-			    <li><a href="#">关于易寻方达</a></li>
-			    <li><a href="#">合作伙伴</a></li>
-			    <li><a href="#">营销中心</a></li>
-			    <li><a href="#">联系我们</a></li>
-			    <li><a href="#">网站地图</a></li>
-			    <li><a href="#">法律声明</a></li>
-			    <span class="float-right footer-license">© 2013 efinder.com.cn 版权所有</span>
+	    	   <li><a href="/partners.html">合作伙伴</a></li>
+			   <li><a href="/sitemap/about.html">联系我们</a></li>
+			   <li><a href="javascript:void(0);">网站地图</a></li>
+			   <li><a href="javascript:void(0);">法律声明</a></li>
+			   <span class="float-right footer-license">版权所有 © 北京易寻方达科技有限公司。  京ICP备13009564号</span>
 			</ul>
 		</div>
 	</footer>
@@ -175,7 +251,7 @@
 						}
 
 						if (searchType === 'SEAL') {
-							$('#searchInput').attr('placeholder', '搜铅封');
+							$('#searchInput').attr('placeholder', '智能铅封');
 						} else {
 							$('#searchInput').attr('placeholder', '搜箱');
 						}

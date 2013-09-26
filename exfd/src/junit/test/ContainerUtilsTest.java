@@ -31,7 +31,7 @@ public class ContainerUtilsTest {
 		ContainerUtils.LoadConfig();
 		LineBase.LoadConfig();
 		
-		String code = "CBHU1835330";;
+		String code = "CAXU9286394";;
 		String strPage = ContainerUtils.GetPage(code);
 		PrintWriter out = new PrintWriter(new File("/Users/david/Developer/TestData/" + code + ".html"));
 		out.print(strPage);
