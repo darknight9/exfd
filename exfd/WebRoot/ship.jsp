@@ -33,7 +33,7 @@
 				<li><a href="/container.jsp" class="color-link">搜箱</a></li>
 			</ul>
 			<ul class="nav float-right">	
-				<li><a href="#" class="color-highlight">登录</a></li>
+				<li><a href="#" class="color-highlight">VIP入口</a></li>
 				<li class="divider-vertical"></li>
 				<li><a href="#">注册</a></li>
 			</ul>
@@ -41,34 +41,36 @@
 	</div>
 
 	<div class="search-site-bar">
-		<div class="span2 offset2">
-			<a href="/index.html">
-				<img src="img/logo.png" width="100px" height="70px">
-			</a>
-		</div>
-		<div class="span9 logo-container relative-div">
-			<form id="searchForm" class="form-inline" accept-charset="utf-8">
-				<input id="searchInput" type="text" class="input-xlarge search-box-input search-box-input-large" placeholder="搜船" name="code">
-				<span class="ship-radio-group">
-					<label class="radio inline">
-					    <input type="radio" name="type" value="name" checked> 船名
-					</label>
-					<label class="radio inline">
-					    <input type="radio" name="type" value="mmsi"> MMSI
-					</label>
-					<label class="radio inline">
-					    <input type="radio" name="type" value="imo"> IMO
-					</label>
-					<label class="radio inline">
-					    <input type="radio" name="type" value="callsign"> 呼码
-					</label>
-				</span>
-				<button type="submit" class="btn search-box-button">搜索</button>
-			</form>
-		</div>
-		<div class="busy-cursor-div">
-			<img src="img/loading.gif" id="loadingIndicator" class="hide"/>
-		</div>
+      <div class="container">
+         <div class="span2 offset1">
+            <a href="/index.html">
+               <img src="img/logo.png" width="100px" height="70px">
+            </a>
+         </div>
+         <div class="span7 logo-container relative-div">
+            <form id="searchForm" class="form-inline" accept-charset="utf-8">
+               <input id="searchInput" type="text" class="input-xlarge search-box-input" placeholder="中远鞍钢" name="code">
+               <span class="ship-radio-group">
+                  <label class="radio inline">
+                      <input type="radio" name="type" value="name" checked> 船名
+                  </label>
+                  <label class="radio inline">
+                      <input type="radio" name="type" value="mmsi"> MMSI
+                  </label>
+                  <label class="radio inline">
+                      <input type="radio" name="type" value="imo"> IMO
+                  </label>
+                  <label class="radio inline">
+                      <input type="radio" name="type" value="callsign"> 呼码
+                  </label>
+               </span>
+               <button type="submit" class="btn search-box-button">搜索</button>
+            </form>
+         </div>
+         <div class="busy-cursor-div">
+            <img src="img/loading.gif" id="loadingIndicator" class="hide"/>
+         </div>
+      </div>
 	</div>
 
 	<div id="errorDiv" class="alert alert-error hide">
@@ -213,7 +215,7 @@
 			var submitForm = function() {
 				var code, type, url;
 
-				code = encodeURIComponent(searchInput.val());
+				code = encodeURIComponent(searchInput.val() || '中远鞍钢');
 				if (!!code) {
 					type = encodeURIComponent($("#searchForm input[type='radio']:checked").val());
 					url = '/servlet/TrackShipInfoServlet?code=' + code + '&type=' + type;

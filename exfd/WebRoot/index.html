@@ -17,20 +17,7 @@
 </head>
 <body>
 	<div class="main-wrap">
-		<div id="header" class="navbar">
-			<div class="navbar-inner">
-				<div class="container">
-					<ul class="nav">
-						<li><a href="javascript:void(0);">欢迎来到易寻方达！</a></li>
-					</ul>
-					<ul class="nav float-right">
-						<li><a href="#" class="color-highlight">登录</a></li>
-						<li class="divider-vertical"></li>
-						<li><a href="#">注册</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		<div id="header" class="navbar"></div>
 
 		<div class="container">
 			<div class="span2 offset1 logo-container">
@@ -41,13 +28,13 @@
 			<div class="span7 relative-div">
 				<ul id="searchNav" class="nav nav-tabs search-nav-bar">
 				    <li data-type="SEAL" title="智能铅封" class="active nav-first">
-				    	<a href="#">智能铅封</a>
+				    	<a href="javascript:void(0);">智能铅封</a>
 				    </li>
-				    <li data-type="CONTAINER" title="搜箱"><a href="#">搜箱</a></li>
-				    <li data-type="SHIP" title="搜船"><a href="#">搜船</a></li>
+				    <li data-type="CONTAINER" title="搜箱"><a href="javascript:void(0);">搜箱</a></li>
+				    <li data-type="SHIP" title="搜船"><a href="javascript:void(0);">搜船</a></li>
 				</ul>
 				<form id="searchForm" class="form-inline" method="post" accept-charset="utf-8">
-					<input id="searchInput" type="text" class="search-box-input" placeholder="智能铅封" name="code">
+					<input id="searchInput" type="text" class="search-box-input" placeholder="2127" name="code">
 					<span class="search-bar-radio-group hide">
 						<label class="radio inline">
 						    <input type="radio" name="type" value="name" checked> 船名
@@ -65,6 +52,9 @@
 					<button type="submit" class="btn search-box-button">搜索</button>
 				</form>
 			</div>
+         <div class="vip">
+            <a href="javascript:void(0);">VIP入口</a>
+         </div>
 		</div>
 
 		<div class="site-bar">
@@ -164,7 +154,7 @@
 			</div>
 		</div>
 
-		<div class="container">
+		<div class="container" style="min-height: 500px;">
 			<div id="myCarousel" class="carousel slide ship-carousel">
 			    <ol class="carousel-indicators">
 				    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -233,7 +223,8 @@
 
 				$('#searchNav > li').on('click', function(e) {
 					var self = $(this),
-						radioGroup = $('.search-bar-radio-group');
+						 radioGroup = $('.search-bar-radio-group'),
+                   searchInput = $('#searchInput');
 
 					$.each($('#searchNav > li'), function() {
 						$(this).removeClass('active');
@@ -244,29 +235,43 @@
 					searchType = self.data('type');
 					if (searchType === 'SHIP') {
 						radioGroup.removeClass('hide');
-						$('#searchInput').attr('placeholder', '搜船');
+						searchInput
+                     .attr('placeholder', '中远鞍钢');
 					} else {
 						if (!radioGroup.hasClass('hide')) {
 							radioGroup.addClass('hide');
 						}
 
 						if (searchType === 'SEAL') {
-							$('#searchInput').attr('placeholder', '智能铅封');
+							searchInput
+                        .attr('placeholder', '2127');
 						} else {
-							$('#searchInput').attr('placeholder', '搜箱');
+							searchInput
+                        .attr('placeholder', 'CMAU1396117');
 						}
 					}
 				});
 
-				$('#searchForm').submit(function() {
-					var self = $(this);
+				$('#searchForm').submit(function(e) {
+					var self = $(this),
+                   searchInput = $('#searchInput');
+
 
 					if (searchType === 'SEAL') {
 						self.attr('action', '/searchseal.jsp');
+                  if (!searchInput.val()) {
+                     searchInput.val('2127');
+                  }
 					} else if (searchType === 'CONTAINER') {
 						self.attr('action', '/searchcontainer.jsp');
+                  if (!searchInput.val()) {
+                     searchInput.val('CMAU1396117');
+                  }
 					} else {
 						self.attr('action', '/searchship.jsp');
+                  if (!searchInput.val()) {
+                     searchInput.val('中远鞍钢');
+                  }
 					}
 				});
 			};

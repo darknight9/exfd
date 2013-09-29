@@ -59,10 +59,6 @@ body {
 	border-radius: 4px 0 0 4px !important;
 }
 
-.search-box-input-large {
-	width: 540px;
-}
-
 button.search-box-button {
 	float: left;
 	width: 62px;
@@ -401,7 +397,7 @@ a.site-bar-nav-div:hover {
 }
 
 .footer-margin {
-	margin-top: 80px;
+	margin-top: 40px;
 }
 
 .footer-links {
@@ -564,6 +560,10 @@ a.site-bar-nav-div:hover {
    margin-bottom: 5px;
 }
 
+.panel-content {
+   margin: 20px 20px 10px 20px;
+}
+
 .left-menu {
    float: left;
    width: 200px;
@@ -601,9 +601,23 @@ a.site-bar-nav-div:hover {
    text-indent: 0;
 }
 
+.left-menu li.active {
+   background: url(../img/left-menu-bg2.png) no-repeat center bottom;
+}
+
 .left-menu a {
    font-size: 12px;
    color: #555;
+}
+
+.left-menu a:hover {
+   text-decoration: none;
+   color: #990000;
+}
+
+.left-menu a.active {
+   font-weight: bold;
+   color: #990000;
 }
 
 .page-text {
@@ -667,4 +681,30 @@ a.site-bar-nav-div:hover {
 
 .select-btn:hover {
    text-decoration: none;
+}
+
+.img-top {
+   margin-bottom: 20px;
+}
+
+.img-float-left {
+   float: left;
+   margin-right: 30px;
+}
+
+.vip {
+   margin: 45px 30px 0 20px;
+}
+
+.vip a {
+   font-size: 14px;
+   font-style: italic;
+   line-height: 20px;
+   font-weight: bold;
+   color: #bd362f;
+}
+
+.nav-right {
+   float: right !important;
+   margin: 20px 80px 0 0 !important;
 }

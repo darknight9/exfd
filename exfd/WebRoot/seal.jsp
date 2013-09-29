@@ -33,7 +33,7 @@
 				<li><a href="/ship.jsp" class="color-link">搜船</a></li>
 			</ul>
 			<ul class="nav float-right">	
-				<li><a href="#" class="color-highlight">登录</a></li>
+				<li><a href="#" class="color-highlight">VIP入口</a></li>
 				<li class="divider-vertical"></li>
 				<li><a href="#">注册</a></li>
 			</ul>
@@ -41,20 +41,22 @@
 	</div>
 
 	<div class="search-site-bar">
-		<div class="span2 offset2">
-			<a href="/index.html">
-				<img src="img/logo.png" width="100px" height="70px">
-			</a>
-		</div>
-		<div class="span9 logo-container">
-			<form id="searchForm" class="form-inline" accept-charset="utf-8">
-				<input id="searchInput" type="text" class="input-xlarge search-box-input search-box-input-large" placeholder="智能铅封" name="code">
-				<button type="submit" class="btn search-box-button">搜索</button>
-			</form>
-		</div>
-		<div class="busy-cursor-div">
-			<img src="img/loading.gif" id="loadingIndicator" class="hide"/>
-		</div>
+      <div class="container">
+         <div class="span2 offset1">
+            <a href="/index.html">
+               <img src="img/logo.png" width="100px" height="70px">
+            </a>
+         </div>
+         <div class="span7 logo-container">
+            <form id="searchForm" class="form-inline" accept-charset="utf-8">
+               <input id="searchInput" type="text" class="input-xlarge search-box-input" placeholder="2127" name="code">
+               <button type="submit" class="btn search-box-button">搜索</button>
+            </form>
+         </div>
+         <div class="busy-cursor-div">
+            <img src="img/loading.gif" id="loadingIndicator" class="hide"/>
+         </div>
+      </div>
 	</div>
 
 	<div id="errorDiv" class="alert alert-error">
@@ -112,7 +114,7 @@
 			var submitForm = function() {
 				var code, url;
 
-				code = encodeURIComponent(searchInput.val());
+				code = encodeURIComponent(searchInput.val() || '2127');
 				if (!!code) {
 					url = '/servlet/TrackSealInfoServlet?code=' + code;
 
