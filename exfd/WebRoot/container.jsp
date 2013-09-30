@@ -416,6 +416,7 @@
 				}
 
 				tableDiv.html(htmlStr);
+                tableDiv.removeClass('hide');
 			};
 
 			var submitForm = function() {
