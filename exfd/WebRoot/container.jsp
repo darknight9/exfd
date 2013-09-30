@@ -30,15 +30,15 @@
 					<li><a href="/ship.jsp" class="color-link">搜船</a></li>
 				</ul>
 				<ul class="nav float-right">	
-					<li><a href="#" class="color-highlight">VIP入口</a></li>
+					<li><a href="javascript:void(0);" class="color-highlight">VIP入口</a></li>
 					<li class="divider-vertical"></li>
-					<li><a href="#">注册</a></li>
+					<li><a href="javascript:void(0);">注册</a></li>
 				</ul>
 			</div>
 		</div>
 
 		<div class="search-site-bar">
-         <div class="container">
+         <div class="container relative-div">
             <div class="span2 offset1">
                <a href="/index.html">
                   <img src="img/logo.png" width="100px" height="70px">
@@ -47,11 +47,16 @@
             <div class="span7 logo-container">
                <form id="searchForm" class="form-inline" accept-charset="utf-8">
                   <input id="searchInput" type="text" class="input-xlarge search-box-input" placeholder="CMAU1396117" name="code">
+                  <input id="companyInput" type="hidden" name="company" value="default">
                   <button type="submit" class="btn search-box-button">搜索</button>
                </form>
             </div>
             <div class="busy-cursor-div">
                <img src="img/loading.gif" id="loadingIndicator" class="hide"/>
+            </div>
+            <div class="select-div">
+               <span id="companyName" class="color-link">选择船公司</span>
+               <a id="selectShipCompany" class="select-btn">更改 ></a>
             </div>
          </div>
 		</div>
@@ -77,17 +82,226 @@
 				</div>
 
 				<div id="tableContainer" class="offset1 span9 table-container"></div>
+
+				<div id="companyContainer" class="offset2 span6 hide">
+               <div class="panel-title">
+                  <h2>请指定船公司：</h2>
+               </div>
+					
+               <ul class="shipping-list">
+						<li class="shipping-list-unit">
+							<div class="shipping-list-clearfix">
+								<div class="shipping-list-logo">
+									<img src="/img/shipping/MAERSK.jpg" alt="MAERSK" width="76px" height="76px">
+								</div>
+								<div class="shipping-list-clearfix">
+									<div class="shipping-list-check">
+										<button type="submit" name="shipping" value="MAERSK" class="btn btn-info" data-name="马士基">确定</button>
+									</div>
+									<div class="shipping-list-middle">
+										<div class="shipping-list-title">
+											<a href="http://www.maerskline.com/">马士基</a>
+										</div>
+										<div class="shipping-list-text">
+											Maersk Line
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="shipping-list-unit">
+							<div class="shipping-list-clearfix">
+								<div class="shipping-list-logo">
+									<img src="/img/shipping/MSC.jpg" alt="MSC" width="76px" height="76px">
+								</div>
+								<div class="shipping-list-clearfix">
+									<div class="shipping-list-check">
+										<button type="submit" name="shipping" value="MSC" class="btn btn-info" data-name="地中海">确定</button>
+									</div>
+									<div class="shipping-list-middle">
+										<div class="shipping-list-title">
+											<a href="http://www.mscgva.ch/">地中海</a>
+										</div>
+										<div class="shipping-list-text">
+											Mediterranean Shipping Company
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="shipping-list-unit">
+							<div class="shipping-list-clearfix">
+								<div class="shipping-list-logo">
+									<img src="/img/shipping/CMA.jpg" alt="CMA" width="76px" height="76px">
+								</div>
+								<div class="shipping-list-clearfix">
+									<div class="shipping-list-check">
+										<button type="submit" name="shipping" value="CMA" class="btn btn-info" data-name="法国达飞">确定</button>
+									</div>
+									<div class="shipping-list-middle">
+										<div class="shipping-list-title">
+											<a href="http://www.cma-cgm.com/">法国达飞</a>
+										</div>
+										<div class="shipping-list-text">
+											CMA CGM S.A.
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="shipping-list-unit">
+							<div class="shipping-list-clearfix">
+								<div class="shipping-list-logo">
+									<img src="/img/shipping/EVERGREEN.jpg" alt="EVERGREEN" width="76px" height="76px">
+								</div>
+								<div class="shipping-list-clearfix">
+									<div class="shipping-list-check">
+										<button type="submit" name="shipping" value="EVERGREEN" class="btn btn-info" data-name="长荣海运">确定</button>
+									</div>
+									<div class="shipping-list-middle">
+										<div class="shipping-list-title">
+											<a href="http://www.evergreen-marine.com/">长荣海运</a>
+										</div>
+										<div class="shipping-list-text">
+											Evergreen Marine Corporation
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="shipping-list-unit">
+							<div class="shipping-list-clearfix">
+								<div class="shipping-list-logo">
+									<img src="/img/shipping/COSCO.jpg" alt="COSCO" width="76px" height="76px">
+								</div>
+								<div class="shipping-list-clearfix">
+									<div class="shipping-list-check">
+										<button type="submit" name="shipping" value="COSCO" class="btn btn-info" data-name="中远集团">确定</button>
+									</div>
+									<div class="shipping-list-middle">
+										<div class="shipping-list-title">
+											<a href="http://www.cosco.com/">中远集团</a>
+										</div>
+										<div class="shipping-list-text">
+											China Ocean Shipping Company
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="shipping-list-unit">
+							<div class="shipping-list-clearfix">
+								<div class="shipping-list-logo">
+									<img src="/img/shipping/APL.jpg" alt="APL" width="76px" height="76px">
+								</div>
+								<div class="shipping-list-clearfix">
+									<div class="shipping-list-check">
+										<button type="submit" name="shipping" value="APL" class="btn btn-info" data-name="美国总统轮船">确定</button>
+									</div>
+									<div class="shipping-list-middle">
+										<div class="shipping-list-title">
+											<a href="http://www.apl.com/">美国总统轮船</a>
+										</div>
+										<div class="shipping-list-text">
+											Asia Pacific Marine Container Lines
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="shipping-list-unit">
+							<div class="shipping-list-clearfix">
+								<div class="shipping-list-logo">
+									<img src="/img/shipping/CSAV.jpg" alt="CSAV" width="76px" height="76px">
+								</div>
+								<div class="shipping-list-clearfix">
+									<div class="shipping-list-check">
+										<button type="submit" name="shipping" value="CSAV" class="btn btn-info" data-name="南美邮轮">确定</button>
+									</div>
+									<div class="shipping-list-middle">
+										<div class="shipping-list-title">
+											<a href="http://www.csav.com/">南美邮轮</a>
+										</div>
+										<div class="shipping-list-text">
+											CSAV Compañía Sud Americana de Vapores
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="shipping-list-unit">
+							<div class="shipping-list-clearfix">
+								<div class="shipping-list-logo">
+									<img src="/img/shipping/HANJIN.jpg" alt="HANJIN" width="76px" height="76px">
+								</div>
+								<div class="shipping-list-clearfix">
+									<div class="shipping-list-check">
+										<button type="submit" name="shipping" value="HANJIN" class="btn btn-info" data-name="韩进">确定</button>
+									</div>
+									<div class="shipping-list-middle">
+										<div class="shipping-list-title">
+											<a href="http://www.hanjin.com/">韩进</a>
+										</div>
+										<div class="shipping-list-text">
+											Hanjin Shipping Co. Ltd
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="shipping-list-unit">
+							<div class="shipping-list-clearfix">
+								<div class="shipping-list-logo">
+									<img src="/img/shipping/CHINASHIPPING.jpg" alt="CHINASHIPPING" width="76px" height="76px">
+								</div>
+								<div class="shipping-list-clearfix">
+									<div class="shipping-list-check">
+										<button type="submit" name="shipping" value="CHINASHIPPING" class="btn btn-info" data-name="中海集装箱运输股份有限公司">确定</button>
+									</div>
+									<div class="shipping-list-middle">
+										<div class="shipping-list-title">
+											<a href="http://www.cscl.com.cn/">中海集装箱运输股份有限公司</a>
+										</div>
+										<div class="shipping-list-text">
+											China Shipping Container Lines
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="shipping-list-unit">
+							<div class="shipping-list-clearfix">
+								<div class="shipping-list-logo">
+									<img src="/img/shipping/MOL.jpg" alt="MOL" width="76px" height="76px">
+								</div>
+								<div class="shipping-list-clearfix">
+									<div class="shipping-list-check">
+										<button type="submit" name="shipping" value="MOL" class="btn btn-info" data-name="商船三井">确定</button>
+									</div>
+									<div class="shipping-list-middle">
+										<div class="shipping-list-title">
+											<a href="http://www.cscl.com.cn/">商船三井</a>
+										</div>
+										<div class="shipping-list-text">
+											Mitsui O.S.K. Lines
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<footer class="footer">
+	<footer class="footer footer-margin">
 		<div class="container">
 			<ul class="footer-links">
 			    <li><a href="/partners.html">合作伙伴</a></li>
 			    <li><a href="/sitemap/about.html">联系我们</a></li>
 			    <li><a href="javascript:void(0);">网站地图</a></li>
-			    <li><a href="javascript:void(0);">法律声明</a></li>
+			    <li><a href="/sitemap/legal.html">法律声明</a></li>
 			    <span class="float-right footer-license">版权所有 © 北京易寻方达科技有限公司。  京ICP备13009564号</span>
 			</ul>
 		</div>
@@ -101,7 +315,11 @@
 		$(function() {
 			"use strict";
 
-			var searchInput = $('#searchInput');
+			var searchInput = $('#searchInput'),
+             companyInput = $('#companyInput'),
+             tableDiv = $('#tableContainer'),
+             companyDiv = $('#companyContainer'),
+             companyName = $('#companyName');
 
 			var successCallback = function(data) {
 				var i, obj,
@@ -197,31 +415,64 @@
 					EFINDER.utils.showError('很抱歉，我们没有查找到箱号（' + searchInput.val() + '）的信息。');
 				}
 
-				$('#tableContainer').html(htmlStr);
+				tableDiv.html(htmlStr);
 			};
 
 			var submitForm = function() {
 				var code = encodeURIComponent(searchInput.val() || 'CMAU1396117'),
-				    url = '/servlet/TrackContainerInfoServlet?code=' + code;
+				    url = '/servlet/TrackContainerInfoServlet?code=' + code
+                  + '&company=' + companyInput.val();
 				
-				EFINDER.utils.load(url, successCallback);
+            if (!companyDiv.hasClass('hide')) {
+               companyDiv.addClass('hide');
+            }
+				
+            EFINDER.utils.load(url, successCallback);
 			};
 
 			var init = function() {
-				var code = '';
+				var code = '<%= (code != null) ? code : "" %>';
+
+            $('#selectShipCompany').on('click', function() {
+               if (!tableDiv.hasClass('hide')) {
+                  tableDiv.addClass('hide');
+               }
+
+               companyDiv.removeClass('hide');
+            });
+
+            $('button[name="shipping"]').on('click', function() {
+               var me = this,
+                   self = $(this);
+
+               $('button[name="shipping"]').each(function() {
+                  var btn = $(this);
+
+                  if (this === me) {
+                     if (!btn.hasClass('disabled')) {
+                        btn.addClass('btn-danger disabled');
+                     }
+                  } else {
+                     if (btn.hasClass('disabled')) {
+                        btn.removeClass('btn-danger disabled');
+                     }
+                  }
+               });
+
+               companyName.text(self.data('name'));
+               companyInput.val(self.val());
+            });
 				
-				code = '<%= (code != null) ? code : "" %>';
+            $('#searchForm').submit(function(e) {
+					e.preventDefault();
+	
+					submitForm();
+				});
 
 				if (code !== '') {
 					searchInput.val(code);
 					submitForm();
 				}
-
-				$('#searchForm').submit(function(e) {
-					e.preventDefault();
-	
-					submitForm();
-				})
 			};
 
 			init();

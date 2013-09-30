@@ -91,49 +91,49 @@ window.EFINDER = window.EFINDER || {};
     };
 
     EFINDER.utils = {
-        showBusyCursor : function(display) {
-            var cursor = $('#loadingIndicator');
+       showBusyCursor : function(display) {
+          var cursor = $('#loadingIndicator');
 
-            if (display) {
-                cursor.show();
-            } else {
-                cursor.hide();
-            }
-        },
+          if (display) {
+             cursor.show();
+          } else {
+             cursor.hide();
+          }
+       },
 
-        load : function(url, successCallback, errorCallback) {
-	    var self = this;
+       load : function(url, successCallback, errorCallback) {
+          var self = this;
 
-            this.showBusyCursor(true);
-            $.ajax({
-                type: 'GET',
-                url: url,
-                dataType: 'json',
-                cache: false,
-                success: function(data) {
-                    self.showBusyCursor(false);
-                    if (typeof successCallback === 'function') {
-                        successCallback(data);
-                    }
-                },
-                error: function(e) {
-                    self.showBusyCursor(false);
-                    EFINDER.logger.error('Search Seal AJAX request failure!');
-                    if (typeof errorCallback === 'function') {
-                        errorCallback(e);
-                    }
+          this.showBusyCursor(true);
+          $.ajax({
+             type: 'GET',
+             url: url,
+             dataType: 'json',
+             cache: false,
+             success: function(data) {
+                self.showBusyCursor(false);
+                if (typeof successCallback === 'function') {
+                   successCallback(data);
                 }
-            });
-        },
+             },
+             error: function(e) {
+                self.showBusyCursor(false);
+                EFINDER.logger.error('Search Seal AJAX request failure!');
+                if (typeof errorCallback === 'function') {
+                   errorCallback(e);
+                }
+             }
+          });
+       },
 
-        showError : function(msg) {
-            $('#errorMsg').text(msg);
-            $('#errorDiv').show();
-        },
+       showError : function(msg) {
+          $('#errorMsg').text(msg);
+          $('#errorDiv').show();
+       },
 
-        hideError : function() {
-            $('#errorDiv').hide();
-        }
+       hideError : function() {
+          $('#errorDiv').hide();
+       }
     };
 
 }(window.jQuery, window.EFINDER));

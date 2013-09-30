@@ -666,8 +666,8 @@ a.site-bar-nav-div:hover {
 
 .select-div {
    position: absolute;
-   left: 350px;
-   bottom: 10px;
+   left: 260px;
+   bottom: 0;
 }
 
 .select-btn {
@@ -707,4 +707,15 @@ a.site-bar-nav-div:hover {
 .nav-right {
    float: right !important;
    margin: 20px 80px 0 0 !important;
+}
+
+.non-indent {
+   text-indent: 0;
+}
+
+.btn-danger.disabled,
+.btn-danger[disabled] {
+   color: #fff;
+   background-color: #bd362f;
+   *background-color: #a9302a;
 }

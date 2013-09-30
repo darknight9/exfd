@@ -33,9 +33,9 @@
 				<li><a href="/container.jsp" class="color-link">搜箱</a></li>
 			</ul>
 			<ul class="nav float-right">	
-				<li><a href="#" class="color-highlight">VIP入口</a></li>
+				<li><a href="javascript:void(0);" class="color-highlight">VIP入口</a></li>
 				<li class="divider-vertical"></li>
-				<li><a href="#">注册</a></li>
+				<li><a href="javascript:void(0);">注册</a></li>
 			</ul>
 		</div>
 	</div>
@@ -87,13 +87,13 @@
       <table id="mapTable" class="table table-bordered"></table>
    </div>
 
-	<footer class="footer">
+	<footer class="footer footer-margin">
 		<div class="container">
 			<ul class="footer-links">
 	    	   <li><a href="/partners.html">合作伙伴</a></li>
 			   <li><a href="/sitemap/about.html">联系我们</a></li>
 			   <li><a href="javascript:void(0);">网站地图</a></li>
-			   <li><a href="javascript:void(0);">法律声明</a></li>
+			   <li><a href="/sitemap/legal.html">法律声明</a></li>
 			   <span class="float-right footer-license">版权所有 © 北京易寻方达科技有限公司。  京ICP备13009564号</span>
 			</ul>
 		</div>
