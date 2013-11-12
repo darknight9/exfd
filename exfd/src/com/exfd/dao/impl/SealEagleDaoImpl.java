@@ -113,6 +113,7 @@ public class SealEagleDaoImpl implements SealDao {
 			// 联网信息有效，写入数据库并返回.
 			if (seal != null) {
 				// 有旧记录，更新.
+				onlineSeal.setId(seal.getId());
 				update(onlineSeal);
 			} else {
 				// 没有记录，添加.
@@ -170,6 +171,7 @@ public class SealEagleDaoImpl implements SealDao {
 					// 联网信息有效，写入数据库并返回.
 					if (seal != null) {
 						// 有旧记录，更新.
+						onlineSeal.setId(seal.getId());
 						update(onlineSeal);
 						mapSeal.put(code, onlineSeal);
 					} else {
@@ -231,22 +233,17 @@ public class SealEagleDaoImpl implements SealDao {
 		seal.setCtime(new Date());
 		seal.setMtime(new Date());
 		seal.setMarkdel(false);
-		seal.setRemark("");
-
-		seal.setPlate(seal_tag.elementTextTrim("Plate"));
 
 		try {
 			seal.setGpstime(df.parse(seal_tag.elementTextTrim("GpsTime")));
 		} catch (Exception e) {
 			seal.setGpstime(df2.parse(seal_tag.elementTextTrim("GpsTime")));
 		}
-
-		seal.setSpeed(Integer.parseInt(seal_tag.elementTextTrim("Speed")));
-		seal.setDirection(Double.parseDouble(seal_tag.elementTextTrim("Dir")));
-		seal.setDaymiles(Double.parseDouble(seal_tag.elementTextTrim("MIL1")));
-		seal.setMonthmiles(Double.parseDouble(seal_tag.elementTextTrim("MIL2")));
-		seal.setOil(Integer.parseInt(seal_tag.elementTextTrim("oil")));
-		seal.setEngst(seal_tag.elementTextTrim("St"));
 		seal.setPoi(seal_tag.elementTextTrim("Lo"));
+	}
+
+	@Override
+	public ArrayList<Seal> findMany(Long uid, int first, int count) {
+		return dbimp.findMany(uid, first, count);
 	}
 }

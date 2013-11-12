@@ -1,5 +1,6 @@
 package junit.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -20,6 +21,7 @@ public class ShipMyshipsDaoImplTest {
 		System.out.println(ship);
 	}
 	
+	
 	// "mmsi":"370188000"
 	// "mmsi":"370188016"
 	@Test
@@ -31,6 +33,13 @@ public class ShipMyshipsDaoImplTest {
 		}
 		
 	}
+	
+
+	
+
+	
+
+
 	
 	// "mmsi":"370188000"
 	// "mmsi":"370188016"

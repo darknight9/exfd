@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.exfd.domain">
+
+	<class name="Ship" table="ships">
+
+		<id name="id" type="long" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="shipid" type="string">
+			<column name="shipid" length="50" not-null="false" unique="true" />
+		</property>
+
+		<property name="shipname" type="string" column="shipname" />
+		<property name="shipnamecn" type="string" column="shipnamecn" />
+		<property name="mmsi" type="string" column="mmsi" />
+		<property name="imo" type="string" column="imo" />
+
+		<property name="callsign" type="string" column="callsign" />
+		<property name="shipflag" type="string" column="shipflag" />
+		<property name="shiptype" type="string" column="shiptype" />
+		<property name="shiplength" type="double" column="shiplength" />
+		<property name="shipwidth" type="double" column="shipwidth" />
+
+		<property name="draft" type="double" column="draft" />
+		<property name="gpstime" type="string" column="gpstime" />
+		<property name="latitude" type="string" column="latitude" />
+		<property name="longitude" type="string" column="longitude" />
+		<property name="lat" type="double" column="lat" />
+		<property name="lon" type="double" column="lon" />
+
+		<property name="speed" type="double" column="speed" />
+		<property name="direction" type="double" column="direction" />
+		<property name="truehending" type="double" column="truehending" />
+		<property name="reporttype" type="string" column="reporttype" />
+		<property name="state" type="string" column="state" />
+		<property name="updatetime" type="long" column="updatetime" />
+
+		<property name="gpstimepre" type="string" column="gpstimepre" />
+		<property name="latpre" type="double" column="latpre" />
+		<property name="lonpre" type="double" column="lonpre" />
+		<property name="averagespeed" type="double" column="averagespeed" />
+		<property name="distanceMoved" type="double" column="distanceMoved" />
+
+	</class>
+
+</hibernate-mapping>

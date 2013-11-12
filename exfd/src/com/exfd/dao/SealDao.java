@@ -32,6 +32,9 @@ public interface SealDao {
 	// 查找一个seal记录.
 	Seal find(String code);
 	
+	// 根据uid查找多个seal记录.
+	public ArrayList<Seal> findMany(Long uid, int first, int count);
+	
 	// 查找多个seal记录.
 	Map<String, Seal> find(ArrayList<String> codes);
 	

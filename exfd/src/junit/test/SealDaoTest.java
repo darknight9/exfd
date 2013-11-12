@@ -2,7 +2,6 @@ package junit.test;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.junit.Test;
@@ -25,8 +24,6 @@ public class SealDaoTest {
 		seal.setCtime(new Date(80, 2, 3, 4, 5, 6));
 		seal.setMtime(new Date(93, 4, 5, 6, 7, 8));
 		seal.setMarkdel(true);
-		seal.setRemark("来自测试testAdd的注释");
-		
 		seal.setGpstime(new Date(80, 2, 3, 4, 5, 6));
 		dao.add(seal);
 		System.out.println("----- testAdd testAdd-----");
@@ -51,7 +48,6 @@ public class SealDaoTest {
 			seal.setCtime(new Date(80, 2, 3, 4, 5, 6));
 			seal.setMtime(new Date(93, 4, 5, 6, 7, 8));
 			seal.setMarkdel(true);
-			seal.setRemark("来自测试testAddArray的注释");
 			seal.setGpstime(new Date(80, 2, 3, 4, 5, 6));
 		}
 		seal1.setCode("testAddArray001");
@@ -78,10 +74,9 @@ public class SealDaoTest {
 		seal.setCtime(new Date(80, 2, 3, 4, 5, 6));
 		seal.setMtime(new Date(93, 4, 5, 6, 7, 8));
 		seal.setMarkdel(true);
-		seal.setRemark("来自测试testDelete的注释");
-		
 		seal.setGpstime(new Date(80, 2, 3, 4, 5, 6));
 		dao.add(seal);
+		System.out.println(seal);
 		dao.delete(seal);		
 	}
 	
@@ -108,7 +103,7 @@ public class SealDaoTest {
 		System.out.println("----- testUpdate testAdd Before-----");
 		System.out.println(seal);
 		
-		seal.setRemark(("来自测试testUpdate的注释"));
+		seal.setPoi("POIPOI--ABCDEFFF");
 		dao.update(seal);
 
 		System.out.println("----- testUpdate testAdd After-----");
@@ -130,9 +125,9 @@ public class SealDaoTest {
 		for (Seal seal : seals) {
 			System.out.println(seal);
 		}
-		seal1.setRemark(("来自测试testUpdate1111的注释"));
-		seal2.setRemark(("来自测试testUpdate2222的注释"));
-		seal3.setRemark(("来自测试testUpdate3333的注释"));
+		seal1.setPoi("111POIPOI--ABCDEFFF");
+		seal2.setPoi("222POIPOI--ABCDEFFF");
+		seal3.setPoi("222POIPOI--ABCDEFFF");
 		dao.update(seals);
 
 		System.out.println("----- testUpdate testAdd After-----");
@@ -179,5 +174,17 @@ public class SealDaoTest {
 		for (Seal seal : seals) {
 			System.out.println(seal);
 		}
+	}
+	
+	@Test
+	public void testFindMany() {
+		SealDao dao = new SealDaoImpl();
+		ArrayList<String> codes = new ArrayList<String>();
+		System.out.println("----- testFindMany -----");
+		ArrayList<Seal> seals = dao.findMany((long) 1,10, 100);
+		for (Seal seal : seals) {
+			System.out.println(seal);
+		}
+		
 	}
 }

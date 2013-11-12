@@ -42,9 +42,9 @@ public class EagleGPSUtilsTest {
 	
 	@Test
 	public void testTrackHistory2() throws FileNotFoundException {
-		String resString = EagleGPSUtils.trackHistory2("2899", "2013-03-26 0:0:0", "2013-03-27 0:0:0");
+		String resString = EagleGPSUtils.trackHistory2("2127", "2013-11-11 0:0:0", "2013-11-11 0:5:0");
 		System.out.println(resString);
-		PrintWriter out = new PrintWriter(new File("/Users/david/Developer/TestData/" + "2899" + ".2.txt"));
+		PrintWriter out = new PrintWriter(new File("/Users/david/Developer/TestData/" + "2127" + ".2.txt"));
 		out.print(resString);
 		out.flush();
 		out.close();

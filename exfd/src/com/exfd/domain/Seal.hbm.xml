@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.exfd.domain">
+
+	<class name="Seal" table="seals">
+
+		<id name="id" type="long" column="id">
+			<generator class="native" />
+		</id>
+		<property name="code" type="string" column="code" />
+		<property name="markdel" type="boolean" column="markdel" />
+		<property name="status" type="int" column="status" />
+		<property name="longitude" type="double" column="longitude" />
+		<property name="latitude" type="double" column="latitude" />
+		<property name="ctime" type="timestamp" column="ctime" />
+		<property name="mtime" type="timestamp" column="mtime" />
+		<property name="gpstime" type="timestamp" column="gpstime" />
+		<property name="poi" type="string" column="poi" />
+		<property name="uid" type="long" column="uid" />
+
+	</class>
+
+</hibernate-mapping>

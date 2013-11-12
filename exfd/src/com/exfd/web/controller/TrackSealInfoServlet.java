@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.exfd.domain.Seal;
-import com.exfd.domain.SealHistoryRecord;
+import com.exfd.domain.SealRecord;
 import com.exfd.service.impl.SealServiceImpl;
 import com.google.gson.Gson;
 
@@ -61,7 +61,7 @@ public class TrackSealInfoServlet extends HttpServlet {
 		// 查询历史信息.
 		if (beginString != null && endString != null && !beginString.equals("")
 				&& !endString.equals("")) {
-			ArrayList<SealHistoryRecord> records = service.trackHistory(code,
+			ArrayList<SealRecord> records = service.trackHistory(code,
 					beginString, endString);
 			if (records != null) {
 				Gson gson = new Gson();

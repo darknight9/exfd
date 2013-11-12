@@ -2,6 +2,7 @@ package com.exfd.domain;
 
 public class Ship {
 
+	private Long id; // id.
 	private String shipid;
 	private String shipname;// 英文船名
 	private String shipnamecn;// 中文船名
@@ -33,6 +34,14 @@ public class Ship {
 	private double lonpre = 0.00; // 上一个位置的经度
 	private double averagespeed = 0.00; // 平均速度
 	private double distanceMoved = 0.00; // 最后行驶距离
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getShipid() {
 		return shipid;
@@ -252,19 +261,28 @@ public class Ship {
 
 	@Override
 	public String toString() {
-		return "Ship [shipid=" + shipid + ", shipname=" + shipname
-				+ ", shipnamecn=" + shipnamecn + ", mmsi=" + mmsi + ", imo="
-				+ imo + ", callsign=" + callsign + ", shipflag=" + shipflag
-				+ ", shiptype=" + shiptype + ", shiplength=" + shiplength
-				+ ", shipwidth=" + shipwidth + ", draft=" + draft
-				+ ", gpstime=" + gpstime + ", latitude=" + latitude
-				+ ", longitude=" + longitude + ", lat=" + lat + ", lon=" + lon
-				+ ", speed=" + speed + ", direction=" + direction
-				+ ", truehending=" + truehending + ", reporttype=" + reporttype
-				+ ", state=" + state + ", updatetime=" + updatetime
-				+ ", gpstimepre=" + gpstimepre + ", latpre=" + latpre
-				+ ", lonpre=" + lonpre + ", averagespeed=" + averagespeed
-				+ ", distanceMoved=" + distanceMoved + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Ship [id=").append(id).append(", shipid=")
+				.append(shipid).append(", shipname=").append(shipname)
+				.append(", shipnamecn=").append(shipnamecn).append(", mmsi=")
+				.append(mmsi).append(", imo=").append(imo)
+				.append(", callsign=").append(callsign).append(", shipflag=")
+				.append(shipflag).append(", shiptype=").append(shiptype)
+				.append(", shiplength=").append(shiplength)
+				.append(", shipwidth=").append(shipwidth).append(", draft=")
+				.append(draft).append(", gpstime=").append(gpstime)
+				.append(", latitude=").append(latitude).append(", longitude=")
+				.append(longitude).append(", lat=").append(lat)
+				.append(", lon=").append(lon).append(", speed=").append(speed)
+				.append(", direction=").append(direction)
+				.append(", truehending=").append(truehending)
+				.append(", reporttype=").append(reporttype).append(", state=")
+				.append(state).append(", updatetime=").append(updatetime)
+				.append(", gpstimepre=").append(gpstimepre).append(", latpre=")
+				.append(latpre).append(", lonpre=").append(lonpre)
+				.append(", averagespeed=").append(averagespeed)
+				.append(", distanceMoved=").append(distanceMoved).append("]");
+		return builder.toString();
 	}
 
 }

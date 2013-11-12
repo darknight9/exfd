@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.exfd.domain.Seal;
-import com.exfd.domain.SealHistoryRecord;
+import com.exfd.domain.SealRecord;
 import com.exfd.service.impl.SealServiceImpl;
 
 public class TrackSealServlet extends HttpServlet {
@@ -59,7 +59,7 @@ public class TrackSealServlet extends HttpServlet {
 				&& !endString.equals("")) {
 
 			// 有时间参数，表明是查历史信息.
-			ArrayList<SealHistoryRecord> records = service.trackHistory(code,
+			ArrayList<SealRecord> records = service.trackHistory(code,
 					beginString, endString);
 			if (records != null) {
 

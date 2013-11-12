@@ -118,7 +118,8 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 		if (onlineShip != null) {
 			// 联网信息有效，写入数据库并返回.
 			if (ship != null) {
-				// 有旧记录，更新.
+				// 有旧记录，更新.这个时候给onlineShip设置ID.
+				onlineShip.setId(ship.getId());
 				update(onlineShip);
 			} else {
 				// 没有记录，添加.
@@ -227,6 +228,7 @@ public class ShipMyshipsDaoImpl implements ShipDao {
 		
 		if (onlineShips != null && !onlineShips.isEmpty()) {
 			// 联网信息有效，写入数据库并返回.
+			// TODO 这里可能逻辑上有问题，onlineShips无法设置ID，导致只能Add记录，不能修改记录.
 			updateOrAdd(onlineShips);
 		} else if (ships != null) {
 			// 还是需要更新mtime的值的.

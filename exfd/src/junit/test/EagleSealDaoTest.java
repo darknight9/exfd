@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import com.exfd.dao.SealDao;
-import com.exfd.dao.SealHistoryDao;
+import com.exfd.dao.SealRecordDao;
 import com.exfd.dao.impl.SealEagleDaoImpl;
-import com.exfd.dao.impl.SealEagleHistoryDaoImpl;
+import com.exfd.dao.impl.SealRecordEagleDaoImpl;
 import com.exfd.domain.Seal;
 import com.exfd.util.EagleGPSUtils;
 
