@@ -48,11 +48,12 @@ public class EagleSealDaoTest {
 		
 	}
 	
+	// 填充seal数据.
 	@Test
 	public void testFillData() throws InterruptedException {
 		SealDao dao = new SealEagleDaoImpl();	// 以后用工厂模式或者spring来解耦合.
 		
-		for (int i = 2438; i < 3000; i++) {
+		for (int i = 4097; i < 4099; i++) {
 			Seal seal = dao.find("" + i);
 			if (seal != null) {
 				logger.debug("seal code[{}] fill OK.", i);
