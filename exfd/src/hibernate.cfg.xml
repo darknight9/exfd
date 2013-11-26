@@ -21,6 +21,10 @@
 		<property name="connection.password">
 			kanekane.1
 		</property>
+		
+		<property name="connection.autoReconnect">true</property> 
+        <property name="connection.autoReconnectForPools">true</property> 
+        <property name="connection.is-connection-validation-required">true</property>
 
 		<mapping resource="com/exfd/domain/Ship.hbm.xml" />
 		<mapping resource="com/exfd/domain/Seal.hbm.xml" />

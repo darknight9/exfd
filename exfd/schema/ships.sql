@@ -9,7 +9,7 @@
  Target Server Version : 50610
  File Encoding         : utf-8
 
- Date: 11/25/2013 19:11:30 PM
+ Date: 11/25/2013 19:28:57 PM
 */
 
 SET NAMES utf8;
@@ -21,29 +21,29 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `ships`;
 CREATE TABLE `ships` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `shipid` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
-  `shipname` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '英文船名',
-  `shipnamecn` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '中文船名',
-  `mmsi` varchar(50) CHARACTER SET utf8 DEFAULT '',
-  `imo` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
-  `callsign` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '呼号',
-  `shipflag` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '船籍',
-  `shiptype` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '船舶类型',
+  `shipid` varchar(50) DEFAULT NULL,
+  `shipname` varchar(50) DEFAULT NULL COMMENT '英文船名',
+  `shipnamecn` varchar(50) DEFAULT NULL COMMENT '中文船名',
+  `mmsi` varchar(50) DEFAULT '',
+  `imo` varchar(50) DEFAULT NULL,
+  `callsign` varchar(50) DEFAULT NULL COMMENT '呼号',
+  `shipflag` varchar(50) DEFAULT NULL COMMENT '船籍',
+  `shiptype` varchar(50) DEFAULT NULL COMMENT '船舶类型',
   `shiplength` double DEFAULT NULL COMMENT '船长',
   `shipwidth` double DEFAULT NULL COMMENT '船宽',
   `draft` double DEFAULT NULL COMMENT '吃水',
-  `gpstime` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '报位时间',
-  `latitude` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '纬度，度分秒格式',
-  `longitude` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '经度，度分秒格式',
+  `gpstime` varchar(50) DEFAULT NULL COMMENT '报位时间',
+  `latitude` varchar(50) DEFAULT NULL COMMENT '纬度，度分秒格式',
+  `longitude` varchar(50) DEFAULT NULL COMMENT '经度，度分秒格式',
   `lat` double DEFAULT NULL COMMENT '纬度 小数值',
   `lon` double DEFAULT NULL COMMENT '经度 小数值',
   `speed` double DEFAULT NULL COMMENT '航速',
   `direction` double DEFAULT NULL COMMENT '航向',
   `truehending` double DEFAULT NULL COMMENT '航首向',
-  `reporttype` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '报位方式',
-  `state` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '航行状态',
+  `reporttype` varchar(50) DEFAULT NULL COMMENT '报位方式',
+  `state` varchar(50) DEFAULT NULL COMMENT '航行状态',
   `updatetime` double DEFAULT NULL COMMENT '更新时间',
-  `gpstimepre` varchar(50) CHARACTER SET utf8 DEFAULT '""' COMMENT '上一个位置的定位时间',
+  `gpstimepre` varchar(50) DEFAULT '""' COMMENT '上一个位置的定位时间',
   `latpre` double DEFAULT '0' COMMENT '上一个位置的纬度',
   `lonpre` double DEFAULT '0' COMMENT '上一个位置的经度',
   `averagespeed` double DEFAULT '0' COMMENT '平均速度',
@@ -51,7 +51,7 @@ CREATE TABLE `ships` (
   PRIMARY KEY (`id`),
   KEY `shipname` (`shipname`) USING HASH,
   KEY `mmsi` (`mmsi`) USING HASH
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `ships`
