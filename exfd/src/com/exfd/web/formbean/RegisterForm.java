@@ -10,7 +10,7 @@ public class RegisterForm {
 	private String password;
 	private String password2;
 	private String email;
-	private String birthday;
+	//private String birthday;
 	private String nickname;
 
 	private Map errors = new HashMap();
@@ -45,14 +45,6 @@ public class RegisterForm {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
 	}
 
 	public String getNickname() {
@@ -126,6 +118,7 @@ public class RegisterForm {
 		}
 		
 		// 生日可以为空.不为空时，必须要是一个日期.
+		/*
 		if(this.birthday!=null && !this.birthday.trim().equals("")){
 			try {
 				DateLocaleConverter dlc = new DateLocaleConverter();
@@ -135,6 +128,7 @@ public class RegisterForm {
 				errors.put("birthday", "日期格式不正确！");
 			}
 		}
+		*/
 		
 		// 昵称不可以为空，并且要是汉字.
 		if (this.nickname == null || this.nickname.trim().equals("")) {

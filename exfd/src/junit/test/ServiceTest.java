@@ -16,9 +16,9 @@ public class ServiceTest {
 	public void testRegister(){
 		User user = new User();
 		user.setUsername("cccc");
-		user.setBirthday(new Date());
+		//user.setBirthday(new Date());
 		user.setEmail("cc@sina.com");
-		user.setId("333");
+		//user.setId("333");
 		user.setNickname("李三");
 		user.setPassword("123");
 

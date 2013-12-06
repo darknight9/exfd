@@ -36,7 +36,7 @@ public class RegisterServlet extends HttpServlet {
 		// 3.如果校验成功，则调用service处理注册请求.
 		User user = new User();
 		WebUtils.copyBean(form, user);
-		user.setId(WebUtils.generateID());
+		//user.setId(WebUtils.generateID());
 		BusinessServieImpl service = new BusinessServieImpl();
 		try {
 			service.register(user);

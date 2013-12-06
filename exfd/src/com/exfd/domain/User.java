@@ -3,18 +3,20 @@ package com.exfd.domain;
 import java.util.Date;
 
 public class User {
-	private String id;
+	private Long id;
 	private String username;
 	private String password;
 	private String email;
-	private Date birthday;
 	private String nickname;
+	private Date createtime; // 建立帐号时间
+	private Date logintime; // 本次登录时间
+	private Date lasttime; // 上次登录时间
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -42,14 +44,6 @@ public class User {
 		this.email = email;
 	}
 
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
 	public String getNickname() {
 		return nickname;
 	}
@@ -57,4 +51,29 @@ public class User {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+
+	public Date getCreatetime() {
+		return createtime;
+	}
+
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
+
+	public Date getLogintime() {
+		return logintime;
+	}
+
+	public void setLogintime(Date logintime) {
+		this.logintime = logintime;
+	}
+
+	public Date getLasttime() {
+		return lasttime;
+	}
+
+	public void setLasttime(Date lasttime) {
+		this.lasttime = lasttime;
+	}
+
 }

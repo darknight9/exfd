@@ -1,7 +1,5 @@
 package junit.test;
 
-import java.util.Date;
-
 import org.junit.Test;
 
 import com.exfd.dao.UserDao;
@@ -13,12 +11,10 @@ public class UserDaoTest {
 	@Test
 	public void testAdd() {
 		User user = new User();
-		user.setBirthday(new Date());
-		user.setEmail("bb@sina.com");
-		user.setId("222");
-		user.setNickname("李二");
+		user.setUsername("zhangsan");
 		user.setPassword("123");
-		user.setUsername("bbbb");
+		user.setNickname("张三");
+		user.setEmail("zhangsan@sina.com");
 		
 		UserDao dao = new UserDaoImpl();
 		dao.add(user);
@@ -27,12 +23,12 @@ public class UserDaoTest {
 	@Test
 	public void testFind(){
 		UserDao dao = new UserDaoImpl();
-		dao.find("aaa", "123");
+		dao.find("zhangsan", "123");
 	}
 	
 	@Test
 	public void testFindByName(){
 		UserDao dao = new UserDaoImpl();
-		System.out.println(dao.find("aaa"));
+		System.out.println(dao.find("zhangsan"));
 	}
 }

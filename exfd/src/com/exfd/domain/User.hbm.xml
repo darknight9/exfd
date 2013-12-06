@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.exfd.domain">
+
+	<class name="User" table="users">
+
+		<id name="id" type="long" column="id">
+			<generator class="native" />
+		</id>
+		<property name="username" type="string" column="username" />
+		<property name="password" type="string" column="password" />
+		<property name="email" type="string" column="email" />
+		<property name="nickname" type="string" column="nickname" />
+		<property name="createtime" type="timestamp" column="createtime" />
+		<property name="logintime" type="timestamp" column="logintime" />
+		<property name="lasttime" type="timestamp" column="lasttime" />
+
+	</class>
+
+</hibernate-mapping>

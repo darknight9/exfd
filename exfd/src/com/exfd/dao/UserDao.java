@@ -2,6 +2,7 @@ package com.exfd.dao;
 
 import com.exfd.domain.User;
 
+// 用户管理DAO接口.
 public interface UserDao {
 
 	// 添加一个用户.
