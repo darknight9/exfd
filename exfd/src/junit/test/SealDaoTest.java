@@ -181,7 +181,7 @@ public class SealDaoTest {
 		SealDao dao = new SealDaoImpl();
 		ArrayList<String> codes = new ArrayList<String>();
 		System.out.println("----- testFindMany -----");
-		ArrayList<Seal> seals = dao.findMany((long) 1,10, 100);
+		ArrayList<Seal> seals = dao.findMany((long) 2,0, 100);
 		for (Seal seal : seals) {
 			System.out.println(seal);
 		}

@@ -31,9 +31,16 @@ public class TrackSealInfoServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 
 		// 回传code.
-		String code = request.getParameter("code").trim();
+		String code = request.getParameter("code");
+		if (code != null) {
+			code = code.trim();
+		}
 		request.setAttribute("code", code);
-		String cid = request.getParameter("cid").trim();
+		
+		String cid = request.getParameter("cid");
+		if (cid != null) {
+			cid = cid.trim();
+		}
 		request.setAttribute("cid", cid);
 		String beginString = request.getParameter("beginTime");
 		request.setAttribute("beginTime", beginString);

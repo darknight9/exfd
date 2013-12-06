@@ -40,7 +40,7 @@ public class SealServiceImpl {
 		Long uid = Long.parseLong(cid);
 		ArrayList<Seal> records = dao.findMany(uid, 0, 10);
 		if (records != null && !records.isEmpty()) {
-			logger.info("SEALCID[{}] find. Very Good.", cid);
+			logger.info("SEALCID[{}] find [{}] records. Very Good.", cid, records.size());
 		} else {
 			logger.info("SEALCID[{}] not find.", cid);
 		}
