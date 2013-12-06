@@ -45,7 +45,7 @@
       <div class="container">
          <div class="span2 offset1">
             <a href="/index.html">
-			   <img src="/img/logo.png" class="logo-img">
+					<img src="/img/logo.png" class="logo-img">
             </a>
          </div>
          <div class="span7 logo-container">
@@ -65,9 +65,14 @@
       <span id="errorMsg"></span>
    </div>
 
-	<div id="map" class="map-container"></div>
+	<div id="map" class="map-right-container"></div>
 
-	<footer class="footer footer-margin">
+   <div class="marker-panel">
+      <table id="markerTable" cellspacing="0" cellpadding="0" class="marker-list">
+      </table>
+   </div>
+	
+   <footer class="footer footer-margin">
 		<div class="container">
 			<ul class="footer-links">
 	    	   <li><a href="/partners.html">合作伙伴</a></li>
@@ -86,7 +91,8 @@
 			"use strict";
 
 			var map = null,
-				searchInput = $('#searchInput');
+				 searchInput = $('#searchInput'),
+             markerTable = $('#markerTable');
 			
 			var getInfoContent = function(code, location) {
 				return '<div style="margin:0;line-height:20px;padding:2px;">\
@@ -103,15 +109,58 @@
 		            </div>';
 			};
 
+         var getMarkerList = function(list) {
+            var htmlStr, data, i;
+
+            if (!list || list.length < 1) {
+               return '';
+            }
+
+            htmlStr = '<tbody>';
+
+            for (i = 0; i < list.length; i++) {
+               data = list[i];
+
+               htmlStr +=
+                  '<tr class="focus">\
+                     <td>\
+                        <div class="relative-div marker-icon">\
+                           <img src="img/marker.png" class="map-marker-icon">\
+                           <div class="map-marker-text">' + String.fromCharCode(65 + (i % 26)) + '</div>\
+                        </div>\
+                     </td>\
+                     <td>\
+                        <div class="marker-detail">\
+                           <p class="marker-title">' + data.code + '</p>\
+                           <p>' + data.poi + '</p>\
+                        </div>\
+                     </td>\
+                  </tr>\
+                  <tr style="height: 5px">\
+                     <td></td>\
+                     <td style="font-size: 0;"></td>\
+                  </tr>';
+            }
+            
+            htmlStr += '</tbody>';
+            return htmlStr;
+         };
+               
+
 			var successCallbck = function(data) {
-				if (!!data) {
+            var item, i;
+
+				if (!!data && !!data.records) {
 					EFINDER.utils.hideError();
-					map.drawMarkers([{
-	                   longitude: data.longitude,
-	                   latitude: data.latitude,
-	                   title: '智能铅封',
-	                   content: getInfoContent(data.code, data.poi)
-	                }]);
+               
+               for (i = 0; i < data.records.length; i++) {
+                  item = data.records[i];
+                  item.title = '智能铅封';
+                  item.content = getInfoContent(item.code, item.poi);
+               }
+
+					map.drawMarkers(data.records);
+               markerTable.html(getMarkerList(data.records));
 				} else {
 					EFINDER.utils.showError('很抱歉，我们没有查找到铅封（' + searchInput.val() + '）的信息。');
 				}
@@ -126,7 +175,7 @@
 					searchInput.val('2127');
 				}
 				
-				url = '/servlet/TrackSealInfoServlet?code=' + encodeURIComponent(code);
+				url = '/servlet/TrackSealInfoServlet?cid=' + encodeURIComponent(code);
 				EFINDER.utils.load(url, successCallbck);
 			};
 
@@ -146,7 +195,7 @@
 				$('#searchForm').submit(function(e) {
 					e.preventDefault();
 					submitForm();
-				});
+				})
 			};
 
 			init();

@@ -1,13 +1,20 @@
 package com.exfd.action;
 
-public class HelloWorldAction {
+import com.opensymphony.xwork2.ActionSupport;
+
+public class HelloWorldAction extends ActionSupport {
+
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String message;
 	
 	public String execute(){
 		
 		message = "尝试一下struts究竟好不好用";
-		return "success";
+		return SUCCESS;
 	}
 
 	public String getMessage() {

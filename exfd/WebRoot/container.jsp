@@ -41,7 +41,7 @@
          <div class="container relative-div">
             <div class="span2 offset1">
                <a href="/index.html">
-                  <img src="img/logo.png" width="100px" height="70px">
+                  <img src="/img/logo.png" class="logo-img">
                </a>
             </div>
             <div class="span7 logo-container">
@@ -420,51 +420,57 @@
 			};
 
 			var submitForm = function() {
-				var code = encodeURIComponent(searchInput.val() || 'CMAU1396117'),
-				    url = '/servlet/TrackContainerInfoServlet?code=' + code
+				var code, url;
+				
+				code = searchInput.val();
+				if (!code) {
+					code = 'CMAU1396117';
+					searchInput.val('CMAU1396117');
+				}
+				url = '/servlet/TrackContainerInfoServlet?code=' + encodeURIComponent(code)
                   + '&company=' + companyInput.val();
-				
-            if (!companyDiv.hasClass('hide')) {
-               companyDiv.addClass('hide');
-            }
-				
-            EFINDER.utils.load(url, successCallback);
+
+	            if (!companyDiv.hasClass('hide')) {
+	               companyDiv.addClass('hide');
+	            }
+					
+	            EFINDER.utils.load(url, successCallback);
 			};
 
 			var init = function() {
 				var code = '<%= (code != null) ? code : "" %>';
 
-            $('#selectShipCompany').on('click', function() {
-               if (!tableDiv.hasClass('hide')) {
-                  tableDiv.addClass('hide');
-               }
+	            $('#selectShipCompany').on('click', function() {
+	               if (!tableDiv.hasClass('hide')) {
+	                  tableDiv.addClass('hide');
+	               }
 
-               companyDiv.removeClass('hide');
-            });
+	               companyDiv.removeClass('hide');
+	            });
 
-            $('button[name="shipping"]').on('click', function() {
-               var me = this,
-                   self = $(this);
+	            $('button[name="shipping"]').on('click', function() {
+	               var me = this,
+	                   self = $(this);
 
-               $('button[name="shipping"]').each(function() {
-                  var btn = $(this);
+	               $('button[name="shipping"]').each(function() {
+	                  var btn = $(this);
 
-                  if (this === me) {
-                     if (!btn.hasClass('disabled')) {
-                        btn.addClass('btn-danger disabled');
-                     }
-                  } else {
-                     if (btn.hasClass('disabled')) {
-                        btn.removeClass('btn-danger disabled');
-                     }
-                  }
-               });
+	                  if (this === me) {
+	                     if (!btn.hasClass('disabled')) {
+	                        btn.addClass('btn-danger disabled');
+	                     }
+	                  } else {
+	                     if (btn.hasClass('disabled')) {
+	                        btn.removeClass('btn-danger disabled');
+	                     }
+	                  }
+	               });
 
-               companyName.text(self.data('name'));
-               companyInput.val(self.val());
-            });
-				
-            $('#searchForm').submit(function(e) {
+	               companyName.text(self.data('name'));
+	               companyInput.val(self.val());
+	            });
+					
+	            $('#searchForm').submit(function(e) {
 					e.preventDefault();
 	
 					submitForm();

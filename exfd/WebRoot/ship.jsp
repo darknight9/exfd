@@ -9,6 +9,7 @@
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/baidu_searchinfowindow.css" />
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<!--[if lte IE 6]>
@@ -16,9 +17,9 @@
 	<link href="css/ie.css" rel="stylesheet">
 	<script type="text/javascript" src="js/bootstrap-ie.js"></script>
 	<![endif]-->
-	<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
-	<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
-	<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
+	<script type="text/javascript" src="js/baidu/map_min.js"></script>
+	<script type="text/javascript" src="js/baidu/searchinfowindow_min.js"></script>
+   <script type="text/javascript" src="js/baidu/richmarker_min.js"></script>
 	<script type="text/javascript" src="js/map.js"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
 </head>
@@ -44,7 +45,7 @@
       <div class="container">
          <div class="span2 offset1">
             <a href="/index.html">
-               <img src="img/logo.png" width="100px" height="70px">
+					<img src="/img/logo.png" class="logo-img">
             </a>
          </div>
          <div class="span7 logo-container relative-div">
@@ -78,7 +79,7 @@
 		<span id="errorMsg"></span>
 	</div>
 
-	<div id="map" class="map-small-container"></div>
+	<div id="map" class="map-left-container"></div>
 
    <div class="map-table">
       <div class="panel-title map-title">
@@ -195,16 +196,16 @@
          }; 
 
 			var successCallbck = function(data) {
-				if (!!data) {
-					EFINDER.utils.hideError();
-					map.drawMarker(data.lon, data.lat, '搜船', getInfoContent(data), 5, {
-						image : 'img/cargo-ship.png',
-						width: 120,
-						height: 106,
-						anchorWidth: 60,
-						anchorHeight: 53
-					});
-               mapTable.html(getShipDetails(data));
+			   if (!!data) {
+			      EFINDER.utils.hideError();
+				  
+				  map.drawMarkers([{
+	                 longitude: data.lon,
+	                 latitude: data.lat,
+	                 title: '搜船',
+	                 content: getInfoContent(data)
+	              }], 5);
+                  mapTable.html(getShipDetails(data));
 				} else {
 					EFINDER.utils.showError('很抱歉，我们没有查找到航船（' +
 						$("#searchForm input[type='radio']:checked").val() + '：' +
@@ -215,13 +216,15 @@
 			var submitForm = function() {
 				var code, type, url;
 
-				code = encodeURIComponent(searchInput.val() || '中远鞍钢');
-				if (!!code) {
-					type = encodeURIComponent($("#searchForm input[type='radio']:checked").val());
-					url = '/servlet/TrackShipInfoServlet?code=' + code + '&type=' + type;
-					
-					EFINDER.utils.load(url, successCallbck);
+				code = searchInput.val();
+				if (!code) {
+					code = '中远鞍钢';
+					searchInput.val('中远鞍钢');
 				}
+				type = encodeURIComponent($("#searchForm input[type='radio']:checked").val());
+				url = '/servlet/TrackShipInfoServlet?code=' + encodeURIComponent(code) + '&type=' + type;
+				
+				EFINDER.utils.load(url, successCallbck);
 			};
 
 			var init = function() {
