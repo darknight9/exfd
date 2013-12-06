@@ -33,30 +33,63 @@ public class TrackSealInfoServlet extends HttpServlet {
 		// 回传code.
 		String code = request.getParameter("code").trim();
 		request.setAttribute("code", code);
+		String cid = request.getParameter("cid").trim();
+		request.setAttribute("cid", cid);
 		String beginString = request.getParameter("beginTime");
 		request.setAttribute("beginTime", beginString);
 		String endString = request.getParameter("endTime");
 		request.setAttribute("endTime", endString);
 
 		// 记录请求.
-		if (beginString != null && endString != null) {
+		if (code != null && beginString != null && endString != null) {
 			logger.info(
 					"Get Request Seal. code:[{}].beginTime:[{}].endTime:[{}]",
 					code, beginString, endString);
-		} else {
+		} else if (code != null) {
 			logger.info("Get Request Seal. code:[{}].", code);
+		} else if (cid != null) {
+			logger.info("Get Request Seal. cid:[{}].", cid);
 		}
 
 		// 前置检查.
-		boolean isParameterOK = checkParameter(code, beginString, endString);
+		boolean isParameterOK = checkParameter(code, cid, beginString,
+				endString);
 		if (!isParameterOK) {
 			// 可以直接返回表示出错.
-			logger.info("check Parameter fail. code:[{}].", code);
+			if (code != null) {
+				logger.info("check Parameter fail. code:[{}].", code);
+			} else if (cid != null) {
+				logger.info("check Parameter fail. cid:[{}].", cid);
+			}
 			return;
 		}
 
 		// 提供查询服务.
 		SealServiceImpl service = new SealServiceImpl();
+
+		// 查询cid.
+		if (cid != null) {
+			// 没有时间参数，查询铅封位置信息.
+			ArrayList<Seal> records = service.trackSealByCid(cid);
+			if (records != null) {
+				Gson gson = new Gson();
+				String strJson = gson.toJson(records);
+
+				// Get printerwriter object from response to write json object
+				// to the output stream.
+				PrintWriter out = response.getWriter();
+				out.print(strJson);
+				out.flush();
+				logger.info("SealServiceImpl.trackSealByCid OK. cid:[{}].", cid);
+				return;
+			} else {
+				// 进行到这里说明没有找到, 直接返回.
+				logger.info(
+						"SealServiceImpl.trackSealByCid Not Found. cid:[{}].",
+						cid);
+				return;
+			}
+		}
 
 		// 查询历史信息.
 		if (beginString != null && endString != null && !beginString.equals("")
@@ -104,13 +137,16 @@ public class TrackSealInfoServlet extends HttpServlet {
 		}
 	}
 
-	private boolean checkParameter(String code, String beginString,
+	private boolean checkParameter(String code, String cid, String beginString,
 			String endString) {
 
 		// 目前要求：code是4位数字.
 		// 这里只做简单检查，不做严格检查.
 		// 这里没有使用beginString等，以后检查的时候需要检查日期格式及是否是null.
-		if (code.length() == 4) {
+		if (code != null && code.length() == 4) {
+			return true;
+		}
+		if (cid != null && !cid.isEmpty()) {
 			return true;
 		}
 		return false;

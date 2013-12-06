@@ -32,6 +32,20 @@ public class SealServiceImpl {
 		}
 		return seal;
 	}
+
+	// 对web层提供查询铅封集合服务.
+	public ArrayList<Seal> trackSealByCid(String cid) {
+		
+		// 在dao层查找.
+		Long uid = Long.parseLong(cid);
+		ArrayList<Seal> records = dao.findMany(uid, 0, 10);
+		if (records != null && !records.isEmpty()) {
+			logger.info("SEALCID[{}] find. Very Good.", cid);
+		} else {
+			logger.info("SEALCID[{}] not find.", cid);
+		}
+		return records;
+	}
 	
 	// 对web层提供查询铅封历史服务.
 	public ArrayList<SealRecord> trackHistory(String code) {
