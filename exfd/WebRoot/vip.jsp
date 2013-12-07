@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title>易寻方达 - 智能铅封</title>
+	<title>易寻方达 - 智能锁</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
@@ -155,7 +155,7 @@
                
                for (i = 0; i < data.records.length; i++) {
                   item = data.records[i];
-                  item.title = '智能铅封';
+                  item.title = '智能锁';
                   item.content = getInfoContent(item.code, item.poi);
                }
 

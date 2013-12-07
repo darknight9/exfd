@@ -107,10 +107,6 @@ button.search-box-button:hover {
    text-align: center;
 }
 
-.search-nav-bar > li.nav-first {
-   width: 90px;
-}
-
 .search-nav-bar > li > a {
    color: #333;
    font-weight: bold;

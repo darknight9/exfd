@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title>易寻方达 - 智能铅封</title>
+	<title>易寻方达 - 智能锁</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
@@ -109,7 +109,7 @@
 					map.drawMarkers([{
 	                   longitude: data.longitude,
 	                   latitude: data.latitude,
-	                   title: '智能铅封',
+	                   title: '智能锁',
 	                   content: getInfoContent(data.code, data.poi)
 	                }]);
 				} else {

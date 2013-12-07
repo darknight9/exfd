@@ -152,7 +152,7 @@ function sbmSearch(str)
     <td colspan="3" align="center">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td align="center"><a href="#" class="curr" id="tabap1_btn_0" onclick="tabit(this)">搜箱</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="STYLE2" id="tabap1_btn_1" onclick="tabit(this)">搜船</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="STYLE2" id="tabap1_btn_2" onclick="tabit(this)">智能铅封</a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td align="center"><a href="#" class="curr" id="tabap1_btn_0" onclick="tabit(this)">搜箱</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="STYLE2" id="tabap1_btn_1" onclick="tabit(this)">搜船</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="STYLE2" id="tabap1_btn_2" onclick="tabit(this)">智能锁</a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
         </table>
 	  </td>

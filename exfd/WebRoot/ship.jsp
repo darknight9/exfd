@@ -29,7 +29,7 @@
 			<ul class="nav">
 				<li><a href="/index.html">欢迎来到易寻方达！</a></li>
 				<li class="divider-vertical"></li>
-				<li><a href="/seal.jsp" class="color-link">智能铅封</a></li>
+				<li><a href="/seal.jsp" class="color-link">智能锁</a></li>
 				<li class="divider-vertical"></li>
 				<li><a href="/container.jsp" class="color-link">搜箱</a></li>
 			</ul>
