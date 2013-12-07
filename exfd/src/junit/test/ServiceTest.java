@@ -1,11 +1,7 @@
 package junit.test;
 
-import java.util.Date;
-
 import org.junit.Test;
 
-import com.exfd.dao.UserDao;
-import com.exfd.dao.impl.UserDaoImpl;
 import com.exfd.domain.User;
 import com.exfd.exception.UserExistException;
 import com.exfd.service.impl.BusinessServieImpl;
