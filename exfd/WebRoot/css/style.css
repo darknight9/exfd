@@ -784,8 +784,13 @@ a.site-bar-nav-div:hover {
    margin: 10px;
 }
 
+.marker-list-row {
+   border-bottom: 1px dashed #eaeaf0;
+}
+
 .marker-list tr.focus {
-   background: #f0f0f0;
+   background: #fafaf0;
+   cursor: pointer;
 }
 
 .marker-list td {

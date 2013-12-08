@@ -93,7 +93,7 @@
 			var map = null,
 				 searchInput = $('#searchInput'),
              markerTable = $('#markerTable');
-			
+
 			var getInfoContent = function(code, location) {
 				return '<div style="margin:0;line-height:20px;padding:2px;">\
 					    <table>\
@@ -110,7 +110,7 @@
 			};
 
          var getMarkerList = function(list) {
-            var htmlStr, data, i;
+            var htmlStr, data, id, i;
 
             if (!list || list.length < 1) {
                return '';
@@ -122,7 +122,7 @@
                data = list[i];
 
                htmlStr +=
-                  '<tr class="focus">\
+                  '<tr class="marker-list-row" id="' + i + '">\
                      <td>\
                         <div class="relative-div marker-icon">\
                            <img src="img/marker.png" class="map-marker-icon">\
@@ -145,22 +145,37 @@
             htmlStr += '</tbody>';
             return htmlStr;
          };
-               
+
+         var initMarkerList = function() {
+            var markerList = $('.marker-list-row'),
+                id;
+            
+            markerList
+               .on('mouseover', function() {
+                  markerList.removeClass('focus');
+                  $(this).addClass('focus');
+               })
+               .on('click', function() {
+                  id = parseInt($(this).prop('id'));
+                  map.selectMarker(id);
+               });
+         }; 
 
 			var successCallbck = function(data) {
             var item, i;
 
-				if (!!data && !!data.records) {
+				if (!!data) {
 					EFINDER.utils.hideError();
                
-               for (i = 0; i < data.records.length; i++) {
-                  item = data.records[i];
+               for (i = 0; i < data.length; i++) {
+                  item = data[i];
                   item.title = '智能锁';
                   item.content = getInfoContent(item.code, item.poi);
                }
 
-					map.drawMarkers(data.records);
-               markerTable.html(getMarkerList(data.records));
+					map.drawMarkers(data, 11);
+               markerTable.html(getMarkerList(data));
+               initMarkerList();
 				} else {
 					EFINDER.utils.showError('很抱歉，我们没有查找到铅封（' + searchInput.val() + '）的信息。');
 				}
@@ -171,8 +186,8 @@
 
 				code = searchInput.val();
 				if (!code) {
-					code = '2127';
-					searchInput.val('2127');
+					code = '1';
+					searchInput.val(code);
 				}
 				
 				url = '/servlet/TrackSealInfoServlet?cid=' + encodeURIComponent(code);

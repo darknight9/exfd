@@ -5,7 +5,10 @@ window.EFINDER = window.EFINDER || {};
 
    EFINDER.Map = function(div) {
       this.map = null;
+      this.zoom = 15;
       this.markers = [];
+      this.selected = -1;
+      this.data = null;
 
       if (!!div) {
          this.map = new BMap.Map(div);
@@ -28,11 +31,11 @@ window.EFINDER = window.EFINDER || {};
       // Default center point.
       longitude = longitude || 116.404;
       latitude = latitude || 39.915;
-      zoom = zoom || 15;
+      this.zoom = zoom || 15;
 
       // Center around point.
       point = new BMap.Point(longitude, latitude);
-      this.map.centerAndZoom(point, zoom);
+      this.map.centerAndZoom(point, this.zoom);
    };
 
    EFINDER.Map.prototype.addMarker = function(longitude, latitude, title, content, text) {
@@ -107,16 +110,18 @@ window.EFINDER = window.EFINDER || {};
       var longitude,
           latitude,
           marker,
-          code = 65,
+          code,
           i;
 
       // Clear the present marker.
       this.clear();
-      
+
+      this.data = markers;      
       if (!!markers && markers.length > 0) {
          // Center around the first marker
          longitude = markers[0].longitude;
          latitude = markers[0].latitude;
+         this.selected = 0;
       }
       // Center around point.
       this.init(longitude, latitude, zoom);
@@ -124,10 +129,23 @@ window.EFINDER = window.EFINDER || {};
       for (i = 0; i < markers.length; i++) {
          // Draw a marker at the point.
          marker = markers[i];
-         code += (i % 26);
+         code = 65 + (i % 26);
          this.addMarker(marker.longitude, marker.latitude, 
             marker.title, marker.content, String.fromCharCode(code));
       }
+   };
+
+   EFINDER.Map.prototype.selectMarker = function(index) {
+      var selectedMarker,
+          point;
+
+      if (index < 0 || index >= this.markers.length) {
+         return;
+      }
+
+      selectedMarker = this.data[index];             
+      // Center around point.
+      this.init(selectedMarker.longitude, selectedMarker.latitude, this.zoom);
    };
 
 }(window.jQuery, window.EFINDER));
