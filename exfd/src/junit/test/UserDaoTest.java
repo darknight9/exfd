@@ -23,7 +23,8 @@ public class UserDaoTest {
 	@Test
 	public void testFind(){
 		UserDao dao = new UserDaoImpl();
-		dao.find("zhangsan", "123");
+		User user = dao.find("zhangsan", "123");
+		System.out.println(user);
 	}
 	
 	@Test

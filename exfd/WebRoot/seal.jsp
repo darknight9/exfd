@@ -24,28 +24,28 @@
 	<script type="text/javascript" src="js/utils.js"></script>
 </head>
 <body>
-	<div id="header" class="navbar">
-		<div class="navbar-inner">
-			<ul class="nav">
-				<li><a href="/index.html">欢迎来到易寻方达！</a></li>
-				<li class="divider-vertical"></li>
-				<li><a href="/container.jsp" class="color-link">搜箱</a></li>
-				<li class="divider-vertical"></li>
-				<li><a href="/ship.jsp" class="color-link">搜船</a></li>
-			</ul>
-			<ul class="nav float-right">	
-				<li><a href="javascript:void(0);" class="color-highlight">VIP入口</a></li>
-				<li class="divider-vertical"></li>
-				<li><a href="javascript:void(0);">注册</a></li>
-			</ul>
-		</div>
-	</div>
+   <div id="header" class="navbar">
+      <div class="navbar-inner">
+         <ul class="nav">
+            <li><a href="/index.html">欢迎来到易寻方达！</a></li>
+            <li class="divider-vertical"></li>
+            <li><a href="/container.jsp" class="color-link">搜箱</a></li>
+            <li class="divider-vertical"></li>
+            <li><a href="/ship.jsp" class="color-link">搜船</a></li>
+         </ul>
+         <ul class="nav float-right">	
+            <li><a href="javascript:void(0);" class="color-highlight">VIP入口</a></li>
+            <li class="divider-vertical"></li>
+            <li><a href="javascript:void(0);">注册</a></li>
+         </ul>
+      </div>
+   </div>
 
-	<div class="search-site-bar">
+   <div class="search-site-bar">
       <div class="container">
          <div class="span2 offset1">
             <a href="/index.html">
-			   <img src="/img/logo.png" class="logo-img">
+            <img src="/img/logo.png" class="logo-img">
             </a>
          </div>
          <div class="span7 logo-container">
@@ -58,26 +58,26 @@
             <img src="img/loading.gif" id="loadingIndicator" class="hide"/>
          </div>
       </div>
-	</div>
+   </div>
 
-	<div id="errorDiv" class="alert alert-error hide">
-		<button type="button" class="close" data-dismiss="alert">×</button>
+   <div id="errorDiv" class="alert alert-error hide">
+      <button type="button" class="close" data-dismiss="alert">×</button>
       <span id="errorMsg"></span>
    </div>
 
-	<div id="map" class="map-container"></div>
+   <div id="map" class="map-container"></div>
 
-	<footer class="footer footer-margin">
-		<div class="container">
-			<ul class="footer-links">
-	    	   <li><a href="/partners.html">合作伙伴</a></li>
-			   <li><a href="/sitemap/about.html">联系我们</a></li>
-			   <li><a href="javascript:void(0);">网站地图</a></li>
-			   <li><a href="/sitemap/legal.html">法律声明</a></li>
-			   <span class="float-right footer-license">版权所有 © 北京易寻方达科技有限公司。  京ICP备13009564号</span>
-			</ul>
-		</div>
-	</footer>
+   <footer class="footer">
+      <div class="container">
+         <ul class="footer-links">
+            <li><a href="/partners.html">合作伙伴</a></li>
+            <li><a href="/sitemap/about.html">联系我们</a></li>
+            <li><a href="javascript:void(0);">网站地图</a></li>
+            <li><a href="/sitemap/legal.html">法律声明</a></li>
+            <span class="float-right footer-license">版权所有 © 北京易寻方达科技有限公司。  京ICP备13009564号</span>
+         </ul>
+      </div>
+   </footer>
 
 	<% String code = (String)request.getAttribute("code"); %>
 		

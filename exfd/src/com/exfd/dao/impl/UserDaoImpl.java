@@ -35,11 +35,6 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.exfd.dao.impl.UserDao#find(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public User find(String username, String password) {
 		Session session = HibernateUtils.getSessionFactory().openSession();

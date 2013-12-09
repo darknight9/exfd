@@ -22,7 +22,7 @@ public class LogoutServlet extends HttpServlet {
 		}
 		
 		// 注销成功，跳到全局消息显示页面，显示注销成功消息，并控制消息显示页面过3秒后跳转到首页.
-		request.setAttribute("message", "注销成功，浏览器将在3秒后跳转，如果没有跳转，你就点...  <meta http-equiv='refresh' content='10;url="+request.getContextPath()+"/index.jsp'>");
+		request.setAttribute("message", "注销成功，浏览器将在3秒后跳转，如果没有跳转，你就点...  <meta http-equiv='refresh' content='3;url="+request.getContextPath()+"/index.html'>");
 		request.getRequestDispatcher("/message.jsp").forward(request, response);
 
 	}

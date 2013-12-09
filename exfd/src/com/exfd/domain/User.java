@@ -76,4 +76,16 @@ public class User {
 		this.lasttime = lasttime;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("User [id=").append(id).append(", username=")
+				.append(username).append(", password=").append(password)
+				.append(", email=").append(email).append(", nickname=")
+				.append(nickname).append(", createtime=").append(createtime)
+				.append(", logintime=").append(logintime).append(", lasttime=")
+				.append(lasttime).append("]");
+		return builder.toString();
+	}
+
 }

@@ -26,7 +26,9 @@ public class BusinessServieImpl {
 	
 	// 对web层提供登陆服务.
 	public User login(String username, String password){	
-		password = ServiceUtils.md5(password);
+		
+		// TODO 暂时使用明文保存密码.
+		//password = ServiceUtils.md5(password);
 		return dao.find(username, password);
 	}
 }
