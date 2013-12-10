@@ -35,8 +35,9 @@ public class LoginServlet extends HttpServlet {
 		}
 		
 		// 这里处理出错的页面.
-		request.setAttribute("message", "用户名或密码错误！");
-		request.getRequestDispatcher("/message.jsp").forward(request, response);
+		request.setAttribute("error", "用户名或密码错误！");
+		request.getRequestDispatcher("/admin/login.jsp").forward(request, response);
+		//response.sendRedirect(request.getContextPath()+"/admin/login.jsp");
 		
 	}
 
