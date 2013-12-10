@@ -84,10 +84,13 @@ public class ContainerLineDaoImpl implements ContainerDao {
 		}
 
 		// 如果记录found时间没有过期，说明记录有效.
-		if (container.getFoundtime().after(expire)) {
-			return true;
-		}
-		return false;
+		// TODO 这个功能暂时关闭
+		//if (container.getFoundtime().after(expire)) {
+		//	return true;
+		//}
+		//return false;
+		
+		return true;
 	}
 	
 	private boolean isRecordValid(Container container, Date expire) {

@@ -46,7 +46,7 @@
             </div>
             <div class="span7 logo-container">
                <form id="searchForm" class="form-inline" accept-charset="utf-8">
-                  <input id="searchInput" type="text" class="input-xlarge search-box-input" placeholder="CMAU1396117" name="code">
+                  <input id="searchInput" type="text" class="input-xlarge search-box-input" placeholder="CBHU1835330" name="code">
                   <input id="companyInput" type="hidden" name="company" value="default">
                   <button type="submit" class="btn search-box-button">搜索</button>
                </form>
@@ -424,8 +424,8 @@
 				
 				code = searchInput.val();
 				if (!code) {
-					code = 'CMAU1396117';
-					searchInput.val('CMAU1396117');
+					code = 'CBHU1835330';
+					searchInput.val('CBHU1835330');
 				}
 				url = '/servlet/TrackContainerInfoServlet?code=' + encodeURIComponent(code)
                   + '&company=' + companyInput.val();
