@@ -36,7 +36,7 @@ public class TrackSealInfoServlet extends HttpServlet {
 			code = code.trim();
 		}
 		request.setAttribute("code", code);
-		
+
 		String cid = request.getParameter("cid");
 		if (cid != null) {
 			cid = cid.trim();
@@ -57,6 +57,9 @@ public class TrackSealInfoServlet extends HttpServlet {
 		} else if (cid != null) {
 			logger.info("Get Request Seal. cid:[{}].", cid);
 		}
+
+		// 增加归一化.
+		code = adjustCode(code);
 
 		// 前置检查.
 		boolean isParameterOK = checkParameter(code, cid, beginString,
@@ -141,6 +144,19 @@ public class TrackSealInfoServlet extends HttpServlet {
 				logger.info("SealServiceImpl.track Not Found. code:[{}].", code);
 				return;
 			}
+		}
+	}
+
+	// 对code做归一化处理.
+	private String adjustCode(String code) {
+
+		if (code == null) {
+			return null;
+		}
+		if (code.startsWith("EF2014") || code.startsWith("ef2014")) {
+			return code.substring(6);
+		} else {
+			return code;
 		}
 	}
 
