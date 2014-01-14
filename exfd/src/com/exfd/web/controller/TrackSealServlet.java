@@ -152,8 +152,8 @@ public class TrackSealServlet extends HttpServlet {
 		if (code == null) {
 			return null;
 		}
-		if (code.startsWith("EF2014") || code.startsWith("ef2014")) {
-			return code.substring(6);
+		if (code.startsWith("EF") || code.startsWith("ef")) {
+			return code.substring(2);
 		} else {
 			return code;
 		}
