@@ -74,7 +74,7 @@
             <li><a href="/sitemap/about.html">联系我们</a></li>
             <li><a href="javascript:void(0);">网站地图</a></li>
             <li><a href="/sitemap/legal.html">法律声明</a></li>
-            <span class="float-right footer-license">版权所有 © 北京易寻方达科技有限公司。  京ICP备13009564号</span>
+            <span class="float-right footer-license">版权所有 © 北京易寻方达科技有限公司  京ICP备13009564号</span>
          </ul>
       </div>
    </footer>
