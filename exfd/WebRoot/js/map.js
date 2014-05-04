@@ -9,6 +9,7 @@ window.EFINDER = window.EFINDER || {};
       this.markers = [];
       this.selected = -1;
       this.data = null;
+      this.path = null;
 
       if (!!div) {
          this.map = new BMap.Map(div);
@@ -36,6 +37,7 @@ window.EFINDER = window.EFINDER || {};
       // Center around point.
       point = new BMap.Point(longitude, latitude);
       this.map.centerAndZoom(point, this.zoom);
+      this.map.enableScrollWheelZoom();
    };
 
    EFINDER.Map.prototype.addMarker = function(longitude, latitude, title, content, text) {
@@ -52,7 +54,7 @@ window.EFINDER = window.EFINDER || {};
                <img src="../img/marker.png" class="map-marker-icon">\
                <div class="map-marker-text">' + text + '</div>\
             </div>';
-      
+
       // Draw a marker at the point.
       point = new BMap.Point(longitude, latitude);
       marker = new BMapLib.RichMarker(div, point, {
@@ -60,13 +62,13 @@ window.EFINDER = window.EFINDER || {};
          "enableDragging": false
       });
       this.markers.push(marker);
-      
+
       // Create search info window.
       marker.infoWindow = this.createInfoWindow(title, content);
       marker.addEventListener("click", function(e){
          this.infoWindow.open(this.getPosition());
       });
-      
+
       this.map.addOverlay(marker);
    };
 
@@ -116,7 +118,7 @@ window.EFINDER = window.EFINDER || {};
       // Clear the present marker.
       this.clear();
 
-      this.data = markers;      
+      this.data = markers;
       if (!!markers && markers.length > 0) {
          // Center around the first marker
          longitude = markers[0].longitude;
@@ -125,12 +127,12 @@ window.EFINDER = window.EFINDER || {};
       }
       // Center around point.
       this.init(longitude, latitude, zoom);
-      
+
       for (i = 0; i < markers.length; i++) {
          // Draw a marker at the point.
          marker = markers[i];
          code = 65 + (i % 26);
-         this.addMarker(marker.longitude, marker.latitude, 
+         this.addMarker(marker.longitude, marker.latitude,
             marker.title, marker.content, String.fromCharCode(code));
       }
    };
@@ -143,9 +145,38 @@ window.EFINDER = window.EFINDER || {};
          return;
       }
 
-      selectedMarker = this.data[index];             
+      selectedMarker = this.data[index];
       // Center around point.
       this.init(selectedMarker.longitude, selectedMarker.latitude, this.zoom);
+   };
+
+   EFINDER.Map.prototype.drawPath = function(points, zoom) {
+      var longitude,
+          latitude,
+          bPoints = [],
+          i;
+
+      if (this.path) {
+         this.map.removeOverlay(this.path);
+      }
+
+      if (!points || points.length <= 0) {
+         return;
+      }
+
+      // Center around the first marker
+      longitude = points[0].longitude;
+      latitude = points[0].latitude;
+      // Center around point.
+      this.init(longitude, latitude, zoom);
+
+      for (i = 0; i < points.length; i++) {
+         bPoints.push(new BMap.Point(points[i].longitude,
+            points[i].latitude));
+      }
+
+      this.path = new BMapLib.CurveLine(bPoints, {strokeColor:"blue", strokeWeight:3, strokeOpacity:0.5});
+      this.map.addOverlay(this.path);
    };
 
 }(window.jQuery, window.EFINDER));

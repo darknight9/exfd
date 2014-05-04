@@ -70,6 +70,8 @@ public class TrackSealInfoServlet extends HttpServlet {
 				logger.info("check Parameter fail. code:[{}].", code);
 			} else if (cid != null) {
 				logger.info("check Parameter fail. cid:[{}].", cid);
+			} else {
+				logger.info("check Parameter fail. code is null, cid is null.");
 			}
 			return;
 		}

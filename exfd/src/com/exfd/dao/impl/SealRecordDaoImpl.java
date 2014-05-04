@@ -99,8 +99,10 @@ public class SealRecordDaoImpl implements SealRecordDao {
 		SealRecord sRecord = null;
 		try {
 			tx = session.beginTransaction();
+			//Query query = session
+			//		.createQuery("from SealRecord as s where s.code=:code order by s.gpstime desc");
 			Query query = session
-					.createQuery("from SealRecord as s where s.code=:code order by s.gpstime desc");
+					.createQuery("from SealRecord as s where s.code=:code order by s.gpstime");
 			query.setString("code", code);
 			List results = query.list();
 			Iterator it = results.iterator();
@@ -131,8 +133,10 @@ public class SealRecordDaoImpl implements SealRecordDao {
 		SealRecord sRecord = null;
 		try {
 			tx = session.beginTransaction();
+			//Query query = session
+			//		.createQuery("from SealRecord as s where s.code=:code and s.gpstime between :begintime and :endtime order by s.gpstime desc");
 			Query query = session
-					.createQuery("from SealRecord as s where s.code=:code and s.gpstime between :begintime and :endtime order by s.gpstime desc");
+					.createQuery("from SealRecord as s where s.code=:code and s.gpstime between :begintime and :endtime order by s.gpstime");
 			query.setString("code", code);
 			query.setTimestamp("begintime", beginDate);
 			query.setTimestamp("endtime", endDate);
@@ -161,6 +165,9 @@ public class SealRecordDaoImpl implements SealRecordDao {
 		return find(code, df.parse(beginDate), df.parse(endDate));
 	}
 
+	// 主要用来测试用.
+	// 来由：巡逻鹰的seal记录无法一次性获得，所以只能根据时间，截取多个5分钟这样的小时间段来入数据库，然后通过这个函数将这5分钟内的一条代表记录提取出来。
+	//
 	public SealRecord findOne(String code, Date beginDate,
 			Date endDate, boolean isNew) {
 

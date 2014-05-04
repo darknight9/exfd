@@ -75,8 +75,8 @@ public class SealRecordDaoImplTest {
 	public void testFind2() throws ParseException {
 		SealRecordDaoImpl impl = new SealRecordDaoImpl();
 		
-		String beginString = "2013-03-26 12:0:0";
-		String endString = "2013-03-26 12:05:00";
+		String beginString = "2013-03-26 12:06:0";
+		String endString = "2013-03-26 12:15:00";
 		
 		Date beginDate = df.parse(beginString);
 		Date endDate = df.parse(endString);
@@ -96,7 +96,7 @@ public class SealRecordDaoImplTest {
 	public void testFindOne() throws ParseException {
 		SealRecordDaoImpl impl = new SealRecordDaoImpl();
 		
-		String beginString = "2013-03-27 12:0:0";
+		String beginString = "2013-03-26 12:0:0";
 		String endString = "2013-03-29 12:05:00";
 		
 		Date beginDate = df.parse(beginString);
@@ -105,6 +105,8 @@ public class SealRecordDaoImplTest {
 		System.out.println(endDate);
 		SealRecord record = impl.findOne("2899", beginDate, endDate, false);
 		System.out.println(record);
+		SealRecord record2 = impl.findOne("2899", beginDate, endDate, true);
+		System.out.println(record2);
 	}
 
 }
