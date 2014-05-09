@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.exfd.dao.SealDao;
 import com.exfd.dao.SealRecordDao;
 import com.exfd.dao.impl.SealEagleDaoImpl;
+import com.exfd.dao.impl.SealRecordEFinderDaoImpl;
 import com.exfd.dao.impl.SealRecordEagleDaoImpl;
 import com.exfd.domain.Seal;
 import com.exfd.domain.SealRecord;
@@ -18,7 +19,7 @@ public class SealServiceImpl {
 	private static Logger logger = LogManager.getLogger();
 	
 	private SealDao dao = new SealEagleDaoImpl();	// 以后用工厂模式或者spring来解耦合.
-	private SealRecordDao historyDao = new SealRecordEagleDaoImpl();
+	private SealRecordDao historyDao = new SealRecordEFinderDaoImpl();
 	
 	// 对web层提供查询铅封信息服务.
 	public Seal track(String code) {

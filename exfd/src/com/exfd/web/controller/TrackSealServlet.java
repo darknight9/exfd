@@ -36,15 +36,15 @@ public class TrackSealServlet extends HttpServlet {
 			cid = cid.trim();
 		}
 		request.setAttribute("cid", cid);
-		String beginString = request.getParameter("beginTime");
-		request.setAttribute("beginTime", beginString);
-		String endString = request.getParameter("endTime");
-		request.setAttribute("endTime", endString);
+		String beginString = request.getParameter("begin");
+		request.setAttribute("begin", beginString);
+		String endString = request.getParameter("end");
+		request.setAttribute("end", endString);
 
 		// 记录请求.
 		if (code != null && beginString != null && endString != null) {
 			logger.info(
-					"Get Request Seal. code:[{}].beginTime:[{}].endTime:[{}]",
+					"Get Request Seal. code:[{}].begin:[{}].end:[{}]",
 					code, beginString, endString);
 		} else if (code != null) {
 			logger.info("Get Request Seal. code:[{}].", code);

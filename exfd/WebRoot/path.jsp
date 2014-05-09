@@ -1,3 +1,4 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="zh">
@@ -13,15 +14,18 @@
 	<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
    <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+   <script type="text/javascript" src="js/dateformat.js"></script>
 	<!--[if lte IE 6]>
 	<link href="css/bootstrap-ie6.min.css" rel="stylesheet">
 	<link href="css/ie.css" rel="stylesheet">
 	<script type="text/javascript" src="js/bootstrap-ie.js"></script>
 	<![endif]-->
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=sBY8xc3rlpQuHyN5VispqMH1"></script>
 	<script type="text/javascript" src="js/baidu/map_min.js"></script>
 	<script type="text/javascript" src="js/baidu/searchinfowindow_min.js"></script>
    <script type="text/javascript" src="js/baidu/richmarker_min.js"></script>
    <script type="text/javascript" src="js/baidu/curveline.min.js"></script>
+   <script type="text/javascript" src="js/baidu/LuShu_min.js"></script>
 	<script type="text/javascript" src="js/map.js"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
 </head>
@@ -109,6 +113,8 @@
 		</div>
 	</footer>
 
+	<% String code = (String)request.getAttribute("code"); %>
+	
 	<script type="text/javascript">
 		$(function() {
 			"use strict";
@@ -172,7 +178,7 @@
 			var successCallback = function(data) {
 				if (!!data) {
 					EFINDER.utils.hideError();
-					map.drawPath(data, 5);
+					map.drawPath(data, 11);
                markerTable.html(getMarkerList(data));
                initMarkerList();
 				} else {
@@ -181,39 +187,39 @@
 			};
 
 			var submitForm = function() {
-				var code, startPicker, start, endPicker, end, url;
+				var code, startPicker, start, endPicker, end, url, starts, ends;
 
 				code = encodeURIComponent(searchInput.val() || '2127');
-            url = '/servlet/TrackPathServlet?code=' + code;
+            url = '/servlet/TrackSealInfoServlet?code=' + code;
             // Start time.
             startPicker = $('#startTimePicker').data('datetimepicker');
             if (!!startPicker) {
                start = startPicker.getLocalDate();
             }
             start = start || new Date();
-            url += '&start=' + start;
+            starts = encodeURIComponent(start.Format("yyyy-MM-dd hh:mm:ss"));
+            url += '&start=' + starts;
             // End time.
             endPicker = $('#endTimePicker').data('datetimepicker');
             if (!!endPicker) {
                end = endPicker.getLocalDate();
             }
             end = end || new Date();
-            url += '&end=' + end;
-            EFINDER.utils.load(url, successCallbck);
+            ends = encodeURIComponent(end.Format("yyyy-MM-dd hh:mm:ss"));
+            url += '&end=' + ends;
+            EFINDER.utils.load(url, successCallback);
 			};
 
 			var init = function() {
 				var code = '';
-
 				
-				//code = '<%= (code != null) ? code : "" %>';
+				code = '<%= (code != null) ? code : "" %>';
 
 				if (code !== '') {
 					searchInput.val(code);
 				}
 
 				map = new EFINDER.Map('map');
-				submitForm();
 
 				$('#searchForm').submit(function(e) {
 					e.preventDefault();
@@ -221,11 +227,11 @@
 				});
 
             $('#startTimePicker').datetimepicker({
-               language: 'zh'
+               language: 'en'
             });
             
             $('#endTimePicker').datetimepicker({
-               language: 'zh'
+               language: 'en'
             });
 			};
 

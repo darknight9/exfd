@@ -159,6 +159,7 @@ window.EFINDER = window.EFINDER || {};
       if (this.path) {
          this.map.removeOverlay(this.path);
       }
+      this.map.clearOverlays();
 
       if (!points || points.length <= 0) {
          return;
@@ -175,8 +176,18 @@ window.EFINDER = window.EFINDER || {};
             points[i].latitude));
       }
 
-      this.path = new BMapLib.CurveLine(bPoints, {strokeColor:"blue", strokeWeight:3, strokeOpacity:0.5});
+      //this.path = new BMapLib.CurveLine(bPoints, {strokeColor:"blue", strokeWeight:3, strokeOpacity:0.5});
+      this.path = new BMap.Polyline(bPoints, {strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5});
       this.map.addOverlay(this.path);
+      
+      // 调整zoom
+      this.map.setViewport(bPoints);
+      
+      var lushu = new BMapLib.LuShu(this.map, bPoints, {
+          defaultContent:"从天安门到百度大厦",
+          speed:10
+      });
+      lushu.start();
    };
 
 }(window.jQuery, window.EFINDER));
