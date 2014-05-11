@@ -20,11 +20,9 @@
 	<link href="css/ie.css" rel="stylesheet">
 	<script type="text/javascript" src="js/bootstrap-ie.js"></script>
 	<![endif]-->
-	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=sBY8xc3rlpQuHyN5VispqMH1"></script>
 	<script type="text/javascript" src="js/baidu/map_min.js"></script>
 	<script type="text/javascript" src="js/baidu/searchinfowindow_min.js"></script>
    <script type="text/javascript" src="js/baidu/richmarker_min.js"></script>
-   <script type="text/javascript" src="js/baidu/curveline.min.js"></script>
    <script type="text/javascript" src="js/baidu/LuShu_min.js"></script>
 	<script type="text/javascript" src="js/map.js"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
@@ -121,7 +119,8 @@
 
 			var map = null,
              markerTable = $('#markerTable'),
-				 searchInput = $('#searchInput');
+				 searchInput = $('#searchInput'),
+             code = '';
 
          var getMarkerList = function(list) {
             var htmlStr, data, id, i;
@@ -140,13 +139,13 @@
                      <td>\
                         <div class="relative-div marker-icon">\
                            <img src="img/marker.png" class="map-marker-icon">\
-                           <div class="map-marker-text">' + String.fromCharCode(65 + (i % 26)) + '</div>\
+                           <div class="map-marker-text">' + (i + 1) + '</div>\
                         </div>\
                      </td>\
                      <td>\
                         <div class="marker-detail">\
-                           <p class="marker-title">' + data.code + '</p>\
-                           <p>' + data.time + '</p>\
+                           <p class="marker-title">' + data.gpstime + '</p>\
+                           <p>' + data.poi + '</p>\
                         </div>\
                      </td>\
                   </tr>\
@@ -178,7 +177,7 @@
 			var successCallback = function(data) {
 				if (!!data) {
 					EFINDER.utils.hideError();
-					map.drawPath(data, 11);
+					map.drawPath(data, 11, code);
                markerTable.html(getMarkerList(data));
                initMarkerList();
 				} else {
@@ -187,7 +186,7 @@
 			};
 
 			var submitForm = function() {
-				var code, startPicker, start, endPicker, end, url, starts, ends;
+				var startPicker, start, endPicker, end, url, starts, ends;
 
 				code = encodeURIComponent(searchInput.val() || '2127');
             url = '/servlet/TrackSealInfoServlet?code=' + code;
@@ -211,8 +210,6 @@
 			};
 
 			var init = function() {
-				var code = '';
-				
 				code = '<%= (code != null) ? code : "" %>';
 
 				if (code !== '') {
@@ -220,6 +217,7 @@
 				}
 
 				map = new EFINDER.Map('map');
+				submitForm();
 
 				$('#searchForm').submit(function(e) {
 					e.preventDefault();
@@ -227,11 +225,11 @@
 				});
 
             $('#startTimePicker').datetimepicker({
-               language: 'en'
+               language: 'zh'
             });
             
             $('#endTimePicker').datetimepicker({
-               language: 'en'
+               language: 'zh'
             });
 			};
 

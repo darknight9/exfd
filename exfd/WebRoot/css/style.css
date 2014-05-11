@@ -312,7 +312,7 @@ button.search-path-box-button {
 
 .site-bar-list li {
    line-height: 25px;
-   background: url(../img/arrow_right.gif) left top no-repeat scroll transparent;
+   background: url(/img/arrow_right.gif) left top no-repeat scroll transparent;
    padding-left: 8px;
 }
 
@@ -826,11 +826,28 @@ button.search-path-box-button {
    text-align: center;
 }
 
+.map-start-marker,
+.map-end-marker {
+   position: absolute;
+   background: url(/img/dest_markers.png) no-repeat;
+   width: 40px;
+   height: 34px;
+}
+
+.map-start-marker {
+   background-position: 0 0;
+}
+
+.map-end-marker {
+   background-position: 0 -34px;
+}
+
 .marker-panel {
    float: left;
    width: 25%;
    height: 80%;
    background-color: #fff;
+   overflow: scroll;
 }
 
 .marker-list {

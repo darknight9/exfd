@@ -80,7 +80,9 @@ window.EFINDER = window.EFINDER || {};
          marker = this.markers[i];
          overlay = marker.infoWindow;
          this.removeOverlay(marker);
-         this.removeOverlay(overlay);
+         if (!!overlay) {
+            this.removeOverlay(overlay);
+         }
       }
       this.markers.length = 0;
    };
@@ -150,16 +152,18 @@ window.EFINDER = window.EFINDER || {};
       this.init(selectedMarker.longitude, selectedMarker.latitude, this.zoom);
    };
 
-   EFINDER.Map.prototype.drawPath = function(points, zoom) {
+   EFINDER.Map.prototype.drawPath = function(points, zoom, code) {
       var longitude,
           latitude,
           bPoints = [],
+          startMarker,
+          endMarker,
+          self = this,
+          icon,
           i;
 
-      if (this.path) {
-         this.map.removeOverlay(this.path);
-      }
       this.map.clearOverlays();
+      this.markers.length = 0;
 
       if (!points || points.length <= 0) {
          return;
@@ -176,18 +180,64 @@ window.EFINDER = window.EFINDER || {};
             points[i].latitude));
       }
 
-      //this.path = new BMapLib.CurveLine(bPoints, {strokeColor:"blue", strokeWeight:3, strokeOpacity:0.5});
       this.path = new BMap.Polyline(bPoints, {strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5});
       this.map.addOverlay(this.path);
       
       // 调整zoom
       this.map.setViewport(bPoints);
-      
+    
+      // Add start marker. 
+      startMarker = '<div class="map-start-marker"></div>';
+      startMarker = new BMapLib.RichMarker(startMarker, bPoints[0], {
+         "anchor": new BMap.Size(-20, -30),
+         "enableDragging": false
+      });
+      this.markers.push(startMarker);
+      this.map.addOverlay(startMarker);
+     
+      // Add end marker. 
+      endMarker = '<div class="map-end-marker"></div>';
+      endMarker = new BMapLib.RichMarker(endMarker, bPoints[bPoints.length - 1], {
+         "anchor": new BMap.Size(-20, -30),
+         "enableDragging": false
+      });
+      this.markers.push(startMarker);
+      this.map.addOverlay(endMarker);
+
+      icon = new BMap.Icon("../img/marker_red_sprite.png", new BMap.Size(39, 25), {imageOffset: new BMap.Size(0, 0)});
       var lushu = new BMapLib.LuShu(this.map, bPoints, {
-          defaultContent:"从天安门到百度大厦",
-          speed:10
+          defaultContent: code,
+          icon: icon,
+          speed: 100
       });
       lushu.start();
    };
+
+   EFINDER.Map.prototype.run = function(points) {
+      var icon = new BMap.Icon("../img/marker_red_sprite.png", new BMap.Size(39, 25), {imageOffset: new BMap.Size(0, 0)}),
+          marker;
+
+      if (!points || points.length <= 0) {
+         return;
+      }
+
+      marker = new BMap.Marker(points[0],{icon:icon});
+      this.map.addOverlay(marker);
+
+      var setMarkerPos = function(i) {
+         if (i < points.length) {
+            marker.setPosition(points[i]);
+            setTimeout(function() {
+               i++;
+               setMarkerPos(i);
+            }, 500);
+         }
+      };
+      
+      setTimeout(function() {
+         setMarkerPos(1);
+      }, 500); 
+   };
+
 
 }(window.jQuery, window.EFINDER));

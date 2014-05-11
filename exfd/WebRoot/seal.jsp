@@ -29,6 +29,8 @@
          <ul class="nav">
             <li><a href="/index.html">欢迎来到易寻方达！</a></li>
             <li class="divider-vertical"></li>
+            <li><a href="/path.jsp" class="color-link">轨迹</a></li>
+            <li class="divider-vertical"></li>
             <li><a href="/container.jsp" class="color-link">搜箱</a></li>
             <li class="divider-vertical"></li>
             <li><a href="/ship.jsp" class="color-link">搜船</a></li>
